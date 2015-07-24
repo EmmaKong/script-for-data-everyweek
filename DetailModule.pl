@@ -429,11 +429,11 @@ sub Process{
 										
 										
 					          #打开Detaillast
-										$filePathDetail = $dir."\/".$_.".xlsx";	# 表格路径
-										$workbookDetail = $Excel->Workbooks->Open($filePathDetail); 
-										$tempName=$docName."投诉";
+										$filePathDetailLast = $dir."\/".$_."Last".".xlsx";	# 表格路径
+										$workbookDetailLast = $Excel->Workbooks->Open($filePathDetailLast); 
+										$tempNameLast = $docName."投诉";
 										#print $1."\n";
-										$selectSheetDetail = $workbookDetail->Sheets($tempName);
+										$selectSheetDetailLast = $workbookDetailLast->Sheets($tempNameLast);
 					
 										#读出Detaillast的EXCEL数据到数组
 						  			$rowCountDetail=$selectSheetDetail->usedrange->rows->count;       #最大有效行数

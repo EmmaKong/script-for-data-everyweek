@@ -425,7 +425,22 @@ sub Process{
 										$numDRowDetail=AYG.$totolRowDetail;
 										$DataArrayDetail = $selectSheetDetail->Range("A1:$numDRowDetail")->{'Value'};
 										$DataLengthDetail=@$DataArrayDetail;
+										
+										
+										
+					          #打开Detaillast
+										$filePathDetailLast = $dir."\/".$_."Last".".xlsx";	# 表格路径
+										$workbookDetail = $Excel->Workbooks->Open($filePathDetail); 
+										$tempName=$docName."投诉";
+										#print $1."\n";
+										$selectSheetDetail = $workbookDetail->Sheets($tempName);
 					
+										#读出Detaillast的EXCEL数据到数组
+						  			$rowCountDetail=$selectSheetDetail->usedrange->rows->count;       #最大有效行数
+										$totolRowDetail=$rowCountDetail;
+										$numDRowDetail=AYG.$totolRowDetail;
+										$DataArrayDetail = $selectSheetDetail->Range("A1:$numDRowDetail")->{'Value'};
+										$DataLengthDetail=@$DataArrayDetail;
 					
 					
 										#获取排名前八位数据
