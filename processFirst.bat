@@ -26,6 +26,7 @@ copy a.xlsx Y13iL.xlsx
 copy a.xlsx Y33.xlsx
 perl PreAnalysis.pl
 perl PostAnalysis.pl
+
 copy a.xlsx X3tDetail.xlsx
 copy a.xlsx X3LDetail.xlsx
 copy a.xlsx X3VDetail.xlsx
@@ -53,6 +54,7 @@ copy a.xlsx Y13iLDetail.xlsx
 copy a.xlsx Y33Detail.xlsx
 perl ModulePreAnalysis.pl
 perl ModulePostAnalysis.pl
+
 perl PostCountChart.pl
 perl PostSuddenChange.pl
 perl DetailModule.pl

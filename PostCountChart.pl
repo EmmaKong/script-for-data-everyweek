@@ -33,7 +33,7 @@ i音乐 i视频 音频 i管家 浏览器 软件商店 状态栏 联系人 短信 电子邮件 文件管理 输入
 $totolRow=600;#初始化该sheet只需要600行数据  # modify kongqiao
 $numDRow=MM.$totolRow;#400行对应的excel长宽
 $ModuleNum=5;
-$colMax=85; #眼球识别 
+$colMax=85;  # 模式数 
 $endRow=27;
 $startRow=11;
 $rom_count_name="rom_count.xlsx";
