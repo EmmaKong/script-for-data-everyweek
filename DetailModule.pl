@@ -434,24 +434,8 @@ sub Process{
 										$numDRowDetail=AYG.$totolRowDetail;
 										$DataArrayDetail = $selectSheetDetail->Range("A1:$numDRowDetail")->{'Value'};
 										$DataLengthDetail=@$DataArrayDetail;
-										
-										
-										
-					          #打开Detaillast
-										$filePathDetailLast = $dir."\/".$_."Last".".xlsx";	# 表格路径
-										$workbookDetailLast = $Excel->Workbooks->Open($filePathDetailLast); 
-										$tempNameLast = $docName."投诉";
-										#print $1."\n";
-										$selectSheetDetailLast = $workbookDetailLast->Sheets($tempNameLast);
-					
-										#读出Detaillast的EXCEL数据到数组
-						  			$rowCountDetailLast = $selectSheetDetailLast->usedrange->rows->count;       #最大有效行数
-										$totolRowDetailLast = $rowCountDetailLast;
-										$numDRowDetailLast = AYG.$totolRowDetailLast;
-										$DataArrayDetailLast = $selectSheetDetailLast->Range("A1:$numDRowDetail")->{'Value'};
-										$DataLengthDetailLast = @$DataArrayDetailLast;
-										
-											
+																				
+							
 										# modify kongqiao 20150724
 										# 获取本周所有模块细分数据
 										$moduleArray = $$DataTotolArray[0];
@@ -500,7 +484,6 @@ sub Process{
 					
 												}
 												
-												$haha = $TAGSERIES[5];
 												
 												#获取TAGSERIES模块内的位置，从而得到该模块长度
 												foreach(@TAGSERIES){
@@ -557,107 +540,122 @@ sub Process{
 																																																				
 										}
 										
-										#获取上周细分模块数据											
-										$allNum = 240;
+										#获取上周细分模块数据				
+																				
+					          #打开Detaillast
+										$filePathDetailLast = $dir."\/".$_."Last".".xlsx";	# 表格路径
+										$workbookDetailLast = $Excel->Workbooks->Open($filePathDetailLast); 
+										$tempNameLast = $docName."投诉";
+										#print $1."\n";
+										$selectSheetDetailLast = $workbookDetailLast->Sheets($tempNameLast);
+					
+										#读出Detaillast的EXCEL数据到数组
+						  			$rowCountDetailLast = $selectSheetDetailLast->usedrange->rows->count;       #最大有效行数
+										$totolRowDetailLast = $rowCountDetailLast;
+										$numDRowDetailLast = AYG.$totolRowDetailLast;
+										$DataArrayDetailLast = $selectSheetDetailLast->Range("A1:$numDRowDetailLast")->{'Value'};
+										$DataLengthDetailLast = @$DataArrayDetailLast;
+										
+																		
+										$allNumLast = 240;
 										foreach $value(@getmodule){
 											
-												$tempFirstData = $$detailDataArray[0+$allNum];
-												$lineValue = @$tempFirstData;
-												$$tempFirstData[0] = $docName."投诉";
+												$tempFirstDataLast = $$detailDataArray[0 + $allNumLast];
+												$lineValueLast = @$tempFirstDataLast;
+												$$tempFirstDataLast[0] = $docName."投诉";
 												
-												$tempSecondtData = $$detailDataArray[1+$allNum];
-												$lineValueSecond = @$tempSecondData;
-												$secondValueName = "上周".$value."投诉量";
-												$$tempSecondtData[0] = $secondValueName;
+												$tempSecondtDataLast = $$detailDataArray[1 + $allNumLast];
+												$lineValueSecondLast = @$tempSecondDataLast;
+												$secondValueNameLast = "上周".$value."投诉量";
+												$$tempSecondtDataLast[0] = $secondValueNameLast;
 																			
-												$tempFirstDataDetail = $$DataArrayDetailLast[0];
-												$lineValueDetail = @$tempFirstDataDetail;
+												$tempFirstDataDetailLast = $$DataArrayDetailLast[0];
+												$lineValueDetailLast = @$tempFirstDataDetailLast;
+												print "aiahd $lineValueDetailLast \n";
+												$tempLastDataDetailLast = $$DataArrayDetailLast[$DataLengthDetailLast - 1];												
+												$lineValueLastDetailLast = @$tempLastDataDetailLast;
 												
-												$tempLastDataDetail = $$DataArrayDetailLast[$DataLengthDetailLast-1];
-												$lineValueLastDetail=@$tempLastDataDetail;
 												
-												$markPosition = 0;  #整个数组位置信息
-												$markModulePosition = 0; #获取到得哪个模块名在模块数组的位置
-												$tempNum = 0;
-												$numInsert = 1; #每个模块的每列位置信息
+												$markPositionLast = 0;  #整个数组位置信息
+												$markModulePositionLast = 0; #获取到得哪个模块名在模块数组的位置
+												$tempNumLast = 0;
+												$numInsertLast = 1; #每个模块的每列位置信息
 												
 											
-												foreach $valueDetail(0...$lineValueDetail-1){
+												foreach $valueDetailLast (0...$lineValueDetailLast-1){
 													#print $valueDetail."\n";
-														if($$tempFirstDataDetail[$valueDetail] eq $value){
-															if($$tempFirstDataDetail[$valueDetail] eq "系统性能"){
+														if($$tempFirstDataDetailLast[$valueDetailLast] eq $value){
+															if($$tempFirstDataDetailLast[$valueDetailLast] eq "系统性能"){
 																#print "可以匹配系统性能的\n";
 															}
-															$markPosition = $valueDetail;#记录整个细分数组中的位置信息
+															$markPositionLast = $valueDetailLast;  #记录整个细分数组中的位置信息
 															
 															last;
 														}
 					
 												}
 												
-												$haha = $TAGSERIES[5];
 												
 												#获取TAGSERIES模块内的位置，从而得到该模块长度
 												foreach(@TAGSERIES){
 														if($_ eq $value){
-																$markModulePosition = $tempNum;
+																$markModulePositionLast = $tempNumLast;
 																last;
 														}
-														$tempNum++;
+														$tempNumLast++;
 												}
 												
-												$positionModule[$moduleTempNum = $markModulePosition;
-												$moduleTempNum++;
+												$positionModuleLast[$moduleTempNumLast] = $markModulePositionLast;
+												$moduleTempNumLast++;
 												
-												foreach $tempNum($markPosition...$markPosition+$mergeArray[$markModulePosition]-1){		
+												foreach $tempNumLast($markPositionLast...$markPositionLast + $mergeArray[$markModulePositionLast]-1){		
 														#print $tempNum."\n";
-														$$tempFirstData[$numInsert]=$$tempFirstDataDetail[$tempNum+1];#将X3T1的数据放到X3T里面去
-														$$tempSecondtData[$numInsert]=$$tempLastDataDetail[$tempNum+1];#将X3T1的数据放到X3T里面去
-														$numInsert++;			
+														$$tempFirstDataLast[$numInsertLast] = $$tempFirstDataDetailLast[$tempNumLast + 1];   
+														$$tempSecondtDataLast[$numInsertLast] = $$tempLastDataDetailLast[$tempNumLast + 1]; 
+														$numInsertLast++;			
 												}
 
 												# 相机或第三方软件只显示不为 0 的部分
 												if($value eq "相机" || $value eq "第三方软件"){
 												
-													for ($i = 1; $i < $numInsert; $i++){
+													for ($i = 1; $i < $numInsertLast; $i++){
 												
-														for($j = 1; $j < $numInsert - $i; $j++){
-															$jNum = $$tempSecondtData[$j];
-															$jNumP = $$tempSecondtData[$j + 1];
-															$jName = $$tempFirstData[$j];
-															$jNameP = $$tempFirstData[$j + 1];
+														for($j = 1; $j < $numInsertLast - $i; $j++){
+															$jNum = $$tempSecondtDataLast[$j];
+															$jNumP = $$tempSecondtDataLast[$j + 1];
+															$jName = $$tempFirstDataLast[$j];
+															$jNameP = $$tempFirstDataLast[$j + 1];
 															if($jNum < $jNumP){
-																$$tempSecondtData[$j] = $jNumP;
-																$$tempSecondtData[$j + 1] = $jNum;
-																$$tempFirstData[$j] = $jNameP;
-																$$tempFirstData[$j + 1] = $jName;
+																$$tempSecondtDataLast[$j] = $jNumP;
+																$$tempSecondtDataLast[$j + 1] = $jNum;
+																$$tempFirstDataLast[$j] = $jNameP;
+																$$tempFirstDataLast[$j + 1] = $jName;
 															}
 														}
 													}
 												
-													$countNonZero = 0;
-													for($i = 1; $i < $numInsert; $i++){
-														if($$tempSecondtData[$i] > 0){
-															$countNonZero ++;
+													$countNonZeroLast = 0;
+													for($i = 1; $i < $numInsertLast; $i++){
+														if($$tempSecondtDataLast[$i] > 0){
+															$countNonZeroLast ++;
 														} else {
-															$$tempSecondtData[$i] = '';
-															$$tempFirstData[$i] = '';
+															$$tempSecondtDataLast[$i] = '';
+															$$tempFirstDataLast[$i] = '';
 														}
 													}
-													$columnMap{$value} = $countNonZero;
+													$columnMapLast{$value} = $countNonZeroLast;
 												}
 												
 																					
-												$allNum=$allNum+3;   
+												$allNumLast = $allNumLast + 3;   
 																																																				
 										}
 										
 										
-										$detailSheet->Range("A1:$numDRow")->{'value'}= $detailDataArray;
+										$detailSheet->Range("A1:$numDRow")->{'value'} = $detailDataArray;
 					
 	
-										
-														
+													
 										#获取本周排名前八位数据
 										$tempCount=0;
 										foreach $temp(135..142){
@@ -668,103 +666,25 @@ sub Process{
 										}
 										
 										
-										$allNum=0;										
+										$allNum=0;								
 										$ModuleNum=@getLine;
 										foreach $value(@getLine){						#按得到的字符依次做数据
 											
-												
-												
-												$tempFirstData=$$DataArray[0+$allNum];
-												$lineValue=@$tempFirstData;
+																							
+												$tempFirstData = $$DataArray[0+$allNum];											
 												$$tempFirstData[0]=$docName."投诉";
 												
-												$tempSecondtData=$$DataArray[1+$allNum];
-												$lineValueSecond=@$tempSecondData;
+												$tempSecondtData = $$DataArray[1+$allNum];												
 												$secondValueName = $value."投诉量";
-												$$tempSecondtData[0] = $secondValueName;
-																			
-												$tempFirstDataDetail = $$DataArrayDetail[0];
-												$lineValueDetail = @$tempFirstDataDetail;
-												
-												$tempLastDataDetail = $$DataArrayDetail[$DataLengthDetail-1];
-												$lineValueLastDetail = @$tempLastDataDetail;
-												                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             																		$markPosition = 0;#整个数组位置信息
-												$markModulePosition = 0;  #获取到得哪个模块名在模块数组的位置
-												$tempNum=0;
-												$numInsert = 1;  #x3t的每个模块的每列位置信息
-												
-												
-												foreach $valueDetail(0...$lineValueDetail-1){
-													#print $valueDetail."\n";
-														if($$tempFirstDataDetail[$valueDetail] eq $value){
-															if($$tempFirstDataDetail[$valueDetail] eq "系统性能"){
-																#print "可以匹配系统性能的\n";
-															}
-															$markPosition = $valueDetail;#记录整个细分数组中的位置信息
-															#print "匹配到了记录位置为：";
-															#print $markPosition."\n";
-															last;
-														}
-					
-												}
-												
-												$haha = $TAGSERIES[5];
-												#print $haha."\n";
-												
-												#获取TAGSERIES模块内的位置，从而得到该模块长度
-												foreach(@TAGSERIES){
-														if($_ eq $value){
-																$markModulePosition = $tempNum;
-																last;
-														}
-														$tempNum++;
-												}
-												
-												$positionModule[$moduleTempNum] = $markModulePosition;
-												$moduleTempNum++;
-												#print $tempNum."\n";
-												#print "要开始改变了这个值\n";
-												foreach $tempNum($markPosition...$markPosition+$mergeArray[$markModulePosition]-1){		
-														#print $tempNum."\n";
-														$$tempFirstData[$numInsert]=$$tempFirstDataDetail[$tempNum+1]; #将X3T1的数据放到X3T里面去
-														$$tempSecondtData[$numInsert]=$$tempLastDataDetail[$tempNum+1]; #将X3T1的数据放到X3T里面去
-														$numInsert++;			
-												}
-
-												# 相机或第三方软件只显示不为 0 的部分
-												if($value eq "相机" || $value eq "第三方软件"){
-												
-													for ($i = 1; $i < $numInsert; $i++){
-												
-														for($j = 1; $j < $numInsert - $i; $j++){
-															$jNum = $$tempSecondtData[$j];
-															$jNumP = $$tempSecondtData[$j + 1];
-															$jName = $$tempFirstData[$j];
-															$jNameP = $$tempFirstData[$j + 1];
-															if($jNum < $jNumP){
-																$$tempSecondtData[$j] = $jNumP;
-																$$tempSecondtData[$j + 1] = $jNum;
-																$$tempFirstData[$j] = $jNameP;
-																$$tempFirstData[$j + 1] = $jName;
-															}
-														}
-													}
-												
-													$countNonZero = 0;
-													for($i = 1; $i < $numInsert; $i++){
-														if($$tempSecondtData[$i] > 0){
-															$countNonZero ++;
-														} else {
-															$$tempSecondtData[$i] = '';
-															$$tempFirstData[$i] = '';
-														}
-													}
-													$columnMap{$value} = $countNonZero;
-												}
-												
-												
-												#print $lineValue."\n";
-												$allNum=$allNum+35;   # modify kongqiao
+												                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 foreach $num (0...$colMax){
+                        	if($secondValueName eq $$detailDataArray[$num*3 +1][0]){
+                        		print "ene $secondValueName \n"; 
+                        		$$DataArray[0+$allNum] = $$detailDataArray[$num*3 +0];
+                        		$$DataArray[1+$allNum] = $$detailDataArray[$num*3 +1];
+                        		
+                        	}
+                        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          														 
+											  $allNum = $allNum + 35;   
 																																				
 																
 										}
@@ -773,9 +693,10 @@ sub Process{
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 									
 										
-										
+=pod										
 										# modify kongqiao 20150715
  										# 复制并解析上周数据
+ 										
 			    				  my @allfilePathLast = <*.xlsx>;
 	  								foreach $path (@allfilePathLast){
 	  										if($path =~ /ROM2.0_$docName_.*用户反馈/){
@@ -784,8 +705,10 @@ sub Process{
 	  											print "上周数据路径是： $filePathLast \n";
 	  										}
 	  								}
+ 								
 	  								
 	  								$workbookLast = $Excel->Workbooks->Open($filePathLast);
+	 
 										
 										#读出上周统计 sheet EXCEL数据到数组									 
 										$selectSheetLast = $workbookLast->Sheets("统计");
@@ -810,7 +733,14 @@ sub Process{
 										$ModuleNum=@getLineLast;
 										
 										print "上周前八： @getLineLast \n";
-									  $allChartNum = 1;																	
+									  $allChartNum = 1;	
+=cut
+									  # 为避免，本周前八数据与上周前八数据不同，我们从上周 所有的细分模式数据中，进行匹配	
+									  
+									  
+									  
+									  
+									  															
 										foreach $row (1..$ModuleNum){					
 											if($getLineLast[$row-1] eq "相机" || $getLineLast[$row-1] eq "第三方软件"){														
 												# 获取上周数据, 相机或第三方软件
