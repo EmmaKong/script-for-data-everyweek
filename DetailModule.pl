@@ -429,11 +429,11 @@ sub Process{
 										$selectSheetDetail = $workbookDetail->Sheets($tempName);
 					
 										#读出Detail的EXCEL数据到数组
-						  			$rowCountDetail=$selectSheetDetail->usedrange->rows->count;       #最大有效行数
-										$totolRowDetail=$rowCountDetail;
-										$numDRowDetail=AYG.$totolRowDetail;
+						  			$rowCountDetail = $selectSheetDetail->usedrange->rows->count;       #最大有效行数
+										$totolRowDetail = $rowCountDetail;
+										$numDRowDetail = AYG.$totolRowDetail;
 										$DataArrayDetail = $selectSheetDetail->Range("A1:$numDRowDetail")->{'Value'};
-										$DataLengthDetail=@$DataArrayDetail;
+										$DataLengthDetail = @$DataArrayDetail;
 																				
 							
 										# modify kongqiao 20150724
@@ -488,13 +488,13 @@ sub Process{
 												#获取TAGSERIES模块内的位置，从而得到该模块长度
 												foreach(@TAGSERIES){
 														if($_ eq $value){
-																$markModulePosition=$tempNum;
+																$markModulePosition = $tempNum;
 																last;
 														}
 														$tempNum++;
 												}
 												
-												$positionModule[$moduleTempNum]=$markModulePosition;
+												$positionModule[$moduleTempNum] = $markModulePosition;
 												$moduleTempNum++;
 												
 												foreach $tempNum($markPosition...$markPosition+$mergeArray[$markModulePosition]-1){		
@@ -571,7 +571,7 @@ sub Process{
 																			
 												$tempFirstDataDetailLast = $$DataArrayDetailLast[0];
 												$lineValueDetailLast = @$tempFirstDataDetailLast;
-												print "aiahd $lineValueDetailLast \n";
+												
 												$tempLastDataDetailLast = $$DataArrayDetailLast[$DataLengthDetailLast - 1];												
 												$lineValueLastDetailLast = @$tempLastDataDetailLast;
 												
@@ -678,18 +678,14 @@ sub Process{
 												$secondValueName = $value."投诉量";
 												                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 foreach $num (0...$colMax){
                         	if($secondValueName eq $$detailDataArray[$num*3 +1][0]){
-                        		print "ene $secondValueName \n"; 
+                        		#print "ene $secondValueName \n"; 
                         		$$DataArray[0+$allNum] = $$detailDataArray[$num*3 +0];
                         		$$DataArray[1+$allNum] = $$detailDataArray[$num*3 +1];
                         		
                         	}
-                        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          														 
-											  $allNum = $allNum + 35;   
-																																				
-																
+                        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         														          $allNum = $allNum + 35;   																																																			
 										}
-					
-					         
+										         
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 									
 										
@@ -733,138 +729,148 @@ sub Process{
 										$ModuleNum=@getLineLast;
 										
 										print "上周前八： @getLineLast \n";
-									  $allChartNum = 1;	
+									 
 =cut
-									  # 为避免，本周前八数据与上周前八数据不同，我们从上周 所有的细分模式数据中，进行匹配	
-									  
-									  
-									  
-									  
-									  															
-										foreach $row (1..$ModuleNum){					
-											if($getLineLast[$row-1] eq "相机" || $getLineLast[$row-1] eq "第三方软件"){														
-												# 获取上周数据, 相机或第三方软件
+									  # 为避免，本周前八数据与上周前八数据不同，我们对上周 所有的细分模式数据中，进行匹配	
+									  									  
+									  $allChartNum = 1;																
+										foreach $row (1..$ModuleNum){		
+											foreach $row1 (1..$colMax){											
+												if($getLine[$row-1] eq $getmodule[$row1 -1]){     # 匹配到了
+													#print "$getLine[$row-1] \n";
+													#print "$row1 \n";
+														
+													if($getLine[$row-1] eq "相机" || $getLine[$row-1] eq "第三方软件"){														
+													# 获取上周数据, 相机或第三方软件
 												
 											 							
-												$$DataArray[$allChartNum +($row-1)*35+1][0] = "上周".$$DataArrayLast[($row-1)*30+1][0];												
+														$$DataArray[$allChartNum +($row-1)*35+1][0] =  $$detailDataArray[240 +1 +($row1-1)*3][0];												
 																						
 																	 															
-												# 将上周数据，一一对应的复制至本周，
-												# 先处理，能在上周数据中匹配到相应数值的
-												$count = @{$$DataArray[$allChartNum -1 + ($row-1)*35+0]};
-												$countLast = @{$$DataArrayLast[ ($row-1)*30+0]};												
+														# 将上周数据，一一对应的复制至本周，
+														# 先处理，能在上周数据中匹配到相应数值的
+														$count = @{$$DataArray[$allChartNum -1 + ($row-1)*35+0]};
+														$countLast = @{$$detailDataArray[240 + ($row1-1)*3]};												
 												
-												for ($i = 1; $i<$count; $i++){
-												#	print "enen $temp \n";
-													for ($j =1;$j < $countLast; $j++){
-													#	print "haha $tempLast \n";
-														if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq $$DataArrayLast[ ($row-1)*30+0][$j]) && 
-														!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "")){
+														for ($i = 1; $i<$count; $i++){
+														#	print "enen $temp \n";
+															for ($j =1;$j < $countLast; $j++){
+															#	print "haha $tempLast \n";
+																if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq $$detailDataArray[240+($row1-1)*3][$j]) && 
+																		!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "")){
 															
-															$$DataArray[$allChartNum +($row-1)*35+1][$i] = $$DataArrayLast[($row-1)*30+1][$j];															
+																$$DataArray[$allChartNum +($row-1)*35+1][$i] = $$detailDataArray[240 + 1 +($row1-1)*3][$j];															
 																												 																													
-														}																																			
+																}																																			
 													
-												  }											  													
-												}
-												# 上周未匹配到
-												for ($i = 1; $i<$count; $i++){
-													if(!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") && !($$DataArray[$allChartNum + ($row-1)*35+0][$i] eq "")
-													 && ($$DataArray[$allChartNum +1 + ($row-1)*35][$i] eq "")){
-													 
-													 $$DataArray[$allChartNum +($row-1)*35+1][$i] = 0;
-													}
-													 
-												}
-												my $first = 0;
-												# 找到本周数据中，不为空白的第一项
-												for ($i = 0; $i<$count; $i++){
-													if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") ){
-													 
-													  $first = $i;
-													  last;
-													}
-													 
-												}
-												print "不为空的第一项： $first \n";
-																								
-												# 上周存在，但本周没有
-												
-												LINE: for($i = 1; $i < $countLast; $i++){
-													if(!($$DataArrayLast[ ($row-1)*30+0][$i] eq "")){
-														for ($j = 1; $j < $count; $j++){
-															if($$DataArrayLast[ ($row-1)*30+0][$i] eq $$DataArray[$allChartNum -1+($row-1)*35+0][$j]){
-																#存在匹配的
-																next LINE;																																																
-															}
-																																										
+												 			}											  													
 														}
-														
-														# 未找到 匹配的项
-														print "无匹配项： $$DataArrayLast[ ($row-1)*30+0][$i] \n";
-														
-														$$DataArray[$allChartNum -1+($row-1)*35+0][$first + $nocount[$row-1]] = $$DataArrayLast[ ($row-1)*30+0][$i];														
-														$$DataArray[$allChartNum +($row-1)*35+0][$first + $nocount[$row-1]] = 0;
-														$$DataArray[$allChartNum + 1+($row-1)*35+0][$first + $nocount[$row-1]] = $$DataArrayLast[ ($row-1)*30+1][$i];
-														
-														$nocount[$row-1] ++;
-													
-													}
-													
-												}		
+														# 上周未匹配到
+														for ($i = 1; $i<$count; $i++){
+															if(!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") && !($$DataArray[$allChartNum + ($row-1)*35+0][$i] eq "")
+													 				&& ($$DataArray[$allChartNum +1 + ($row-1)*35][$i] eq "")){
+													 
+													 			$$DataArray[$allChartNum +($row-1)*35+1][$i] = 0;
+															}
+													 
+														}
+														my $first = 0;
+														# 找到本周数据中，不为空白的第一项
+														for ($i = 0; $i<$count; $i++){
+															if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") ){
+													 
+													  		$first = $i;
+													  		last;
+															}
+													 
+														}
+														print "不为空的第一项： $first \n";
+																								
+														# 上周存在，但本周没有
 												
-												$tempDataArray = $$DataArray[$allChartNum  +($row-1)*35];
+														LINE: for($i = 1; $i < $countLast; $i++){
+															if(!($$detailDataArray[240 +($row1-1)*3][$i] eq "")){
+																for ($j = 1; $j < $count; $j++){
+																	if($$detailDataArray[240 +($row1-1)*3][$i] eq $$DataArray[$allChartNum -1+($row-1)*35+0][$j]){
+																		#存在匹配的
+																		next LINE;																																																
+																	}
+																																										
+																}
+														
+																# 未找到 匹配的项
+																print "无匹配项：$$detailDataArray[240 +($row1-1)*3][$i] \n";
+														
+																$$DataArray[$allChartNum -1+($row-1)*35+0][$first + $nocount[$row-1]] = $$detailDataArray[240+($row1-1)*3][$i];														
+																$$DataArray[$allChartNum +($row-1)*35+0][$first + $nocount[$row-1]] = 0;
+																$$DataArray[$allChartNum + 1+($row-1)*35+0][$first + $nocount[$row-1]] = $$detailDataArray[240+1+($row1-1)*3][$i];
+														
+																$nocount[$row-1] ++;
+													
+															}
+													
+														}		
 												
-												$$DataArray[$allChartNum  +($row-1)*35] = $$DataArray[$allChartNum  +($row-1)*35+1];
-												$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;
+														$tempDataArray = $$DataArray[$allChartNum  +($row-1)*35];
+												
+														$$DataArray[$allChartNum  +($row-1)*35] = $$DataArray[$allChartNum  +($row-1)*35+1];
+														$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;
 																																																																			
 												
-											}else{						
+													}else{						
 												
-												$$DataArray[$allChartNum  +($row-1)*35+1] = $$DataArray[$allChartNum  +($row-1)*35];
-												$$DataArray[$allChartNum  +($row-1)*35] = $$DataArrayLast[($row-1)*30+1];
-												$$DataArray[$allChartNum  +($row-1)*35][0] = "上周".$$DataArrayLast[($row-1)*30+1][0];
+														$$DataArray[$allChartNum  +($row-1)*35+1] = $$DataArray[$allChartNum  +($row-1)*35];
+														$$DataArray[$allChartNum  +($row-1)*35] = $$detailDataArray[240 + 1 + ($row1-1)*3];
+													#	$$DataArray[$allChartNum  +($row-1)*35][0] = "上周".$$DataArrayLast[($row-1)*30+1][0];
 												
+													}
+												}
+											
+											
 											}
 										}
 										
-										$workbookLast->Save();
-										$workbookLast->Close();
+									
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 							
 										#开始制图
 									  $getNum=0;
 										$allChartNum = 1;
 										for(1..$ModuleNum){
+											for $row(0..$colMax-1){
+												if($getLine[$getNum] eq $getmodule[$row]){
 																												
 															$rangeStart = A.$allChartNum;
 															if($getLine[$getNum] eq "通话"){
-																$rangeEnd=getColumnName($mergeArray[$positionModule[$getNum]]+1-1).($allChartNum+2);
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1-1).($allChartNum+2);
 															
 															}elsif($getLine[$getNum] eq "相机" || $getLine[$getNum] eq "第三方软件"){
 																
 																$countindex = $columnMap{$getLine[$getNum]} + 1;
 																$rangeEnd = getColumnName($columnMap{$getLine[$getNum]} + 1+ $nocount[$getNum]).($allChartNum+2);
-																#print "$rangeEnd \n";
+																
 																
 															}else{
 																
-																$rangeEnd = getColumnName($mergeArray[$positionModule[$getNum]]+1).($allChartNum+2);
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1).($allChartNum+2);
 															}
-															
+															#print "$rangeStart \n";
+															#print "$rangeEnd \n";
 															if($getLine[$getNum] eq "第三方软件"){
 																$chartWidth=2000;
 															}elsif($getLine[$getNum] eq "游戏"){
 																$chartWidth=1500;
 															}elsif($getLine[$getNum] eq "相机"){
-																$chartWidth=2000;
+																$chartWidth=1500;
+															}elsif($getLine[$getNum] eq "系统性能"){
+															  $chartWidth=1500;
 															}else{
 																$chartWidth=1000;
 															}
 															
 															$chartX=0;
 															$chartY=($allChartNum+5)*13.5;
-															$chartHeight=13.5*23;
+															$chartHeight = 13.5*23;
 															
 														  $chart_range = $newSheet->Range( "$rangeStart:$rangeEnd" );        # 数据源范围
 														  
@@ -881,17 +887,15 @@ sub Process{
 														  $tempChartName = $$DataArray[$allChartNum+1][0];
 														 # print "$tempChartName \n";
 														  $Chart[$getNum]->{'HasTitle'} = 1;
-														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;
-															
-															
-															$getNum++;
-															$allChartNum = $allChartNum + 35;
+														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;																														
+												}	
 																														
-															
+											}			
+																								
+												$getNum++;
+											  $allChartNum = $allChartNum + 35;
 										}
-										
-										
-																		
+																												
 									 	# modify kongqiao0712 20150717
 									  
 									 	#新建 sheet
@@ -968,10 +972,12 @@ sub Process{
 									  $getNum=0;
 										$allChartNum = 5;
 										for(1..$ModuleNum){
+											for $row(0..$colMax-1){
+												if($getLine[$getNum] eq $getmodule[$row]){
 																												
 															$rangeStart = A.$allChartNum;
 															if($getLine[$getNum] eq "通话"){
-																$rangeEnd=getColumnName($mergeArray[$positionModule[$getNum]]+1-1).($allChartNum+2);
+																$rangeEnd=getColumnName($mergeArray[$positionModule[$row]]+1-1).($allChartNum+2);
 															
 															}elsif($getLine[$getNum] eq "相机" || $getLine[$getNum] eq "第三方软件"){
 																
@@ -980,7 +986,7 @@ sub Process{
 																
 															}else{
 																
-																$rangeEnd = getColumnName($mergeArray[$positionModule[$getNum]]+1).($allChartNum+2);
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1).($allChartNum+2);
 															}
 														
 															print "$rangeEnd \n";
@@ -1008,13 +1014,17 @@ sub Process{
 														  $Chart[$getNum]->{'HasTitle'} = 1;
 														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;
 															
-															
-															$getNum++;
-															$allChartNum = $allChartNum + 10;
+												}
+											}			
+											$getNum++;
+											$allChartNum = $allChartNum + 10;
 																														
 															
 										}
-																											 							
+										
+									  $workbookDetailLast->Save();
+									  $workbookDetailLast->Close();
+									  														 							
 										$workbookDetail->Save();
 										$workbookDetail->Close();					
 																		
