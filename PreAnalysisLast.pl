@@ -9,6 +9,7 @@ use Cwd;
 use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
+#use Excel::Writer::XLSX;
 $Win32::OLE::Warn = 3;  
 #待处理机型
 #X3L
@@ -28,31 +29,7 @@ my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X71
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 my $dir = getcwd;
-my $X3t = "$dir/X3tLast.xlsx";
-my $X3L = "$dir/X3LLast.xlsx";
-my $X3V = "$dir/X3VLast.xlsx";
-my $Xplay = "$dir/XplayLast.xlsx";
-my $Xplay3s = "$dir/Xplay3sLast.xlsx";
-my $Xplay3sF = "$dir/Xplay3sFLast.xlsx";
-my $Xshot = "$dir/XshotLast.xlsx";
-my $XshotF = "$dir/XshotFLast.xlsx";
-my $X5L = "$dir/X5LLast.xlsx";
-my $Y22iL = "$dir/Y22iLLast.xlsx";
-my $Y27 = "$dir/Y27Last.xlsx";
-my $Y13L = "$dir/Y13LLast.xlsx";
-my $Y22L = "$dir/Y22LLast.xlsx";
-my $X5MaxL = "$dir/X5MaxLLast.xlsx";
-my $X5V = "$dir/X5VLast.xlsx";
-my $Y28L = "$dir/Y28LLast.xlsx";
-my $Y23L = "$dir/Y23LLast.xlsx";
-my $X5S = "$dir/X5SLLast.xlsx";
-my $X5MaxLL = "$dir/X5Max+Last.xlsx";
-my $Y29L = "$dir/Y29LLast.xlsx";
-my $X5MaxV = "$dir/X5MaxVLast.xlsx";
-my $X5ProD = "$dir/X5ProDLast.xlsx";
-my $X5M = "$dir/X5MLast.xlsx";
-my $Y13iL = "$dir/Y13iLLast.xlsx";
-my $Y33 = "$dir/Y33Last.xlsx";
+
 
 main();
 
@@ -63,196 +40,309 @@ sub main{
 sub preProcess{
 	
 	my ($start_sec, $start_usec) = gettimeofday();
-	process($X3t, 1, $PHONEMODELS[3]);	
+	process($PHONEMODELS[3]);	
 	my ($first_sec, $first_usec) = gettimeofday();
     my $timeDelta = ($first_usec - $start_usec) / 1000000 + ($first_sec - $start_sec);
     printf "X3t已耗时：%s秒\n", $timeDelta ;
-
-	process($X3L, 1, $PHONEMODELS[4]);	
+=pod
+	process($PHONEMODELS[4]);	
 	my ($second_sec, $second_usec) = gettimeofday();
      $timeDelta = ($second_usec - $first_usec) / 1000000 + ($second_sec - $first_sec);
     printf "X3L已耗时：%s秒\n", $timeDelta ;
     
-	process($X3V, 1, $PHONEMODELS[5]);	
+	process($PHONEMODELS[5]);	
 	my ($third_sec, $third_usec) = gettimeofday();
      $timeDelta = ($third_usec - $second_usec) / 1000000 + ($third_sec - $second_sec);
     printf "X3V已耗时：%s秒\n", $timeDelta ;
       
-	process($Xplay, 2, $PHONEMODELS[6], $PHONEMODELS[7]);	
+	process($PHONEMODELS[6], $PHONEMODELS[7]);	
 	my ($fourth_sec, $fourth_usec) = gettimeofday();
     $timeDelta = ($fourth_usec - $third_usec) / 1000000 + ($fourth_sec - $third_sec);
 	printf "Xplay已耗时：%s秒\n", $timeDelta ;
 	
-	process($Xshot, 2, $PHONEMODELS[8],$PHONEMODELS[9]);
+	process($PHONEMODELS[8],$PHONEMODELS[9]);
 	my ($fifth_sec, $fifth_usec) = gettimeofday();
     $timeDelta = ($fifth_usec - $fourth_usec) / 1000000 + ($fifth_sec - $fourth_sec);
 	printf "Xshot已耗时：%s秒\n", $timeDelta ;
 	
-	process($XshotF, 1, $PHONEMODELS[10]);
+	process($PHONEMODELS[10]);
 	my ($sixth_sec, $sixth_usec) = gettimeofday();
     $timeDelta = ($sixth_usec - $fifth_usec) / 1000000 + ($sixth_sec - $fifth_sec);
 	printf "XshotF已耗时：%s秒\n", $timeDelta ;
 
-	process($X5L, 1, $PHONEMODELS[11]);
+	process($PHONEMODELS[11]);
 	my ($seven_sec, $seven_usec) = gettimeofday();
     $timeDelta = ($seven_usec - $sixth_usec) / 1000000 + ($seven_sec - $sixth_sec);
 	printf "X5L已耗时：%s秒\n", $timeDelta ;
 
-	process($Y22iL, 1, $PHONEMODELS[12]);
+	process($PHONEMODELS[12]);
 	my ($eighth_sec, $eighth_usec) = gettimeofday();
     $timeDelta = ($eighth_usec - $seven_usec) / 1000000 + ($eighth_sec - $seven_sec);
 	printf "Y22iL已耗时：%s秒\n", $timeDelta ;
 	
-	process($Y27, 1, $PHONEMODELS[13]);
+	process($PHONEMODELS[13]);
 	my ($ninth_sec, $ninth_usec) = gettimeofday();
     $timeDelta = ($ninth_usec - $eighth_usec) / 1000000 + ($ninth_sec - $eighth_sec);
 	printf "Y27已耗时：%s秒\n", $timeDelta ;
 
-	process($Y13L, 1, $PHONEMODELS[14]);
+	process($PHONEMODELS[14]);
 	my ($tenth_sec, $tenth_usec) = gettimeofday();
     $timeDelta = ($tenth_usec - $ninth_usec) / 1000000 + ($tenth_sec - $ninth_sec);
 	printf "Y13L已耗时：%s秒\n", $timeDelta ;
 		
-	process($Xplay3s, 2, $PHONEMODELS[0],$PHONEMODELS[1]);
+	process($PHONEMODELS[0],$PHONEMODELS[1]);
 	my ($eleven_sec, $eleven_usec) = gettimeofday();
     $timeDelta = ($eleven_usec - $tenth_usec) / 1000000 + ($eleven_sec - $tenth_sec);
 	printf "Xplay3s已耗时：%s秒\n", $timeDelta ;
 	
-	process($Xplay3sF, 1, $PHONEMODELS[2]);
+	process($PHONEMODELS[2]);
 	my ($twelfth_sec, $twelfth_usec) = gettimeofday();
     $timeDelta = ($twelfth_usec - $eleven_usec) / 1000000 + ($twelfth_sec - $eleven_sec);
 	printf "Xplay3sF已耗时：%s秒\n", $timeDelta ;
 
-	process($Y22L, 1, $PHONEMODELS[15]);
+	process($PHONEMODELS[15]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y22L已耗时：%s秒\n", $timeDelta ;
 
-	process($X5MaxL, 1, $PHONEMODELS[16]);
+	process($PHONEMODELS[16]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5MAXL已耗时：%s秒\n", $timeDelta ;
 
-	process($X5V, 1, $PHONEMODELS[17]);
+	process($PHONEMODELS[17]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5V已耗时：%s秒\n", $timeDelta ;	
 
-	process($Y28L, 1, $PHONEMODELS[18]);
+	process($PHONEMODELS[18]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y28L已耗时：%s秒\n", $timeDelta ;	
 	
-	process($Y23L, 1, $PHONEMODELS[19]);
+	process($PHONEMODELS[19]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y23L已耗时：%s秒\n", $timeDelta ;	
 	
-	process($X5S, 1, $PHONEMODELS[20]);
+	process($PHONEMODELS[20]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5S已耗时：%s秒\n", $timeDelta ;	
 	
-	process($X5MaxLL, 1, $PHONEMODELS[21]);
+	process($PHONEMODELS[21]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5Max+已耗时：%s秒\n", $timeDelta ;	
 	
-	process($Y29L, 1, $PHONEMODELS[22]);
+	process($PHONEMODELS[22]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y29L已耗时：%s秒\n", $timeDelta ;	
 	
-	process($X5MaxV, 1, $PHONEMODELS[23]);
+	process($PHONEMODELS[23]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y29L已耗时：%s秒\n", $timeDelta ;	
 	
-	process($X5ProD, 1, $PHONEMODELS[24]);
+	process($PHONEMODELS[24]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5ProD已耗时：%s秒\n", $timeDelta ;	
 	
-	process($X5M, 1, $PHONEMODELS[25]);
+	process($PHONEMODELS[25]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5M已耗时：%s秒\n", $timeDelta ;	
 	
-	process($Y13iL, 1, $PHONEMODELS[26]);
+	process($PHONEMODELS[26]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y13iL已耗时：%s秒\n", $timeDelta ;
 	
-	process($Y33, 1, $PHONEMODELS[27]);
+	process($PHONEMODELS[27]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "Y33已耗时：%s秒\n", $timeDelta ;
-	
+=cut	
 }
 
 sub process{
-	my $filePath = shift;	
-	my $number = shift;
+	
 	my $model = shift;
 	my $model2;
 	my $value = 1;
 	
-	my $workbook = $Excel->Workbooks->Open($filePath); 
-	my $firstSheet = $workbook->Sheets(1);
-	$firstSheet->Activate;	#删除前必须要激活当前窗口
-	my $Rowcount=$firstSheet->usedrange->rows->count;       #最大有效行数
-	$firstSheet->Columns("A:A")->Delete;
-	$firstSheet->Columns("D:F")->Delete;
-	$firstSheet->Columns("F:G")->Delete;
-	my $row = 2;	#从第二行开始遍历
-	my $modelselect;
 	
-	#读出EXCEL数据到数组
-	$totolRow=$Rowcount+1;
-	$numDRow=X.$totolRow;
-	$DataArray = $firstSheet->Range("A1:$numDRow")->{'Value'};
-	$DataLength=@$DataArray;
+	# 上周数据路径
+	 my @allfilePathLast = <*.xlsx>;
+	 foreach $path (@allfilePathLast){
+	 		if($path =~ /ROM2.0_$model_.*用户反馈/){
+	  	 
+	   		$filePathLast = $dir."\/".$path;
+	   		print "上周数据路径是： $filePathLast \n";
+	 		}
+	 }
+ 								  								
+	 $workbookLast = $Excel->Workbooks->Open($filePathLast);
 	
+	 										
+	 #读出上周 全部数据 EXCEL数据到数组			（未作任何处理的数据）						 
+	 $SheetLast = $workbookLast->Sheets("全部数据");
+	 my $Rowcount = $SheetLast->usedrange->rows->count;       #最大有效行数
+	 my $numDRow=MM.$Rowcount;
+	 $DataArrayLast = $SheetLast->Range("A1:$numDRow")->{'Value'};
+									
+=pod
+   # 新建一个excel 
+   my $filePath = $dir."\/".$model."Last".".xlsx";
+   use File::Copy;
+   copy($filePathLast, $filePath) or die "Copy failed: $!";
+   
+   
+   $workbook = $Excel->Workbooks->Open($filePath);
+   
+   $DataArray = qw();
+   # 仅保留 全部数据 sheet
+   
+   $workbook->Sheets(1)->Activate;
+   $workbook->Sheets(1)->Delete;	  # 删除前必须要激活当前窗口
+   
+   $sheet = $workbook->Sheets(2);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  # 内容置空
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(3);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(4);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   
+   $sheet = $workbook->Sheets(5);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(6);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(7);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(8);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(9);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(10);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(11);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(12);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(13);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(14);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(15);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+   
+   $sheet = $workbook->Sheets(16);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+  
+   $sheet = $workbook->Sheets(17);
+   $rowCount = $sheet->usedrange->rows->count;       #最大有效行数   
+   $numRow = MM.$rowCount;
+   $sheet->Range("A1:$numRow")->{'value'} = $DataArray;  
+   $sheet->Activate;
+   $sheet->Delete;
+=cut
 
-	#printf "Row total: %d\n", $Rowcount;
-	if ($number eq 1) {
-		#printf "number = 1\n";
-		for(2..$Rowcount){  	
-		  $ref_array=$$DataArray[$row-1];
-		  $value=$$ref_array[0];
 
-			if($value =~ /$model$/i) {
-				++$row;	#遇到了合适的，下一次就得加一行遍历
-			} else {
-				$position=$row-1;
-				splice(@$DataArray,$position,1);#删除一行，整个表格会上移	
-			}	
-		}
-	} elsif ($number eq 2) {
-		$model2 = shift;		
-		for(2..$Rowcount){  		
-		  $ref_array=$$DataArray[$row-1];
-		  $value=$$ref_array[0];
-			if($value =~ /$model$/i || $value =~ /$model2$/i) {
-				++$row;	#遇到了合适的，下一次就得加一行遍历
-			} else {	
-				$position=$row-1;
-				splice(@$DataArray,$position,1);#删除一行，整个表格会上移	
-			}	
-		}
-	}
-	printf "%d find\n", ($row-2);
-	
-	#创建每页sheet，把数组写回EXCEL
-	$pageNum = 2;
-	$newSheet = $workbook->Worksheets->Add;
-	$newSheet = $workbook->Worksheets->Add;
-	$workbook->Sheets($pageNum)->{name} = "数据";
-	$DataLenth=@$DataArray;
-	$Dataend=X.$DataLenth;
-	$workbook->Sheets($pageNum)->Range("A1:$Dataend")->{'value'}=$DataArray;	#传递的是数组引用
-	
-	$workbook->Sheets($pageNum+1)->{name} = "所有数据";
+		#新建一个空的Excel文件，然后保存
+		my $book = $Excel->Workbooks->Add(); #新建一个工作簿
+		$book->SaveAs( $dir."\/".$model."Last".".xlsx") or die "Save failer."; #保存这个工作部文件
+
+
+   
+=pod   
+   $firstSheet->Range("A1:$numDRow")->{'value'} = $DataArrayLast;
+	 # my $firstSheet = $workbook->Sheets(1);
+	 $firstSheet->Activate;	# 删除前必须要激活当前窗口
+	 my $Rowcount = $firstSheet->usedrange->rows->count;       #最大有效行数
+	 $firstSheet->Columns("A:A")->Delete;
+	 $firstSheet->Columns("D:F")->Delete;
+	 $firstSheet->Columns("F:G")->Delete;
+	 my $row = 2;	#从第二行开始遍历
+	 my $modelselect;
+=cut	
+		
+	$workbookLast->Save();
+	$workbookLast->Close();
 		
 	$workbook->Save();
 	$workbook->Close();

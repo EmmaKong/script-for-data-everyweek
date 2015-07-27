@@ -1,6 +1,5 @@
 
 
-
 copy aLast.xlsx X3tDetailLast.xlsx
 copy aLast.xlsx X3LDetailLast.xlsx
 copy aLast.xlsx X3VDetailLast.xlsx

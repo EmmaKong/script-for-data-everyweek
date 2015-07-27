@@ -416,7 +416,6 @@ sub Process{
 										$detailDataLength = @$detailDataArray-1;
 					
 										$totolSheet=$workbook->Sheets("统计");
-										#$selectSheet = $workbook->Sheets($pageNum);
 										#读出x3tEXCEL数据到数组
 										$DataTotolArray = $totolSheet->Range("A1:$numDRow")->{'Value'};
 
@@ -546,7 +545,6 @@ sub Process{
 										$filePathDetailLast = $dir."\/".$_."Last".".xlsx";	# 表格路径
 										$workbookDetailLast = $Excel->Workbooks->Open($filePathDetailLast); 
 										$tempNameLast = $docName."投诉";
-										#print $1."\n";
 										$selectSheetDetailLast = $workbookDetailLast->Sheets($tempNameLast);
 					
 										#读出Detaillast的EXCEL数据到数组
