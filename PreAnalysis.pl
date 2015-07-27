@@ -23,7 +23,7 @@ $Win32::OLE::Warn = 3;
 #Y22iL
 #Y27
 
-#需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
+#  需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
 my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X710F X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5S\sL X5Max\+ Y29L X5MaxV X5ProD X5M Y13iL Y33);  # Xplay3s: 0, X3t: 1, X510: 2, Xplay: 3, Xshot: 4
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
@@ -197,24 +197,33 @@ sub process{
 	my $model2;
 	my $value = 1;
 	
+	#  modify kongqiao 20150725
 	my $workbook = $Excel->Workbooks->Open($filePath); 
-	my $firstSheet = $workbook->Sheets(1);
-	$firstSheet->Activate;	#删除前必须要激活当前窗口
-	my $Rowcount=$firstSheet->usedrange->rows->count;       #最大有效行数
-	$firstSheet->Columns("A:A")->Delete;
-	$firstSheet->Columns("D:F")->Delete;
-	$firstSheet->Columns("F:G")->Delete;
+	my $allDataSheet = $workbook->Sheets(1);
+  $allDataSheet->{name} = "所有原始数据";
+	#$allDataSheet->Activate;	#删除前必须要激活当前窗口
+	my $Rowcount=$allDataSheet->usedrange->rows->count;       #最大有效行数
+	
+	
 	my $row = 2;	#从第二行开始遍历
 	my $modelselect;
 	
 	#读出EXCEL数据到数组
 	$totolRow=$Rowcount+1;
 	$numDRow=X.$totolRow;
+	$allDataArray = $allDataSheet->Range("A1:$numDRow")->{'Value'};
+	$allDataLength = @$allDataArray;
+	
+	$firstSheet = $workbook->Worksheets->Add;
+	$firstSheet->{name} = "所有数据";
+	$firstSheet->Range("A1:$numDRow")->{'Value'} = $allDataArray;
+	$firstSheet->Activate;	#删除前必须要激活当前窗口
+	$firstSheet->Columns("A:A")->Delete;
+	$firstSheet->Columns("D:F")->Delete;
+	$firstSheet->Columns("F:G")->Delete;
 	$DataArray = $firstSheet->Range("A1:$numDRow")->{'Value'};
-	$DataLength=@$DataArray;
 	
 
-	#printf "Row total: %d\n", $Rowcount;
 	if ($number eq 1) {
 		#printf "number = 1\n";
 		for(2..$Rowcount){  	
@@ -248,11 +257,11 @@ sub process{
 	$newSheet = $workbook->Worksheets->Add;
 	$newSheet = $workbook->Worksheets->Add;
 	$workbook->Sheets($pageNum)->{name} = "数据";
-	$DataLenth=@$DataArray;
-	$Dataend=X.$DataLenth;
-	$workbook->Sheets($pageNum)->Range("A1:$Dataend")->{'value'}=$DataArray;	#传递的是数组引用
+	$DataLenth = @$DataArray;
+	$Dataend = X.$DataLenth;
+	$workbook->Sheets($pageNum)->Range("A1:$Dataend")->{'value'} = $DataArray;	#传递的是数组引用
 	
-	$workbook->Sheets($pageNum+1)->{name} = "所有数据";
+	#$workbook->Sheets($pageNum+1)->{name} = "所有数据";
 		
 	$workbook->Save();
 	$workbook->Close();

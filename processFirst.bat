@@ -58,5 +58,4 @@ perl ModulePostAnalysis.pl
 perl PostCountChart.pl
 perl PostSuddenChange.pl
 perl DetailModule.pl
-
 pause

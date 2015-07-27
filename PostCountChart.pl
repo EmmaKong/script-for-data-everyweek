@@ -30,18 +30,14 @@ i音乐 i视频 音频 i管家 浏览器 软件商店 状态栏 联系人 短信 电子邮件 文件管理 输入
 天籁K歌 录音 掉漆 建议 问题 抱怨 满意);
 
 
-$totolRow=600;#初始化该sheet只需要600行数据  # modify kongqiao
-$numDRow=MM.$totolRow;#400行对应的excel长宽
-$ModuleNum=5;
-$colMax=85;  # 模式数 
-$endRow=27;
-$startRow=11;
-$rom_count_name="rom_count.xlsx";
+$totolRow = 600;#初始化该sheet只需要600行数据  # modify kongqiao
+$numDRow = MM.$totolRow;#400行对应的excel长宽
+$ModuleNum = 5;
+$colMax = 85;  # 模式数 
+$endRow = 27;
+$startRow = 11;
+$rom_count_name = "rom_count.xlsx";
 main();
-
-
-
-
 
 sub main{
 	Process();	#过滤处理，处理完后进行版本筛选，筛选策略：先找到版本个数，按照个数拷贝相同的份数，进行删除操作。	

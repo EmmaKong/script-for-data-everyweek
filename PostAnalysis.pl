@@ -1081,8 +1081,11 @@ sub CopyAndAnalyse{
 			$count=3;
 	}
 #start
+
+
 	if($count eq 3){
 			$arrayLast=$$DataArrayLast[3];	
+			print "aofb $$DataArrayLast[3][0] \n";
 			
 			$lineTag = 0;
 			if($editionArray[$editionNum-1-1] eq $$arrayLast[0]){
