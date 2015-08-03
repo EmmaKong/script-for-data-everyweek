@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -12,7 +11,7 @@ use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 use File::Copy; #导入文件复制模块
 $Win32::OLE::Warn = 3;  
-
+#电量|(百分之|%).{0,18}电.{0,18}关机|电.{0,18}(百分之|%).{0,18}关机|%.{0,18}满格.{0,18}%
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 
 #my @PHONEMODELS = qw(X3t X3V X5L Xplay Xplay3s Xshot Y22iL Y27 Y13L Y22L X5V Y28L Y23L X5SL);  # 机型 X5MaxL
@@ -20,8 +19,8 @@ my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('
 #my @PHONEEDITION1 = qw(5 1 7 1 1 1 1 27 1 1 1 1 1 1 1);  # 机型
 #my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
 #my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD);# X5M); 
-my @PHONEMODELS = qw(X5ProD);#X5M Y13iL Y33);
+my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M);# X5M); 
+#my @PHONEMODELS = qw(Y13iL);#X5M Y13iL Y33);
 my @PHONEEDITION2 = qw(8 15 4 2 9 20 16 12 13 18 15 14 10 7 11);  # 机型
 my @PHONEEDITION1 = qw(5 1 3 5 6 1 1 27 1 1 13 1 1 1 1);  # 机型
 $dayTime="0330";
@@ -164,7 +163,7 @@ my @KeywordsiVideo = qw(i视频 自带.{0,12}播放器.{0,12}(播|放).{0,12}MV 电影 视频
 my @KeywordsiVideoExcl = qw(拍视频 下视屏 下视视频 优酷视频 传视频 编辑视屏 超清影院 视频电话 百度视频 搜狐视频 PPS 爱奇艺 暴风影音 迅雷看看 上网.*视频 视频语音 开讯视频 
 视频聊天 视频通话 接视频 录视频 合成视频 (photo+).*视频 下载视频 腾讯 qq 视频歌 720视频);
 #---------------------------------
-my @KeywordsAudio = qw(音频 双麦降噪 双麦消噪 静音模式 暴音 听筒 好小声 外放音 耳机 电波声 喇叭 聽不.*聲音 聲音 srs 蓝牙.*声音 回音 耳机.*发声 语音.*问题 扬声器 铃声渐强 发.*语音 破声 电流声 没有声音 爆音 听不清 没声 音量底 无声 无音 声小 声大 卡音 杂音 破音 底燥 底噪 噪音 澡音 燥音 声音不清晰 音质 听不清楚 刺耳 没有声音 时小时大 没声音 声音.*小 声音.*大 通话音 铃音 音量 外音 听简 喇叭音杂);
+my @KeywordsAudio = qw(声音 音频 双麦降噪 双麦消噪 静音模式 暴音 听筒 好小声 外放音 耳机 电波声 喇叭 聽不.*聲音 聲音 srs 蓝牙.*声音 回音 耳机.*发声 语音.*问题 扬声器 铃声渐强 发.*语音 破声 电流声 没有声音 爆音 听不清 没声 音量底 无声 无音 声小 声大 卡音 杂音 破音 底燥 底噪 噪音 澡音 燥音 声音不清晰 音质 听不清楚 刺耳 没有声音 时小时大 没声音 声音.*小 声音.*大 通话音 铃音 音量 外音 听简 喇叭音杂);
 my @KeywordsAudioExcl = qw(音量键 选择音质 音量加减键);
 #---------------------------------
 my @KeywordsiGuard = qw(锁.{0,18}软件 清理.{0,18}软件 软件.{0,18}清理 i管家 (弹|出现).*广告 网购保护 系统.*缓存.*删 拦截.*号码 省点模式 省电模式 i管家 一键清理 一键加速 白名单 加速黑名单 超级省点 自带.*管家 管家 超级省电);
@@ -422,11 +421,12 @@ sub Process{
 	  # modify kongqiao 20150714
 	  my @allfilePathLast = <*.xlsx>;
 	  foreach $path (@allfilePathLast){
-	  	if($path =~ /ROM2.0_$__.*用户反馈/){
-	  	 
-	  		$filePathLast = $dir."\/".$path;
-	  		print "上周数据路径是： $filePathLast \n";
-	  	}
+	  	if($path =~ /ROM2.0_(.*)_.*用户反馈/){   # 捕获两个下划线之间的内容
+	  	  if($_ eq $1){
+	  			$filePathLast = $dir."\/".$path;
+	  			print "上周数据路径是： $filePathLast \n";
+	  	  }
+	    }
 	  }
 		$workbookLast = $Excel->Workbooks->Open($filePathLast);
 		$workSheetLast=$workbookLast->Sheets("统计");
@@ -607,7 +607,7 @@ sub Process{
 		#新建统计sheet
 		$workSheetTotol = $workbook->Worksheets->Add;
 		$workSheetTotol->{name} = "统计";
-		$rangeEnd=MM.600;
+		$rangeEnd = MM.600;  #modify kongqiao
 		$DataArrayTotol = $workSheetTotol->Range("A1:$rangeEnd")->{'Value'};
 		$DataLengthTotol=@$DataArrayTotol-1;
 
@@ -1085,7 +1085,7 @@ sub CopyAndAnalyse{
 
 	if($count eq 3){
 			$arrayLast=$$DataArrayLast[3];	
-			print "aofb $$DataArrayLast[3][0] \n";
+			print "$$DataArrayLast[3][0] \n";
 			
 			$lineTag = 0;
 			if($editionArray[$editionNum-1-1] eq $$arrayLast[0]){

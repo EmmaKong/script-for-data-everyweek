@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -14,16 +13,13 @@ $Win32::OLE::Warn = 3;
 
 $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 
-#my @PHONEMODELS = qw(X3tDetail X3VDetail X5LDetail XplayDetail Xplay3sDetail XshotDetail Y22LDetail Y22iLDetail Y27Detail Y13LDetail X5VDetail Y28LDetail Y23LDetail X5SLDetail);# X5MaxLDetail);  # 机型
-#my @PHONEMODELS = qw(XplayDetail Xplay3sDetail XshotDetail X5MaxLDetail);  # 机型
-#my @PHONEMODELS = qw(Y13LDetail X5VDetail Y28LDetail Y23LDetail X5SDetail);  # 机型
-#my @PHONEMODELS = qw(XplayDetail Xplay3sDetail X5LDetail XshotDetail X5MaxLDetail X5Max+Detail Y29LDetail X5MaxVDetail X5ProDDetail);#  X5MDetail);  # 机型
-my @PHONEMODELS = qw(X5ProDDetail);  # 机型
+my @PHONEMODELS = qw(XplayDetail Xplay3sDetail X5LDetail XshotDetail X5MaxLDetail X5Max+Detail Y29LDetail X5MaxVDetail X5ProDDetail X5MDetail);  # 机型
+#my @PHONEMODELS = qw(Y13iLDetail);  # 机型
 
 my $dir = getcwd;
 my $workbook;
 my $pageNum = 2;	
-$colMax = 79;  # 模式数 
+$colMax = 79;  # 模式数 , modify kongqiao 20150731,为保证数据对齐，必须设置为79
 
 @TAGSERIES = qw(耗电 发热 系统性能 死机 重启 自动关机 触屏 桌面 黑屏 升级 vivo乐园 屏幕发黄 闪屏 场景桌面 小挂件 相机 通话 无响应 停止运行 闪退 兼容性 
 i音乐 i视频 音频 i管家 浏览器 软件商店 状态栏 联系人 短信 电子邮件 文件管理 输入法 天气预报 便签 计算器 超清影院 电子书 
@@ -532,10 +528,8 @@ sub Process{
 														}
 													}
 													$columnMap{$value} = $countNonZero;
-												}
-												
-																					
-												$allNum=$allNum+3;   
+												}																																	
+												$allNum = $allNum+3;   
 																																																				
 										}
 										
@@ -650,7 +644,8 @@ sub Process{
 										}
 										
 										
-										$detailSheet->Range("A1:$numDRow")->{'value'} = $detailDataArray;
+										$detailSheet->Range("A1:$numDRow")->{'value'} = $detailDataArray;								
+										$detailSheet->{'Visible'} = 0;   #隐藏工作表
 					
 	
 													
@@ -665,7 +660,7 @@ sub Process{
 										
 										
 										$allNum=0;								
-										$ModuleNum=@getLine;
+										$ModuleNum = @getLine;
 										foreach $value(@getLine){						#按得到的字符依次做数据
 											
 																							
@@ -686,51 +681,12 @@ sub Process{
 										         
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 									
-										
-=pod										
+																				
 										# modify kongqiao 20150715
  										# 复制并解析上周数据
  										
-			    				  my @allfilePathLast = <*.xlsx>;
-	  								foreach $path (@allfilePathLast){
-	  										if($path =~ /ROM2.0_$docName_.*用户反馈/){
-	  	 
-	  											$filePathLast = $dir."\/".$path;
-	  											print "上周数据路径是： $filePathLast \n";
-	  										}
-	  								}
- 								
-	  								
-	  								$workbookLast = $Excel->Workbooks->Open($filePathLast);
-	 
-										
-										#读出上周统计 sheet EXCEL数据到数组									 
-										$selectSheetLast = $workbookLast->Sheets("统计");
-										$DataArrayLast = $selectSheetLast->Range("A1:$numDRow")->{'Value'};
-										
-										#获取上周排名前八位数据
-										$tempCountLast=0;
-										foreach $tempLast(135..142){
-													$tempArrayLast = $$DataArrayLast[$tempLast-1];
-
-													$getLineLast[$tempCountLast] = $$tempArrayLast[8];														
-													$tempCountLast++;
-													
-										}
-																												
-										#读出上周前八位sheet  EXCEL数据到数组									 
-										$selectSheetLast = $workbookLast->Sheets("前八位严重模块具体现象描述");
-										$DataArrayLast = $selectSheetLast->Range("A1:$numDRow")->{'Value'};
-										
-										my @nocount;   # 未匹配到的数目
-										$allNum=0;
-										$ModuleNum=@getLineLast;
-										
-										print "上周前八： @getLineLast \n";
-									 
-=cut
-									  # 为避免，本周前八数据与上周前八数据不同，我们对上周 所有的细分模式数据中，进行匹配	
-									  									  
+									  # 本周前八数据与上周前八数据存在不同，并不能一一对应， 我们对上周 所有的细分模式数据，进行匹配	
+									  my @nocount = 0 x $ModuleNum;								  
 									  $allChartNum = 1;																
 										foreach $row (1..$ModuleNum){		
 											foreach $row1 (1..$colMax){											
@@ -742,9 +698,8 @@ sub Process{
 													# 获取上周数据, 相机或第三方软件
 												
 											 							
-														$$DataArray[$allChartNum +($row-1)*35+1][0] =  $$detailDataArray[240 +1 +($row1-1)*3][0];												
-																						
-																	 															
+														$$DataArray[$allChartNum +($row-1)*35+1][0] = $$detailDataArray[240 +1 +($row1-1)*3][0];												
+																																							 															
 														# 将上周数据，一一对应的复制至本周，
 														# 先处理，能在上周数据中匹配到相应数值的
 														$count = @{$$DataArray[$allChartNum -1 + ($row-1)*35+0]};
@@ -796,8 +751,8 @@ sub Process{
 																																										
 																}
 														
-																# 未找到 匹配的项
-																print "无匹配项：$$detailDataArray[240 +($row1-1)*3][$i] \n";
+																# 未匹配的项
+																print "无匹配项：$$detailDataArray[240 +($row1-1)*3][$i] \n";																
 														
 																$$DataArray[$allChartNum -1+($row-1)*35+0][$first + $nocount[$row-1]] = $$detailDataArray[240+($row1-1)*3][$i];														
 																$$DataArray[$allChartNum +($row-1)*35+0][$first + $nocount[$row-1]] = 0;
@@ -812,14 +767,12 @@ sub Process{
 														$tempDataArray = $$DataArray[$allChartNum  +($row-1)*35];
 												
 														$$DataArray[$allChartNum  +($row-1)*35] = $$DataArray[$allChartNum  +($row-1)*35+1];
-														$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;
-																																																																			
+														$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;																																																																			
 												
 													}else{						
 												
 														$$DataArray[$allChartNum  +($row-1)*35+1] = $$DataArray[$allChartNum  +($row-1)*35];
 														$$DataArray[$allChartNum  +($row-1)*35] = $$detailDataArray[240 + 1 + ($row1-1)*3];
-													#	$$DataArray[$allChartNum  +($row-1)*35][0] = "上周".$$DataArrayLast[($row-1)*30+1][0];
 												
 													}
 												}
@@ -831,7 +784,7 @@ sub Process{
 									
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 							
-										#开始制图
+										# 开始制图
 									  $getNum=0;
 										$allChartNum = 1;
 										for(1..$ModuleNum){
@@ -885,7 +838,9 @@ sub Process{
 														  $tempChartName = $$DataArray[$allChartNum+1][0];
 														 # print "$tempChartName \n";
 														  $Chart[$getNum]->{'HasTitle'} = 1;
-														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;																														
+														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;		
+														  
+														 														  																											
 												}	
 																														
 											}			
@@ -894,8 +849,7 @@ sub Process{
 											  $allChartNum = $allChartNum + 35;
 										}
 																												
-									 	# modify kongqiao0712 20150717
-									  
+									 	# modify kongqiao0712 20150717									  
 									 	#新建 sheet
 									 	$newSheetSta = $workbook->Worksheets->Add;
 										$newSheetSta->{name} = "前八位严重模块比例描述";
@@ -904,45 +858,45 @@ sub Process{
 										$workSheet = $workbook->Sheets("统计");	
 										$totolRownew = 77;
 										$numDRownew = MM.$totolRownew;
-																											
-																			
+										my $DataArraySta = $newSheetSta->Range("A1:$numDRownew")->{'Value'};   # 初始化 sheet 中数据数组的值
+																																														
 										$allChartNum = 1;
 										
-										# 计算总数
 										foreach $row (1..$ModuleNum){		
 											$$DataArraySta[   ($row-1)*10] = $$DataArray[$allChartNum -1  +($row-1)*35];
 											$$DataArraySta[1+ ($row-1)*10] = $$DataArray[$allChartNum  +($row-1)*35];
 											$$DataArraySta[2+ ($row-1)*10] = $$DataArray[$allChartNum + 1  +($row-1)*35];
 											
 											
-											$count = @{$$DataArraySta[  ($row-1)*10]};
-											@countno = qw(0,0);    # 最后一项的下标
-											@totalNum = qw(0,0);
+											my $count = @{$$DataArraySta[  ($row-1)*10]};											
+											my @totalNum = qw(0,0);  # 记录 总数
 											foreach $num(0..1){
-												for($i = 1; i<$count; $i++){
+												my $countNum = 0;    # 记录最后一项的下标
+												
+												for($i = 1; i< $count; $i++){
 												 if($$DataArraySta[ ($row-1)*10][$i] eq ""){
-												 	$countno[$num]++;
+												 	$countNum++;
 												 	last;
 												 	 													
 												 }else{
 												 	
-												 	 $totalNum[$num] += $$DataArraySta[1+ $num + ($row-1)*10][$i];
-												 	 $countno[$num]++;
+												 	 $totalNum[$num] += $$DataArraySta[1+ $num + ($row-1)*10][$i];   # 计算总数
+												 	 $countNum++;
 												 }
 												 																				 												
 											  }
 											  
-											  $$DataArraySta[1 + $num + ($row-1)*10][$countno[$num]] = $totalNum[$num];	
-											  
+											  $$DataArraySta[1 + $num + ($row-1)*10][$countNum] = $totalNum[$num];	
+											  #print "aifhsb $countNum \n";
 											  #求，比例
-											  for($i = 1; $i<$countno[$num]; $i++){	
+											  for($i = 1; $i< $countNum; $i++){	
 											  	if($$DataArraySta[1 + $num +  ($row-1)*10][$i] == 0)
 											  	{
 											  		$$DataArraySta[5 + $num + ($row-1)*10][$i] = 0;
 					
 											  	}else{
-											  		$$DataArraySta[5+ + $num + ($row-1)*10][$i] = $$DataArraySta[1 + $num + ($row-1)*10][$i]/$$DataArraySta[1 + $num + ($row-1)*10][$countno[$num]]*100;
-											  		$$DataArraySta[5+ + $num + ($row-1)*10][$i] = $$DataArraySta[5+ + $num + ($row-1)*10][$i]."\%";
+											  		$$DataArraySta[5 + $num + ($row-1)*10][$i] = $$DataArraySta[1 + $num + ($row-1)*10][$i]/$$DataArraySta[1 + $num + ($row-1)*10][$countNum]*100;
+											  		$$DataArraySta[5 + $num + ($row-1)*10][$i] = $$DataArraySta[5 + $num + ($row-1)*10][$i]."\%";
 											  	}											  
 											  	
 											  }												 					 
@@ -962,10 +916,11 @@ sub Process{
 									  	$row++;									  										  	
 									  }
 									  								  
-									  $newSheetSta->Range("A1:$numDRownew")->{'value'} = $DataArraySta;
+									  $newSheetSta->Range("A1:$numDRownew")->{'value'} = $DataArraySta;									  
+									  $newSheetSta->{'Visible'} = 0;   #隐藏工作表
+
 									  
-									  
-									  # 在统计sheet 中画出 比例图
+									  # 在统计sheet 中画出 比例图  modify kongqiao
 									  #开始制图, 比例图
 									  $getNum=0;
 										$allChartNum = 5;
@@ -1006,12 +961,16 @@ sub Process{
 															);
 														  $Chart[$getNum]->{ChartType} = xlColumnClustered;												
 															$Chart[$getNum]->ChartArea->Format->ThreeD->{'RotationX'}=0;
-															$Chart[$getNum]->ChartArea->Format->ThreeD->{'RotationY'}=90;
+														  $Chart[$getNum]->ChartArea->Format->ThreeD->{'RotationY'}=90;
 														  $tempChartName = $$DataArraySta[$allChartNum+1][0];
 														
 														  $Chart[$getNum]->{'HasTitle'} = 1;
 														  $Chart[$getNum]->ChartTitle->Characters->{Text} = $tempChartName;
-															
+														  
+														  # 添加文本框
+														  #$text[$getNum] = $workSheet->Shapes->AddTextbox();
+														  
+														  															
 												}
 											}			
 											$getNum++;

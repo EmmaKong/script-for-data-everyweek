@@ -1,6 +1,5 @@
 #!/uASZ/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -16,8 +15,8 @@ my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('
 
 #my @PHONEMODELS = qw(X3tDetail X3LDetail X5LDetail X3VDetail XplayDetail Xplay3sDetail Xplay3sFDetail XshotDetail XshotFDetail Y22iLDetail Y27Detail Y13LDetail Y22LDetail X5VDetail Y28LDetail Y23LDetail X5SLDetail);  # 机型
 #my @PHONEMODELS = qw(XplayDetail Xplay3sDetail XshotDetail X5MaxLDetail);  # 机型 for test
-#my @PHONEMODELS = qw(XplayDetail Xplay3sDetail XshotDetail X5MaxLDetail X5Max+Detail Y29LDetail X5LDetail X5MaxVDetail X5ProDDetail);# X5MDetail);  # 机型 for test
-my @PHONEMODELS = qw(X5ProDDetail);  # 机型 for test
+my @PHONEMODELS = qw(XplayDetail Xplay3sDetail XshotDetail X5MaxLDetail X5Max+Detail Y29LDetail X5LDetail X5MaxVDetail X5ProDDetail X5MDetail);  # 机型 for test
+#my @PHONEMODELS = qw(Y13iLDetail);  # 机型 for test
 
 #发现有热，耗电，性能的问题之后，就可以直接跳过模块?
 my @keywordNull = qw();

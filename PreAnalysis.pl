@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -10,20 +9,9 @@ use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 $Win32::OLE::Warn = 3;  
-#待处理机型
-#X3L
-#X3t
-#X3V
-#X510t Xplay
-#X520F Xplay3SF
-#X520L Xplay3S
-#X5L 1401L
-#X710F XshotF
-#X710L Xshot
-#Y22iL
-#Y27
 
-#  需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
+
+#需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
 my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X710F X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5S\sL X5Max\+ Y29L X5MaxV X5ProD X5M Y13iL Y33);  # Xplay3s: 0, X3t: 1, X510: 2, Xplay: 3, Xshot: 4
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
@@ -200,7 +188,7 @@ sub process{
 	#  modify kongqiao 20150725
 	my $workbook = $Excel->Workbooks->Open($filePath); 
 	my $allDataSheet = $workbook->Sheets(1);
-  $allDataSheet->{name} = "所有原始数据";
+  $allDataSheet->{name} = "全部数据";
 	#$allDataSheet->Activate;	#删除前必须要激活当前窗口
 	my $Rowcount=$allDataSheet->usedrange->rows->count;       #最大有效行数
 	

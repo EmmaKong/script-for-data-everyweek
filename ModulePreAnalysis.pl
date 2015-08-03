@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -10,22 +9,10 @@ use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 $Win32::OLE::Warn = 3;  
-#待处理机型
-#X3L
-#X3t
-#X3V
-#X510t Xplay
-#X520F Xplay3SF
-#X520L Xplay3S
-#X5L 1401L
-#X710F XshotF
-#X710L Xshot
-#Y22iL
-#Y27
 
 
 #需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
-my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X710F X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5S\sL X5Max\+ Y29L X5MaxV X5ProD X5M);  # Xplay3s: 0, X3t: 1, X510: 2, Xplay: 3, Xshot: 4
+my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X710F X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5S\sL X5Max\+ Y29L X5MaxV X5ProD X5M Y13iL);  # Xplay3s: 0, X3t: 1, X510: 2, Xplay: 3, Xshot: 4
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 my $dir = getcwd;
@@ -52,6 +39,7 @@ my $Y29L = "$dir/Y29LDetail.xlsx";
 my $X5MaxV = "$dir/X5MaxVDetail.xlsx";
 my $X5ProD = "$dir/X5ProDDetail.xlsx";
 my $X5M = "$dir/X5MDetail.xlsx";
+my $Y13iL = "$dir/Y13iLDetail.xlsx";
 
 main();
 
@@ -175,7 +163,11 @@ sub preProcess{
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
 	printf "X5M已耗时：%s秒\n", $timeDelta ;	
-		
+
+	process($Y13iL, 1, $PHONEMODELS[26]);
+	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
+    $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
+	printf "Y13iL已耗时：%s秒\n", $timeDelta ;		
 }
 
 sub process{
@@ -209,7 +201,7 @@ sub process{
 		  $ref_array=$$DataArray[$row-1];
 		  $value=$$ref_array[0];
 
-			if($value =~ /$model$/i) {  # 不区分大小写
+			if($value =~ /$model$/i) {  # 不区分大小写 , modify kongqiao
 				++$row;	#遇到了合适的，下一次就得加一行遍历
 			} else {
 				$position=$row-1;
@@ -221,7 +213,7 @@ sub process{
 		for(2..$Rowcount){  		
 		  $ref_array=$$DataArray[$row-1];
 		  $value=$$ref_array[0];
-			if($value =~ /$model$/i || $value =~ /$model2$/i) {
+			if($value =~ /$model$/i || $value =~ /$model2$/i) {   #modify kongqiao
 				++$row;	#遇到了合适的，下一次就得加一行遍历
 			} else {	
 				$position=$row-1;

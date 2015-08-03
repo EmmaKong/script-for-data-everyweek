@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
 #version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -16,8 +15,8 @@ $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Exc
 
 #my @PHONEMODELS = qw(X3t X3V Xplay Xplay3s X5L Xshot Y22iL Y27 Y13L Y22L X5V Y28L Y23L X5SL);# X5MaxL);  # 机型
 #my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD);#  X5M);  # 机型
-my @PHONEMODELS = qw(X5ProD);  # 机型
+my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M);  # 机型
+#my @PHONEMODELS = qw(Y13iL);  # 机型
 my $dir = getcwd;
 my $workbook;
 my $pageNum = 2;	
@@ -33,7 +32,7 @@ i音乐 i视频 音频 i管家 浏览器 软件商店 状态栏 联系人 短信 电子邮件 文件管理 输入
 $totolRow = 600;#初始化该sheet只需要600行数据  # modify kongqiao
 $numDRow = MM.$totolRow;#400行对应的excel长宽
 $ModuleNum = 5;
-$colMax = 85;  # 模式数 
+$colMax = 85;  # 模式数   #modify kongqiao
 $endRow = 27;
 $startRow = 11;
 $rom_count_name = "rom_count.xlsx";
@@ -61,19 +60,22 @@ sub Process{
 #=pod
 									 									  
 									  #$filePathLast = $dir."\/".$_."用户反馈".".xlsx";	# 表格路径
-									  # modify kongqiao 20150714
+									  # modify kongqiao 20150714									  
 									  my @allfilePathLast = <*.xlsx>;
 	  								foreach $path (@allfilePathLast){
-	  									if($path =~ /ROM2.0_$__.*用户反馈/){
-	  										$filePathLast = $dir."\/".$path;
-	  										print "上周数据路径是：$filePathLast \n";
-	  									}
-	 									}
+	  									if($path =~ /ROM2.0_(.*)_.*用户反馈/){   # 捕获两个下划线之间的内容
+	  	  								if($_ eq $1){
+	  											$filePathLast = $dir."\/".$path;
+	  											print "上周数据路径是： $filePathLast \n";
+	  	  								}
+	    								}
+	  								}
+	 									
 										$workbookLast = $Excel->Workbooks->Open($filePathLast);
-										$workSheetLast=$workbookLast->Sheets("统计");
+										$workSheetLast = $workbookLast->Sheets("统计");
 										#读出EXCEL数据到数组
 										$DataArrayLast = $workSheetLast->Range("A1:$numDRow")->{'Value'};
-										$DataLength=@$DataArray-1;	
+										$DataLengthLast = @$DataArrayLast - 1;	
 #=cut		
 
 #处理数据
@@ -545,11 +547,11 @@ sub getRomcount{
 	
 	my $model = shift;
 	#$mmodel=$model;#wuhongzhang 
-	my $romfilepath = $dir."\/".$rom_count_name;
+	my $romfilepath = $dir."\/".$rom_count_name;    # 读取 rom_count 文件
 	my $workbook = $Excel->Workbooks->Open($romfilepath);
 	my $sheet    = $workbook->Sheets($model);
 	my $rowcount = $sheet->usedrange->rows->count;
-	my $numDRow  = "F" . $rowcount;
+	my $numDRow  = "F".$rowcount;
 	my $dataArr  = $sheet->Range("A1:$numDRow")->{'Value'};
 	my %dict = ();
 	
@@ -586,10 +588,10 @@ sub calculateRomRate{
 	my $romcount_3 = $dict_romcount{$$row4[0]};
 	
 	for (my $index = 1; $index <= $colMax; $index++){
-		if($mmodel ne "X5ProD"){
+		
 		$$row30[$index] = $$row2[$index] / $romcount_1*100;
 		$$row30[$index] = $$row30[$index]."\%";
-	}
+		
 		$$row31[$index] = $$row3[$index] / $romcount_2*100;
 		$$row31[$index] = $$row31[$index]."\%";
 		$$row32[$index] = $$row4[$index] / $romcount_3*100;
