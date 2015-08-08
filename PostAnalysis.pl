@@ -4,7 +4,6 @@
 #Target:                                                               
 #   auto analysis tool of user feedback.    
 #------------------------------------------------------------------------
-
 use Cwd;
 use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
@@ -20,7 +19,7 @@ my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('
 #my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # »úÐÍ
 #my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M);# X5M); 
 #my @PHONEMODELS = qw(Y13iL);#X5M Y13iL Y33);
-my @PHONEMODELS = qw(Xshot);  # »úÐÍ
+my @PHONEMODELS = qw(X5ProD);  # »úÐÍ
 my @PHONEEDITION2 = qw(8 15 4 2 9 20 16 12 13 18 15 14 10 7 11);  # »úÐÍ
 my @PHONEEDITION1 = qw(5 1 3 5 6 1 1 27 1 1 13 1 1 1 1);  # »úÐÍ
 $dayTime="0330";
@@ -39,14 +38,14 @@ my $totalNum = 83;
 my $startCol = 11+5;
 #----------ºÄµç-------1---------------
 my @KeywordsBattery = qw(ºÄµç Ö±³ä.{0,18}Ã»·´Ó¦ ÓÃµç Ã»ÓÐµç ·ÅµçºÜ¿ì ÓÅ»¯µç³Ø µç³Ø.{0,18}Èõ µç.{0,18}½µ.{0,18}¿ì ²»×¡µç µç³Ø.{0,12}²î¾¢ µçÌ«·Ñ µçÅÜµÄ.{0,12}¿ì µçÓÃ.{0,12}¿ì µç.{0,12}²»ÄÍÓÃ 
-µç.*³Ø.*(ÓÃ|¹Ü).*²».{0,12}Ìì µç³Ø.{0,12}ÓÃ.{0,12}¿ì µçÁ¿²»×ã µçÁ¿.{0,12}Ñ¸ËÙ.{0,12}ÉÙ µç.{0,12}²»¾­ÓÃ ²»ÄÍµç Ðøº½ µçÁ¿ ºÄµç ·Ñµç ÙMëŠ ºÄëŠ ·Ñµã µç³ØÀ¬»ø ÓÃµç¿ì µôµç µç³ØÌ«²î µç³Ø.*(²»|ÎÞ·¨)ÄÍÓÃ Ã»µç 
+µç.*³Ø.*(ÓÃ|¹Ü).*²».{0,12}Ìì µç³Ø.{0,12}ÓÃ.{0,12}¿ì µçÁ¿²»×ã µçÁ¿.{0,12}Ñ¸ËÙ.{0,12}ÉÙ µç.{0,12}²»¾­ÓÃ ²»ÄÍµç ²»´ýµç Ðøº½ µçÁ¿ ºÄµç ·Ñµç ÙMëŠ ºÄëŠ ·Ñµã µç³ØÀ¬»ø ÓÃµç¿ì µôµç µç³ØÌ«²î µç³Ø.*(²»|ÎÞ·¨)ÄÍÓÃ Ã»µç 
 ³äÂúµç.*Ö»Ê£ È¥.*%.*µç ÓÃµç.*¿ì µçµô.*¿ì °Ù·ÖÖ®.*µç µç³ØÏûºÄ µç(²»|ÎÞ·¨)ÄÍÓÃ µç.*ºÄ.*(¿é|¿ì) ²»´æµç ²»Ðîµç ²»¹Üµç µç.*Á÷ÊÅ °Ù·Ö±È.*µçÁ¿ ÍíÉÏ.*µç|µç.*ÍíÉÏ µç.*µõ.*¿ì µç³Ø.*¶Ì µç.*²»ÄÍÓÃ µç³Ø.*¿¹Ê¹ µç.*ºÄ 
-µç³Ø.*²» µç.*ÓÃ²» µç³Ø.*Ã».*µç ²»±£µç ëŠ³Ø.*²» µç³ØÐøº½ Ã».*µç.*²»¶à ´ý»úÊ±¼ä.*¶Ì µç³Ø.*ÈÝÁ¿.*Ð¡ µç.*Íê.*¿ì µç.*(³å|³ä)²»½ø);
+µç³Ø.*²» µç.*ÓÃ²» µç³Ø.*Ã».*µç ²»±£µç ëŠ³Ø.*²» µç³ØÐøº½ Ã».*µç.*²»¶à ´ý»úÊ±¼ä.*¶Ì µç³Ø.*ÈÝÁ¿.*Ð¡ µç.*Íê.*¿ì µç.*(³å|³ä)²»½ø ´øµçÊ±¼ä.*¶Ì µçÃ».*¿ì ´ýµç ÅÜµç);
 my @KeywordsBatteryExcl = qw(ÏëÒªµÄµçÁ¿ ¿´µçÁ¿ ÏÔÊ¾µçÁ¿ µçÁ¿³ä×ã °Ù·Ö±ÈµçÁ¿ µçÁ¿ÏÔÊ¾ µçÁ¿.*°Ù·Ö±È Êý×ÖµçÁ¿ µçÁ¿.*Êý×Ö µç³Ø.*°Ù·Ö±È Ãâ·Ñµç»° ÊÖ»ú¿ìÃ»µçÁË µç³ØÈÝÁ¿ ±ÜÃâ.*ºÄµç µç³Ø·¢ÈÈ °×·Ñµç Ö»¿´µ½³äµç(²»|ÎÞ·¨)ÄÜÉÏ´« 
-µç³ØºÜÈÈ ÉËµç³Ø Ã»µç»° ¸ÄÉÆ ÊÛºóµç»° µçÐÅ µçÐÅ¿¨ ëŠÁ¿ï@Ê¾ À´µç.*ÓÃ²»ÁË µçÁ¿²»×ã.*(ÏÔÊ¾|ÌáÊ¾) Ã».*µç»°¿¨ ÓÃµç»°);
+µç³ØºÜÈÈ ÉËµç³Ø Ã»µç»° ¸ÄÉÆ ÊÛºóµç»° µçÐÅ µçÐÅ¿¨ ëŠÁ¿ï@Ê¾ À´µç.*ÓÃ²»ÁË µçÁ¿²»×ã.*(ÏÔÊ¾|ÌáÊ¾) Ã».*µç»°¿¨ ÓÃµç»° µôµç.*¿ì µçÁ¿.*ÏÔÊ¾ µçÔ´¼ü ³¬¼¶Ê¡µç);
 #------------µçÁ¿ÏÔÊ¾-----1---------------
-my @KeywordsPower = qw(µçÁ¿ (°Ù·ÖÖ®|%).{0,18}µç.{0,18}¹Ø»ú µç.{0,18}(°Ù·ÖÖ®|%).{0,18}¹Ø»ú %.{0,18}Âú¸ñ.{0,18}%);
-my @KeywordsPowerExcl = qw(°Ù·Ö±È °Ù·Ö°Ù °Ù·ÖÖ®¼¸ °Ù·ÖÂÊ µç.*Ã» ºÄµç µç.*ÓÃ ³¬¼¶Ê¡µç);   
+my @KeywordsPower = qw(µçÁ¿ (°Ù·ÖÖ®|%).{0,18}µç.{0,18}¹Ø»ú µç.{0,18}(°Ù·ÖÖ®|%).{0,18}¹Ø»ú %.{0,18}Âú¸ñ.{0,18}% µçÁ¿.*Êý×ÖÏÔÊ¾);
+my @KeywordsPowerExcl = qw(°Ù·Ö±È °Ù·Ö°Ù °Ù·ÖÖ®¼¸ °Ù·ÖÂÊ µç.*Ã» ºÄµç µç.*ÓÃ ³¬¼¶Ê¡µç µôµç°Ù·Ö);   
 #-----------·¢ÈÈ----------------------
 my @KeywordsHeat = qw(·¢ÈÈ ÈÈ ÌÌ ÎÂ¶È  C Ÿá ·¢ÉÕ ·¢ÌÀ ·¢ì¾ ºÜÌÀ ÉÕµÄ);
 my @KeywordsHeatExcl = qw(ÈÈ°Î²å ¸öÈËÈÈµã ·¢ÉÕÓÑ ÈÈÖØÆô ±ÈÈç ¸èÈí ÈÈ°® ÈÈµã ±ÈÈÎ ¼ÈÈ» µÈÈí ¶ÈÈ» ÏÈÈ¨ ƒÈÈÝ ÈÈ¸ÐÓ¦ ÌìÆø.*ÎÂ¶È ÈÈ²å²¥ ÈÈ²å°Î);   #ºÜÆæ¹Ö£¬±ÈÈç¾ÓÈ»±»Ê¶±ð³ÉÈÈ£¬ÔÚÕâÀï¹ýÂËÒ»ÏÂ
@@ -73,8 +72,8 @@ WLAN sm¿¨ ±£ÐÞ¿¨ GLOBE¿¨ ¿¨Æ¬ ¿¨ÓÐÎÊÌâ ¼ô¿¨ 4.*g¿¨ ¿¨l Á©¿¨ ¿¨ÍÛÒÁ ¿¨ÉÏµÄ ¸±¿¨ Ö
 =cut
 #---------------ÏµÍ³ÐÔÄÜ------------------
 my @KeywordsSysPerf = qw(¶Ù¿¨ ¿ª»ú.{0,12}Ê±¼ä.*(³¤|¾Ã)  ÐÔÄÜ.{0,5}(²»ºÃ|²»ÐÐ|²î|ÀÃ|´ê) ¶ÙÒ»ÏÂ Âý ¿¨ Á÷³© ³Ù¶Û Ã»·´Ó¦ Ã»·´Ó³ ³Ù»º Ã´ÓÐ·´Ó¦ ³ÙÖÍ ¿¨¶Ù ²».*Ë³³© ·ÅÓ³.*Âý Ã».*·´Ó¦¿ì ÐÔÄÜ ÏµÍ³ÐÔÄÜ ¿¨ËÀ
-²»ÌýÊ¹»½ ²»Á¬¹á ²»Áé»î); #¿ª²».*»ú 
-my @KeywordsSysPerfExcl = qw(ºÅÂëµ½¿¨ÉÏ ¿¨.{0,18}¶Á²»³öÀ´ ¿¨·¢²»ÁËÐÅÏ¢ ¿ªÊý¾ÝÃ»·´Ó¦ ÊÖ»ú¿¨ ÊÖ»ú¿¨.{0,18}²»ÄÜÓÃ.{0,18}²»ÔÚ·þÎñÇø Á¬Êý¾ÝÌ«Âý °ü»»»á²»»á»» ±£ÏÕ¿¨ ÂýÐÔÎ¸ñ¼Ñ× Á¬½ÓºóÃ»·´Ó¦ ²å´ó¿¨ ÃÜºÏ¶È 
+²»ÌýÊ¹»½ ²»Á¬¹á ²»Áé»î ÏµÍ³Òì³£ (Ó¦ÓÃ|Èí¼þ)ÔËÐÐ²»ÁË ·´Ó¦²»ÁéÃô ¿¨»ú ·´Ó¦Âý ¿¨ÆÁ); 
+my @KeywordsSysPerfExcl = qw(ºÅÂëµ½¿¨ÉÏ ¿¨.{0,18}¶Á²»³öÀ´ ¿¨·¢²»ÁËÐÅÏ¢ ¿ªÊý¾ÝÃ»·´Ó¦ ÊÖ»ú¿¨.{0,18}²»ÄÜÓÃ.{0,18}²»ÔÚ·þÎñÇø Á¬Êý¾ÝÌ«Âý °ü»»»á²»»á»» ±£ÏÕ¿¨ ÂýÐÔÎ¸ñ¼Ñ× Á¬½ÓºóÃ»·´Ó¦ ²å´ó¿¨ ÃÜºÏ¶È 
 ²åÉÏµç.{0,18}Ã»·´Ó¦ ¶Á²»³öÊÖ»ú¿¨ ¼¸Ìì.{0,18}¶¼Ã»·´Ó¦ ÂýÂý±äµÄ´ó usb¿¨ ËÄG.{0,18}ËÙ¶ÈÌ«Âý ÊÖ»ú¿¨¾ÍÃ»ÓÐ·þÎñ ·ÅÄÚ¿¨ ¸ô¿Õ²Ù×÷Ã´ÓÐ·´Ó¦ Ìø¿¨ ¿¨×ù ÁÁÆÁ.{0,18}Ã»·´Ó¦ ÍøÒ³.{0,18}²»Ë³³© 
 ÆÁ.{0,18}(²»Æð×öÓÃ|Ã»·´Ó¦) ½ÓÊÜÐÅÏ¢.{0,18}Âý (ÆÁÄ»|´¥ÆÁ).{0,18}(Ã»·´Ó³|Ã»·´Ó¦) ²»Ö§³Ö¿¨ ¿¨¿Ç ÊÖ»ú¿¨ÖØÐÂ¶ÁÈ¡ ¿¨.{0,18}×Ô¼º.{0,18}(¹Ø±Õ|¹ØÁË) ÏÔÊ¾Ò»¸ö¿¨ ¿¨´¢´æ Ë¢²»³É¿¨ ¿¨µÄºÜ½ô ÉùÒôÃ»·´Ó¦ ÓÐ¿¨¶¼ 
 Ð§ÂÉÌ«Âý ¹Î¹Î¿¨ ¿¨³Ô Ò»¿¨Ë«ºÅ 4636 100Ì«Âý Ïí¿¨ ¿ª»úÃ»·´Ó¦ À©ÕÅ¿¨ ×R„eÊÖ™C¿¨ ÒÆ„Ó¿¨ ÊÖ»úÍâ¿¨ ÎÞ·¨Ñ¡¿¨ ¿¨»á×Ô¶¯¹Ø±Õ ¿¨Íø È«¾ÖÖ÷Ìâ³ö.{0,18}Âý ¿¨»¹»á×Ô¶¯ËøÉÏ À¶ÑÀËÑË÷.{0,18}Âý ÊÖ»ú¿¨ÓÃ²»ÁË ³öµÃÌ«Âý 
@@ -100,44 +99,44 @@ uid¿¨ Ñ¡Ôñ¿¨ ¶Ï¿ªÊÖ»ú¿¨ ÊÖ»úÏûÏûÀÖ gif¿ìÊÖ (»­v|»­o|»­m|»­w).*Ã»·´Ó¦ ¿ª¿¨Õë ÌìÃ¨
 ²å¿¨ °Î¿¨ Ð§ÂÊ.*Âý ÏÂ.*Âý ÍâÖÃ¿¨ ¿¨ÀÖ¸¶ Ê±ÖÓ|Ê±¼ä.*±äÂý ÍøËÙ|ÍøÒ³.*Âý ÏÂÔØ.*Âý ÏÔ¿¨ wifi|wlan.*Á÷³© Á÷³©°æ Á÷³©ÐÔ ÃÅ½û¿¨ ÂýÂ¼Ïñ ¿¨ÔÚÏÂÔØ Ë«¿¨ 2¿¨ 3¿¨ 4¿¨ µ¥¿¨ ¶Á¿¨ Íø.*Âý Íø.*¿¨ 
 »»Ò»ÕÅ¿¨ VIP¿¨ ½ðÊ¿¶Ù¿¨ µçÐÅµÄ¿¨ ·þÎñ.*Âý ÉÏÍø.*³Ù¶Û ¹«½»¿¨ Éù¿¨ ´¢´æ¿¨ (°Ù¶ÈÊÓÆµ|ËÑºüÊÓÆµ|PPS|°®ÆæÒÕ|±©·çÓ°Òô|Ñ¸À×¿´¿´|Ñ¸À×|ÌÚÑ¶).*¿¨
 (ÓÎÏ·|ÌìÌì·çÖ®ÂÃ|¼«Æ··É³µ|¿áÅÜ|·É»ú|Ê±¿ÕÁÔÈË|°®Ïû³ý|±³´Ì|È«Ãñ|µØÖ÷|ÉñÄ§|·É³µ|½Ú×à´óÊ¦|½©Ê¬|Âé½«|ºì¾¯|ÏÀµÁ|nba|½£»êÖ®ÈÐ).*¿¨
-¸ßµÂµØÍ¼ Î¢ÐÅ Ä°Ä° ÍúÐÅ Î¢»° Ó°Ôº YY ÍÁ¶¹ ¿á¹· ¿ìÑÀ Ô¿³× ÐÂÀË ÍøÒ× ËÑ¹· ³ª°É ¾©¶« ÃÀÅÄ °¢ÀïÍ¨ Ä«¼£ ÌìÌì¶¯Ìý ÖÐ¹úÏóÆå ireader
-ÒøºÓ¾ÁÀÖ °®ÆæÒÕ PPTV °Ù¶È ËÑºü ±©·ç DIYÖ÷Ìâ´óÊ¦ ÕÆÔÄ ÌÔ±¦ ÓÅ¿á 360 ôÜÊÂ°Ù¿Æ Ñ¸À× Î¢²© ÔÚÏßÊÓÆµ.*¿¨ 91ÖúÊÖ ÎÞÏßÁ¬½Ó.*Âý ¿¨²Û ÍøÒ³.*¼ÓÔØ QQ ¿­Á¢µÂ ÌìÌììÅ¶· ÉÏ¾W·´Ó³.*Âý Â“Í¨ ÎÞ¿¨ Éý¼¶.*Âý 
+(¸ßµÂµØÍ¼|Î¢ÐÅ|Ä°Ä°|ÍúÐÅ|Î¢»°|Ó°Ôº|YY|ÍÁ¶¹|¿á¹·|¿ìÑÀ|Ô¿³×|ÐÂÀË|ÍøÒ×|ËÑ¹·|³ª°É|¾©¶«|ÃÀÅÄ|°¢ÀïÍ¨|Ä«¼£|ÌìÌì¶¯Ìý|ÖÐ¹úÏóÆå|ireader|ÒøºÓ¾ÁÀÖ|°®ÆæÒÕ|PPTV|°Ù¶È|ËÑºü|±©·ç|DIYÖ÷Ìâ´óÊ¦|ÕÆÔÄ|ÌÔ±¦|ÓÅ¿á|360|ôÜÊÂ°Ù¿Æ|Ñ¸À×|Î¢²©).*¿¨ 
+ÔÚÏßÊÓÆµ.*¿¨ 91ÖúÊÖ ÎÞÏßÁ¬½Ó.*Âý ¿¨²Û ÍøÒ³.*¼ÓÔØ QQ ¿­Á¢µÂ ÌìÌììÅ¶· ÉÏ¾W·´Ó³.*Âý Â“Í¨ ÎÞ¿¨ Éý¼¶.*Âý 
 É¢ÈÈ.*Âý 4g.*Âý Æû³µÖ®¼Ò WLAN sm¿¨ ±£ÐÞ¿¨ ¿¨ÍÐ ÂýÂý»Ö¸´ À©Õ¹¿¨ ²»ÊÇ¿¨ ´æ´¢¿¨ Ö§¸¶±¦Ç®°ü Ö§¸¶±¦ ·´À¡.*Ã»·´Ó¦ ÊÖ»ú¿¨.*·Å½øÈ¥ ÊÖ»ú¿¨ÔõÃ´²å ÍÏ¿¨ ÍÑ¿¨ Âý¿ìÃÅ ¿Û¿Û Ã»µ½.*ËÙ¶È.*Âý ´æ¿¨ Á½ÕÅ¿¨ ¶¨Î»Âý ÏÖ´úÕ½Õù Ë¢¿¨»ú ¿ñÒ°ïjÜ‡ ¿¨°× S¿¨
 ÕÕÏñ ÅÄÊÓÆµ ÉÁ¹âµÆ.*(Ê§Ð§|´ò²»¿ª) ×¨ÒµÄ£Ê½ È«¾°ÕÕÆ¬ ÕÕÆ¬ ÏñËØ ÅÄÉã È«ÆÁ.*ÅÄ ÅÄÕÕ Ïà»ú Á¬ÅÄ ÕÕÏà Â¼Ïñ ÉãÏñ ÉãÓ° ÅÄ.*ÕÕ ×ÔÅÄ ¶Ô½¹ ±³¾°Ðé»¯ Ã¤ÅÄ ÃÀÑÕ ¹âÑ§·À¶¶ ÕÕÆ¬.*ÐéÓ° Ò¹¾°Ä£Ê½ ¼«ËÙÃ¦ÅÄ ¼«ËÙÃ¤ÅÄ Ôëµã ÊÓÆµÂ¼Ïñ
-(ÊÓÆµ|ÊÓÆÁ|¿½±´ÊÓÆµ|(720p.*mkv.*ÏµÍ³²¥·ÅÆ÷)|µçÓ°|µçÊÓ|ÃÀ¾ç|ÉÏÍø).*¿¨
-(ä¯ÀÀÆ÷|Á÷ÀÀÆ÷|ÓÎÀÀÆ÷).*¿¨
+(ÊÓÆµ|ÊÓÆÁ|¿½±´ÊÓÆµ|(720p.*mkv.*ÏµÍ³²¥·ÅÆ÷)|µçÓ°|µçÊÓ|ÃÀ¾ç|ÉÏÍø).*¿¨ ´òµç»°.*Ã»·´Ó¦ ³äµç.{0,5}Âý
+(ä¯ÀÀÆ÷|Á÷ÀÀÆ÷|ÓÎÀÀÆ÷).*¿¨ ³äµç.*Âý ÇåÀí.*Âý °´¼ü.*¿¨
 ÐÅÏ¢.*ÓïÒô²¥±¨ ¶ÌÐÅ ÖØ¸´ÊÕ ÐÅÏ¢Ðü¸¡´°  sim¿¨ÐÅÏ¢ ÐÅÏ¢Ó¦ÓÃ ¼ÓÃÜ¶ÌÐÅ
 ÔÆuÅÌÎÄ¼þ ¸±¿¨ Ö÷¿¨ ¿¨ÉÏµÄ Á©¿¨ ¿¨l 4.*g¿¨ ¼ô¿¨ ×°²»½ø¿¨ ¶ú»ú ¿¨ÓÐÎÊÌâ ¿¨Æ¬ GLOBE¿¨ ñÒÐî¿¨ Á½¸öÊÖ»ú¿¨
 Êµ¾°µ¼º½ gps µ¼º½ ¶¨Î» ÊÕÎÀÐÇ
 ¿¨ÁËÎÒÒ»°ë ¿¨ÔõÃ´²»ÄÜÓÃ°¡ ¿¨ÒÑ¹Ø±Õ ±£ÐÞÕûÌå¿¨ È¡³ö¿¨ Ìá½»¶©µ¥Ã»·´Ó¦
 ¿ì£¬Âý °ìµÄ¿¨ ¿¨Ì«ÉÙ ¿¨¿ªÁË µçÐÅÊÖ»ú¿¨ Ë¢²»ÁË¿¨ Ò»¸ö¿¨ Ã»ÐÅºÅ Ö§³ÖÊ²Ã´¿¨ ÂýÂý¸øÄã
 À¶ÑÀ.{0,18}Ë³³© ÂýÂý±äÍä ×°¿¨ Êý¾Ý¿¨ÇÐ»» ÔÚÏß.{0,18}Ã»·´Ó¦ Ö¸Áî.{0,18}Ã»·´Ó¦ Ì×²ÍÊÖ»ú¿¨ Ôö¼ÓÊÖ»ú¿¨ ¿¨°ÍÂ· Êý¾ÝÏß.{0,18}Ã»·´Ó¦ ¿¨Õë ¿¨×ø Ö÷¿¨ ¸±¿¨ Ö±³ä.{0,18}Ã»·´Ó¦ ×x¿¨ VIPÓ°ÊÓ¿¨ ¶Á²»µ½¿¨ ¿¨ÎåÐÇ ¿¨±¨·Ï ¿¨ÂÞÀ­ »»ÕÅ¿¨ ´ò²»¿ª¿¨
-»Ø¸´.{0,18}Âý g¿¨ »°·Ñ¿¨ ¿¨µÄºÅÂë ²å.*¿¨ »Ø´ðÎÊÌâ.*Âý Ìá½».*ÎÊÌâ.*Ã»·´Ó¦  µç.*³å.*Âý );
+»Ø¸´.{0,18}Âý g¿¨ »°·Ñ¿¨ ¿¨µÄºÅÂë ²å.*¿¨ »Ø´ðÎÊÌâ.*Âý Ìá½».*ÎÊÌâ.*Ã»·´Ó¦  µç.*³å.*Âý ÄãÃÇ.*´¦Àí.*Âý );
 #---------------------------------
-my @KeywordsKMusic = qw(Ììô¥K¸è Ììô¥.*K¸è ÒÆ¶¯KTV);
+my @KeywordsKMusic = qw(Ììô¥K¸è Ììô¥.*K¸è ÒÆ¶¯KTV k¸è);
 my @KeywordsKMusicExcl = qw(K¸èÖ®Íõ);
 #---------ËÀ»ú------------------------
-my @KeywordsDie = qw(ËÀ»ú ¿ª»ú.*vivo ¼ÙËÀ ËÀÁË¼¸´Î»ú ËÀ™C ²»ÄÜ¹Ø»ú ¹Ø.*²»ÁË»ú ³¤°´¹Ø»ú¼ü.*Ã»·´Ó¦);
+my @KeywordsDie = qw(ËÀ»ú ¿ª»ú.*vivo ¼ÙËÀ ËÀÁË¼¸´Î»ú ËÀ™C ²»ÄÜ¹Ø»ú ¹Ø.*²»ÁË»ú ³¤°´¹Ø»ú¼ü.*Ã»·´Ó¦ °´ÈÎºÎ¼ü.*ÎÞ·´Ó¦);
 my @KeywordsDieExcl = qw(ÒÔÎª.*ËÀ»ú);
 #-----------ÖØÆô----------------------
 my @KeywordsRestart = qw(ÖØÆô »áÖØÐÂÆô¶¯ ×Ô¶¯ÖØÆô ×Ô¶¯´ÓÆð ÖØ¸´Æô¶¯ ¾ÍÖØÆô ×Ô¶¯¿ª¹Ø»ú ×Ô¶¯ÖØÐÂÆô¶¯ ´ÓÐÂÆô¶¯ ×Ô¶¯¹Ø»ú¿ª»ú ×Ô¶¯ÖØÆð ×Ô¶¯¿ª¹Ø»ú ×Ô¶¯¹Ø¿ª»ú ÖØ¸´Æô»ú ×Ô¶¯´ÓÆô ×Ô¶¯ÖØÆô ÖØ¸´Æô»ú ·´¸´¿ª¹Ø»ú ×ÔÐÐ¿ª»ú 
 ³öÏÖ.*¿ª»úÏÖÏó ¹Ø»ú.*ÓÖ¿ª»ú ×Ô¶¯¹Ø»ú.*¿ª»ú Í»È».*ÖØ.*Æô ÎÞ¹ÊÖØÆô Òì³£ÖØÆô ÀÏÊÇÖØÆô ¾­³£.*ÖØÆô ÎÞÏÞÖØÆô ³öÏÖ×Ô¶¯ÖØÆô ×Ô¼º.*ÖØÆô Õ¦»áÖØÆô ËÀ»úÖØÆô ÖØÆð);
 my @KeywordsRestartExcl = qw(×Ô¶¯ÖØÆô²¥·Å ÖØ.*Æô.*Ã».*ÓÃ ÖØÆô.*(²Å|¾Í) ÖØÆô.*²Å.*(ÄÜ|ÐÐ) ÐèÒªÖØÆô ÐèÒªÖØ†¢ ÒªÖØ.*Æô ¿ª»ú¼ü.*ÖØÆô ÖØÆôÎÞÐ§ »»»úÖØÆô ±ØÐëÖØÐÂÆô¶¯ ÒªÊÇÖØÆô ÖØÆô.*Ã»ÊÂ ÏÂÔØºÃÖØÆô 
-ÖØÆô.*(Ã»ÓÃ|²»ÐÐ|»¹ÊÇ) ÖØÆôºó ÖØÆôºó²Å ÖØÆôºó¾Í ÖØÆô.*ºÃÁË ÖØÆô.*Ñ¡Ïî ÖØÆô(ÊÖ»ú|»ú×Ó)ºó ÖØÆôÓÖÄÜ ½¨ÒéÖØÆô ×Ô¶¯¹Ø»ú.*³äµç.*¿ª»ú);
+ÖØÆô.*(Ã»ÓÃ|²»ÐÐ|»¹ÊÇ) ÖØÆôºó ÖØÆôºó²Å ÖØÆôºó¾Í ÖØÆô.*ºÃÁË ÖØÆô.*Ñ¡Ïî ÖØÆô(ÊÖ»ú|»ú×Ó)ºó ÖØÆôÓÖ(ÄÜ|¿ÉÒÔ) ½¨ÒéÖØÆô ×Ô¶¯¹Ø»ú.*³äµç.*¿ª»ú ËøÆÁ.*ÖØÆô);
 #----------×Ô¶¯¹Ø»ú-----------------------
 my @KeywordsPoweroff = qw(×Ô¶¯¹Ø»ú ³öÏÖ¹Ø»ú Ò».*¾Í.*¹Ø»ú Íæ.*¹Ø»ú ×ÜÊÇ¹Ø»ú ×Ô¶¯¹Ø»ú ³£¹Ø»ú Òì³£¹Ø±Õ ÎÞÔµÎÞ¹Ê¹Ø»ú ×Ô¼º¹Ø»ú Í»È».*¹Ø»ú ×Ô¼º¹Ø»ú ¶¯²»¶¯¹Ø»ú ×ÔÐÐ¹Ø»ú (ÎÞÔµÎÞ¹Ê|ÎÞ¹Ê).*¹Ø»ú ÄªÃûÆäÃî¹Ø»ú ÊÖ»ú×Ô¶¯¹Ø±Õ);
-my @KeywordsPoweroffExcl = qw(Ã»µç×Ô¶¯¹Ø»ú ÉèÖÃ.*×Ô¶¯¿ª¹Ø»ú);
+my @KeywordsPoweroffExcl = qw(Ã»µç×Ô¶¯¹Ø»ú ÉèÖÃ.*×Ô¶¯¿ª¹Ø»ú ËøÆÁ.*¹Ø»ú);
 #-------------´¥ÆÁ--------------------
-my @KeywordsTouchPanel = qw(´¥ÆÁ »®ÆÁÄ» ÆÁÄ».*Ã».*·´Ó¦ ÆÁ.*Ã».*·´Ó¦ ¶¨ÆÁ  ÆÁÄ».*²».*Áé ´¥ÆÁ.*(²»|ÎÞ·¨)Áé ´¥ÆÁ.*²»Áé ´¥Ãþ Îó´¥Åö »¬¶¯ÆÁÄ» »®¶¯ÆÁÄ» ´¥ÆÁ ÆÁÄ»Ê§Áé ¼ü²»ÁéÃô ÆÁÄ»´¥¿Ø ÆÁÄ».*²»ÊÜ¿ØÖÆ ÆÁÄ».*Ê§Ð§ 
-ÆÁÄ».*Ê§Áé ÆÁÄ»ÂÒÌø ¿¨ÆÁ ÆÁ.*»¬²»×ß ÆÁÄ».*Âý °´¼ü.*Ã»ÓÃ ÆÁÄ».*(°´|µã).²»ÁË (ÆÁÄ»|´¥ÆÁ).*ÁéÃô.*(µÍ|²»));
-my @KeywordsTouchPanelExcl = qw(Ôö¼Ó.*´¥ÆÁ.*Õð¶¯ Ôö¼Ó.*´¥Ãþ ÄÜ´¥Ãþ ËøÆÁ.*Ã»·´Ó¦);
+my @KeywordsTouchPanel = qw(´¥ÆÁ »®ÆÁÄ» ÆÁÄ».*Ã».*·´Ó¦ ÆÁ.*(Ã»|²»).*·´Ó¦ ¶¨ÆÁ  ÆÁÄ».*²».*Áé ´¥ÆÁ.*(²»|ÎÞ·¨)Áé ´¥ÆÁ.*²»Áé ´¥Ãþ Îó´¥Åö »¬¶¯ÆÁÄ» »®¶¯ÆÁÄ» ´¥ÆÁ ÆÁÄ»Ê§Áé ¼ü²»ÁéÃô ÆÁÄ»´¥¿Ø ÆÁÄ».*²»ÊÜ¿ØÖÆ ÆÁÄ».*Ê§Ð§ 
+ÆÁÄ».*Ê§Áé ÆÁÄ»ÂÒÌø ÆÁ.*»¬²»×ß ÆÁÄ».*Âý ÆÁÄ».*(°´|µã).²»ÁË (ÆÁÄ»|´¥ÆÁ).*ÁéÃô.*(µÍ|²»));
+my @KeywordsTouchPanelExcl = qw(Ôö¼Ó.*´¥ÆÁ.*Õð¶¯ Ôö¼Ó.*´¥Ãþ ÄÜ´¥Ãþ ËøÆÁ.*Ã»·´Ó¦ ÌÌ.*´¥Ãþ °´¼ü.*(Ã»ÓÃ|²»Áé));
 #----------×ÀÃæ-----------------------
 my @KeywordsLauncher = qw(×ÀÃæÆÁÄ».{0,18}ÌõÎÆ°ß êÇ³Æ ±ÚÖ½ ¿ª»ú.{0,16}Í·Ïñ ¿ª»ú.{0,16}êÇ³Æ •rég×ÀÃæ Ê±¼ä×ÀÃæ Ê±¹âÖá 3D±ÚÖ½ (Ã»|²»|ÎÞ·¨).*×Ô¶¯.*×ÀÃæ±ÚÖ½ (»».*²»|²».*»»).*±ÚÖ½ ±ÚÖ½¿â (ÎÞ|Ã»)±ÚÖ½ 
 ºáÆÁ±ÚÖ½ ´ý»úÊ±¼ä ³¡¾°Ä£Ê½ ×ÀÃæ launcher Ê±¼äÖá timeline ±ÚÖ½.*²»ÄÜ»» ¶¯Ì¬±ÚÖ½);
 my @KeywordsLauncherExcl = qw(¿ì½Ý·½Ê½ ³¡¾°×ÀÃæ ¹Ò¼þ ×îºÃ ÄÜ²»ÄÜ Ï£Íû ¸Ä½ø Ç¿ÁÒÒªÇó ¶àÀ´µã ³ö¶àµã ¿É²»¿ÉÒÔ ÈËÐÔ»¯Ò»Ð© ¹òÇó ÄÜ·ñÔö¼Ó ´ý»úÊ±¼ä.*(¶Ì|³¤));
 #---------ºÚÆÁ------------------------
 my @KeywordsblackScreen = qw(ºÚÆÁ ÆÁÄ».*ºÚ ºÚÆÁ ÆÁºÚ ÆÁÄ».*±äºÚ ºÚÆµ ºÚÆ½);
-my @KeywordsblackScreenExcl = qw(ºÚÆÁµÄÇé¿öÏÂ Ïà»ú.*ºÚÆÁ);
+my @KeywordsblackScreenExcl = qw(ºÚÆÁµÄÇé¿öÏÂ Ïà»ú.*ºÚÆÁ É¨Ò»É¨.*ºÚÆÁ);
 #--------¸üÐÂÊ§°Ü-------------------------
 my @KeywordsupGrade = qw(Éý¼¶Ê§°Ü Éý¼¶ÔÚÄÄ.{0,18}Éý Ã»·¨Éý¼¶ ÎÞ·¨¸üÐÂ ÎÞ·¨¸üÐÂÏµÍ³ ²»ÄÜ¸üÐÂ×îÐÂ°æ±¾ ¸üÐÂÁË°æ±¾ root.*²».*¸üÐÂ ¸üÐÐÏµÍ³.{0,5}Ê§°Ü ÏµÍ³.*¸üÐÂ.{0,5}²»(ÁË|³É¹¦|ÐÐ) •N¼¶.{0,5}²»(ÁË|³É¹¦|ÐÐ) 
 ÊÖ»ú.{0,5}¸üÐÂ.{0,5}²»(ÁË|³É¹¦|ÐÐ) ÏµÍ³.{0,5}(ÎÞ·¨|²»).{0,5}¸üÐÂ °æ±¾.{0,5}(¸üÐÂ.{0,5}²»(ÁË|³É¹¦|ÐÐ)|²».{0,5}¸üÐÂ) root.{0,5}²».{0,5}¸üÐÂ ¸üÐÐÏµÍ³.{0,5}Ê§°Ü ÏµÍ³.{0,5}¸üÐÂ.{0,5}²»(ÁË|³É¹¦|ÐÐ) 
@@ -148,8 +147,8 @@ my @KeywordsupGrade = qw(Éý¼¶Ê§°Ü Éý¼¶ÔÚÄÄ.{0,18}Éý Ã»·¨Éý¼¶ ÎÞ·¨¸üÐÂ ÎÞ·¨¸üÐÂÏµ
 my @KeywordsupGradeExcl = qw(ÄÜ²»ÄÜ ÍûËÙÉý¼¶ ¸üÐÂÌØÊ§Íû Ô½¸üÐÂÔ½ÀÃ ¸üÐÂÁËÏµÍ³ Éý¼¶Ô½²î¾¢ ¸üÐÂ×îÐÂ.*ÏµÍ³ ºÃ.*ºÜ¶à ¸üÐÂÉý¼¶ºó (Éý¼¶|¸üÐÂ).*ºó ÉýÍê¼¶ Éý¼¶Íê ÏµÍ³.*¸üÐÂ.*(ºó|Íê) ¸üÐÂ.*ÏµÍ³.*(ºó|Íê) 
 °æ±¾¸üÐÂºó  ½âÂë²å¼þÉý¼¶Ê§°Ü Ô½Éý¼¶Ô½²»ºÃ Ê²Ã´Ê±ºòÉý¼¶ »¹²»Éý¼¶ ÎªÊ²Ã´²».*¸üÐÂ);
 #----------¸üÐÂºó-----------------------
-my @KeywordsupGradeAfter = qw(Éý¼¶ºó³öÏÖÎÊÌâ ¸üÐÂÌØÊ§Íû Ô½¸üÐÂÔ½ÀÃ ¸üÐÂÁË.*ÏµÍ³ °æ±¾.*¸üÐÂ.*ºó ¸üÐÂ×îÐÂ.*ÏµÍ³ Éý¼¶.*ºó ÉýÍê¼¶ Éý¼¶Íê ÏµÍ³.*¸üÐÂ.*(ºó|Íê|¹ý) ¸üÐÂ.*(ÏµÍ³|°æ±¾).*(ºó|Íê|¹ý) Éý¼¶Ô½²î¾¢ 
-ÏµÍ³.*Éý¼¶.*Ã»ÓÐ ¸üÐÂºó ÏµÍ³.*ÐÂ°æ.*ÎÊÌâ ¸üÐÂ.*(ºó|Íê|¹ý)  (Ô½Éý¼¶|¸üÐÂ|¸úÐÂ|¸ùÐÂ)Ô½²»ºÃ ÏµÍ³.*(Éý¼¶|¸üÐÂ).*½á¹û ¸üÐÂÁË.*»¹ÊÇ Ô½Éý¼¶.*(Ô½²»ºÃ|Ô½²î|Ô½¿¨) ÏµÍ³Éý¼¶ÁË ÐÂ°æÏµÍ³.*±ÀÀ£);
+my @KeywordsupGradeAfter = qw(Éý¼¶ºó³öÏÖÎÊÌâ ¸üÐÂÌØÊ§Íû Ô½¸üÐÂÔ½ÀÃ (¸üÐÂ|Éý¼¶)ÁË.*ÏµÍ³ °æ±¾.*¸üÐÂ.*ºó ¸üÐÂ×îÐÂ.*ÏµÍ³ Éý¼¶.*ºó ÉýÍê¼¶ Éý¼¶Íê ÏµÍ³.*¸üÐÂ.*(ºó|Íê|¹ý) ¸üÐÂ.*(ÏµÍ³|°æ±¾).*(ºó|Íê|¹ý|½á¹û) Éý¼¶Ô½²î¾¢ 
+ÏµÍ³.*Éý¼¶.*Ã»ÓÐ ¸üÐÂºó ÏµÍ³.*ÐÂ°æ.*ÎÊÌâ ¸üÐÂ.*(ºó|Íê|¹ý) (Ô½Éý¼¶|¸üÐÂ|¸úÐÂ|¸ùÐÂ)Ô½²»ºÃ ÏµÍ³.*(Éý¼¶|¸üÐÂ).*½á¹û ¸üÐÂÁË.*»¹ÊÇ Ô½Éý¼¶.*(Ô½²»ºÃ|Ô½²î|Ô½¿¨) ÏµÍ³Éý¼¶ÁË ÐÂ°æÏµÍ³.*±ÀÀ£ Éý¼¶µ½.{0,10});
 my @KeywordsupGradeAfterExcl = qw((¸üÐÂ.*ºó|Éý¼¶.*ºó|°æ±¾¸üÐÂ.*ºó|¸üÐÂÁËÏµÍ³|ÉýÍê¼¶|Éý¼¶Íê|¸üÐÂ.*ÏµÍ³.*(ºó|Íê)).*(»¹ÊÇÒ»Ñù|(.*Ã»ÓÃ)|ÒÀÈ»|²Å) Ó¦ÓÃÉÌµê.*¸üÐÂ ¸üÐÂ°üºó (Éý¼¶|¸üÐÂ).*ÌáÊ¾ Éý¼¶.*Ò²²»ÐÐ ÒÑ¾­.*×îÐÂ°æ±¾
 Ê²Ã´Ê±ºò(¸üÐÂ|Éý¼¶));
 #---------------------------------
@@ -166,22 +165,24 @@ my @KeywordsScene = qw(³¡¾°×À²¼ ³¡¾°×ÀÃæ ÐéÄâ×ÀÃæ x¿Õ¼ä ³¡¾°Ä£Ê½ ÊÖ»ú³¡¾° ³¡¾°³¡
 my @KeywordsSceneExcl = qw(ÈçºÎ ÔõÑù);
 #---------------------------------
 my @KeywordsWidget = qw(Ð¡¹Ò¼þ ¹Ò¼þ widget);
-my @KeywordsWidgetExcl = qw();
+my @KeywordsWidgetExcl = qw(Ê±¼ä¹Ò¼þ);
 #------------Ïà»ú---------------------
 my @KeywordsCamera = qw(Ïà»ú ÃÀ×± ¿ìÃÅ¼ü Ïà™C Ë®Ó¡ Ôïµã ÕÕÏñ ÅÄÊÓÆµ ÉÁ¹âµÆ.*(Ê§Ð§|´ò²»¿ª) ×¨ÒµÄ£Ê½ È«¾°ÕÕÆ¬ ÕÕÆ¬ ÏñËØ ÏñÊý ÅÄÉã È«ÆÁ.*ÅÄ ÅÄÕÕ Ïà»ú ÕÕÏà Â¼Ïñ ÉãÏñ ÉãÓ° ÅÄ.*ÕÕ ×ÔÅÄ ¶Ô½¹ ±³¾°Ðé»¯ Ã¤ÅÄ ÃÀÑÕ ¹âÑ§·À¶¶ 
-ÕÕÆ¬.*ÐéÓ° Ò¹¾°Ä£Ê½ ¼«ËÙÃ¦ÅÄ ¼«ËÙÃ¤ÅÄ Ôëµã ÊÓÆµÂ¼Ïñ ×Ô¶¯Á¬ÅÄ ¾Û½¹);
-my @KeywordsCameraExcl = qw(ÕÕÆ¬ÉÏ´« ÕÕÆ¬ÏÂÔØ ½éÉÜ.*ÅÄÕÕ 360Ïà»ú ÃÀÑÕÏà»ú ÃÀÈËÏà»ú ×ÔÅÄ¸Ë ÕÕÆ¬(²»ÄÜ|ÎÞ·¨)ÏÔÊ¾ ÔõÑù ÈçºÎ Î¢ÐÅ.*×ÔÅÄ  (ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ).*»Ö¸´ »Ö¸´.*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ) (¿´|ÏÔÊ¾).*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ) ÊÓÆµ.*²¥·Å);
+ÕÕÆ¬.*ÐéÓ° Ò¹¾°Ä£Ê½ ¼«ËÙÃ¦ÅÄ ¼«ËÙÃ¤ÅÄ Ôëµã ÊÓÆµÂ¼Ïñ ×Ô¶¯Á¬ÅÄ ¾Û½¹ É¨Ò»É¨);
+my @KeywordsCameraExcl = qw(ÕÕÆ¬ÉÏ´« ÕÕÆ¬ÏÂÔØ ½éÉÜ.*ÅÄÕÕ 360Ïà»ú ÃÀÑÕÏà»ú ÃÀÈËÏà»ú ×ÔÅÄ¸Ë ×ÔÅÄÉñÆ÷ ÕÕÆ¬(²»ÄÜ|ÎÞ·¨)ÏÔÊ¾ ÔõÑù ÈçºÎ Î¢ÐÅ.*×ÔÅÄ (ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ).*(»Ö¸´|²»¼û) »Ö¸´.*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ) (¿´|ÏÔÊ¾).*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ) 
+ÊÓÆµ.*²¥·Å Ïà²á.*ÕÕÆ¬ ÊÖ»úÕÕÆ¬);
 #--------Í¨»°-------------------------
-my @KeywordsPhone = qw(Í¨»° ºÅÂë¹éÊôµØ ²¦ºÅ µç»°½çÃæ µç»°Ïì µç»°.{0,12}´ò²»½ø µç»°.{0,12}½ÓÍ¨ ºÅÂë¹éÊôµØ.*²».*Ê¶±ð Ò»¼ü°ÎºÅ ÊÓÆµÍ¨»° ÊÓÆµÍ¬»° (À´.*µç|À´.*µç).*±¨ºÅ ÓïÒô½ÓÌý ÊÓÆµÁÄÌì Í¨»° ´òµç»°|½²µç»° ºô½Ð ½ÓëŠÔ’ ´òëŠÔ’ À´µç»° ÃâÌá ´ò.*µç»° ½Ó.*µç»° À´µç µç»°.*´ò.*³öÈ¥ À´µç È¥µç ÊÓÆµÓïÒô ¹Òµç»° µç»°.*Òì³£ µç»î µç»°´ò½øÀ´ µç»°.*²¦.*³öÈ¥);
-my @KeywordsPhoneExcl = qw(À´µçÍ¨ ³öÀ´µçÁ¿ °¢ÀïÍ¨ Î¢»° À´µç»°ÉÁ¹âµÆ Í¨»°.*Ã».*ÎÊÌâ À´µçÐã ½øÈ¥µç Í¨»°½çÃæ ´ò.*µç»°.*À¹½Ø À´µçÌáÐÑ.*Ôõ.*¹Ø±Õ ´òµç»°.*ÊÛºó À´µç±³¾°.*ÄÑ¿´ À´µç±³¾°.*³ó ³öÈ¥µçÑ¹ 
-À´µçÉÁ¹â À´µç²¥±¨ÓïÒôÔÚÄÄ ±³¾°Ä¬ÈÏ.*´òµç»°.*±³¾° ¾Í´òµç»° ÔõÑù ÈçºÎ µçÌ¨ À´µç.*ÁåÉù ÖÇÄÜ½ÓÌý ÓïÒô½ÓÌý Í¨»°¼ÇÂ¼ À´µçºó.*ÉÁË¸ À´µç.*ÉùÒô µç»°.*Ìý(¼û|²»¼û) µç»°½çÃæ ÊÖÊÆ²¦ºÅ);
+my @KeywordsPhone = qw(Í¨»° ºÅÂë¹éÊôµØ ²¦ºÅ µç»°½çÃæ µç»°Ïì µç»°.{0,12}´ò²»½ø µç»°.{0,12}½ÓÍ¨ ºÅÂë¹éÊôµØ.*²».*Ê¶±ð Ò»¼ü°ÎºÅ ÊÓÆµÍ¨»° ÊÓÆµÍ¬»° (À´.*µç|À´.*µç).*±¨ºÅ ÓïÒô½ÓÌý ÊÓÆµÁÄÌì Í¨»° ´òµç»°|½²µç»° ºô½Ð 
+½ÓëŠÔ’ ´òëŠÔ’ À´µç»° ÃâÌá ´ò.*µç»° ½Ó.*µç»° À´µç µç»°.*´ò.*³öÈ¥ À´µç È¥µç ÊÓÆµÓïÒô ¹Òµç»° µç»°.*Òì³£ µç»î µç»°´ò½øÀ´ µç»°.*(²¦|´ò).*³öÈ¥ ´ò²»³ö.*µç»°);
+my @KeywordsPhoneExcl = qw(À´µçÍ¨ ³öÀ´µçÁ¿ °¢ÀïÍ¨ Î¢»° À´µç»°ÉÁ¹âµÆ Í¨»°.*Ã».*ÎÊÌâ À´µçÐã ½øÈ¥µç Í¨»°½çÃæ ´ò.*µç»°.*À¹½Ø À´µçÌáÐÑ.*Ôõ.*¹Ø±Õ ´òµç»°.*ÊÛºó À´µç±³¾°.*ÄÑ¿´ À´µç±³¾°.*³ó ³öÈ¥µçÑ¹ QQÊÓÆµÍ¨»°
+À´µçÉÁ¹â À´µç²¥±¨ÓïÒôÔÚÄÄ ±³¾°Ä¬ÈÏ.*´òµç»°.*±³¾° ¾Í´òµç»° ÔõÑù ÈçºÎ µçÌ¨ À´µç.*(ÁåÉù|ÉÁ¹âµÆ) ÖÇÄÜ½ÓÌý ÓïÒô½ÓÌý Í¨»°¼ÇÂ¼ À´µçºó.*ÉÁË¸ À´µç.*ÉùÒô µç»°.*Ìý(¼û|²»¼û) µç»°½çÃæ ÊÖÊÆ²¦ºÅ À¹½Ø.*À´µç ²¦ºÅ½çÃæ ¿Í·þ.*µç»°);
 #---------------------------------
-my @KeywordsANR = qw(ÎÞÏìÓ¦ ÎÞ·´Ó¦ ÎÞÏìÓ¦ Ã»·´Ó³);
-my @KeywordsANRExcl = qw();
+my @KeywordsANR = qw(ÎÞÏìÓ¦ ÎÞ·´Ó¦ ÎÞÏìÓ¦ Ã»·´Ó³ Ã»ÓÐÏìÓ¦ Î´ÏìÓ¦);
+my @KeywordsANRExcl = qw(ÆÁ.*(ÎÞ·´Ó¦|²»·´Ó¦));
 #-----------Í£Ö¹ÔËÐÐ----------------------
 my @KeywordsStopRunning = qw(Í£Ö¹ÔËÐÐ ±»Í£ÓÃ Æµ·±Í£Ö¹ Í»È».*Í£Ö¹ ÀÏÊÇÍ£Ö¹ ÒÑÍ£ÓÃ ´ò¿ª¾ÍÍ£Ö¹ ÍË³öÔËÐÐ ·´µ¯³öÈ¥ ÌáÊ¾.*ÒÑÍ£Ö¹ ÔËÐÐÍ£Ö¹ Í£Ö¹ß\ÐÐ Í£Ö¹ÔËÓÃ Í£ÐÐ ×Ô¼º¹Ø±Õ ±Àµô Í£Ö¹ÔË Í£Ö¹¹¤×÷ Ç¿ÖÆÍ£Ö¹ 
-Í£Ö¹Ó¦ÐÐ ÎªÊ²Ã´Í£Ö¹ Ò».*¾Í.*¹Ø Í£Ö¹Ê¹ÓÃ ÎÞÔµ¹Ê½áÊø Ö±¶¯¹ØÁË ×Ô¶¯ÍÆ³ö Í»È»Í£Ö¹ Í¤Ö¹ÔËÐÐ ÒâÍâÍ£Ö¹ ×ÔÐÐÍË³ö Í£ÔË ¸æËßvivo ÖÕÖ¹ ±ÀÀ£ LOG LOG.*syste ÖÐÖ¹ ×Ô¶¯¹Ø±Õ Èí¼þ.*Ç¿ÐÐ¹Ø±Õ sog.*system Í£Ö¹ÔËÐÐ 
-Í£Ö¹ÍË³ö ×Ô¶¯Ç¿ÍË Ç¿ÖÆ¹Ø±Õ Òì³£ÍË³ö Ö±½ÓÍË³ö Ç¿ÐÐ¹Ø±Õ Ç¿ÐÐÍ£Ö¹.*ÔËÐÐ
+Í£Ö¹Ó¦ÐÐ ÎªÊ²Ã´Í£Ö¹ Ò».*¾Í.*¹Ø Í£Ö¹Ê¹ÓÃ ÎÞÔµ¹Ê½áÊø Ö±¶¯¹ØÁË ×Ô¶¯ÍÆ³ö Í»È»Í£Ö¹ Í¤Ö¹ÔËÐÐ ÒâÍâÍ£Ö¹ ×ÔÐÐÍË³ö Í£ÔË ¸æËßvivo ÖÕÖ¹ ±ÀÀ£ LOG LOG.*syste ÖÐÖ¹ ×Ô¶¯¹Ø±Õ Èí¼þ.*Ç¿ÐÐ¹Ø±Õ sog.*system Í£Ö¹ÔËÐÐ Ó¦ÓÃÒÑÍ£Ö¹
+Í£Ö¹ÍË³ö ×Ô¶¯Ç¿ÍË Ç¿ÖÆ¹Ø±Õ Òì³£ÍË³ö Ö±½ÓÍË³ö Ç¿ÐÐ¹Ø±Õ Ç¿ÐÐÍ£Ö¹.*ÔËÐÐ Ó¦ÓÃ.*È«²¿ÍË³ö
 ÎÞ¹ÊÍË³ö ×Ô¼ºÍË³ö ×Ô¶¯¹Ø±Õ ×Ô¶¯ÍË³ö Èí¼þ.*Í£Ö¹);
 my @KeywordsStopRunningExcl = qw(ÔÝÍ£¹¦ÄÜ ±ÀÀ£°¡ ×Ô¶¯¹Ø±ÕbbeÒôÐ§);
 #------------ÉÁÍË---------------------
@@ -190,22 +191,23 @@ my @KeywordsExceptionQuitExcl = qw(ÒªÍË³ö ÍæÍêÍË³ö È»ºóÍË³ö);
 #----------¼æÈÝ-----------------------
 my @KeywordsCompatible = qw(¼æÈÝ Èí¼þ(²»|ÎÞ·¨)ÄÜÓÃ);
 my @KeywordsCompatibleExcl = qw();
-#---------------------------------
+#----------iÒôÀÖ-----------------------
 my @KeywordsiMusic = qw(iÒôÀÖ ¸èÇú.{0,18}(ÇÐ¸è|ÔÝÍ£) ÒôÀÖ²¥·ÅÆ÷ ÇÐ¸è.*²¥·Å ÏÂÔØ.*¸èÇú ÒôÀÖ ¸èÇú.*²¥·Å Ìý¸è ÒôÀÖ²¥·ÅÆ÷ ¸èÇú.*¸è´Ê Imusic);
 my @KeywordsiMusicExcl = qw(ËøÆÁ.*ÒôÀÖ.*ÌìÆø.*¹Ò¼þ ËøÆÁ.*¶¯Ì¬ÌìÆø.*Í¼°¸ ËøÆÁ.*ÌìÆø.*ÒôÀÖ.*¹Ò¼þ ËøÆÁ.*ÒôÀÖ.*ÌìÆø.*½çÃæ ËøÆÁ.*¶¯Ì¬ÌìÆø.*Í¼°¸ ËøÆÁ.*ÌìÆø.*ÒôÀÖ.*½çÃæ ÒôÀÖ¹Ø ÒôÀÖ.*¸üÐÂ ÒôÀÖ.*¸ü·á¸» ÒôÀÖÎÄ¼þ¼Ð ÖÆ×÷ÒôÀÖ ¿á¹· ¿á¹·ÒôÀÖ ÌìÌì¶¯Ìý ÌìÌì¾²Ìý QQÒôÀÖ ¿áÎÒÒôÀÖ °Ù¶ÈÒôÀÖ
-¶àÃ×ÒôÀÖ Ç§Ç§¾²Ìý ÏºÃ×ÒôÀÖ ÒôÀÖÐÅÏ¢ ÒôÀÖÍ¼Æ¬ imic googleÒôÀÖ²¥·ÅÆ÷ 
-ÒôÀÖÊÖ»ú ÒôÀÖ.*»¹ÔÚ ¶ú»ú ÏÔÊ¾.*ÒôÀÖ ÊÖ»ú.*ÁåÉù);
+¶àÃ×ÒôÀÖ Ç§Ç§¾²Ìý ÏºÃ×ÒôÀÖ ÒôÀÖÐÅÏ¢ ÒôÀÖÍ¼Æ¬ imic googleÒôÀÖ²¥·ÅÆ÷ Ìý¸èµÄÉè±¸ µç.*Ìý¸è Í¨Öª.*ÒôÀÖ
+ÒôÀÖÊÖ»ú ÒôÀÖ.*»¹ÔÚ ¶ú»ú ÏÔÊ¾.*ÒôÀÖ ÊÖ»ú.*ÁåÉù ÒôÀÖ(Æ¤·ô|Ö÷Ìâ));
 #---¿´ÊÓÆµ------------------------------
-my @KeywordsiVideo = qw(iÊÓÆµ ×Ô´ø.{0,12}²¥·ÅÆ÷.{0,12}(²¥|·Å).{0,12}MV µçÓ° ÊÓÆµ ÊÓÆÁ ¿½±´ÊÓÆµ 720p.*mkv.*ÏµÍ³²¥·ÅÆ÷ ¿´.*µçÊÓ ÌÚÑ¶ÊÓÆµ °Ù¶ÈÊÓÆµ ËÑºüÊÓÆµ PPS °®ÆæÒÕ ±©·çÓ°Òô Ñ¸À× Ñ¸À×¿´¿´);
+my @KeywordsiVideo = qw(iÊÓÆµ ×Ô´ø.{0,12}²¥·ÅÆ÷.{0,12}(²¥|·Å).{0,12}MV µçÓ° ÊÓÆµ ÊÓÆÁ ¿½±´ÊÓÆµ 720p.*mkv.*ÏµÍ³²¥·ÅÆ÷ ¿´.*µçÊÓ ÌÚÑ¶ÊÓÆµ °Ù¶ÈÊÓÆµ ËÑºüÊÓÆµ PPS °®ÆæÒÕ ±©·çÓ°Òô Ñ¸À× Ñ¸À×¿´¿´ ²¥·ÅÆ÷ ÊÓÆµ²¥·Å);
 my @KeywordsiVideoExcl = qw((ÅÄ|Â¼).*ÊÓÆµ ÏÂ.*ÊÓÆÁ ÏÂ.*ÊÓÆµ ´«ÊÓÆµ ±à¼­ÊÓÆÁ ³¬ÇåÓ°Ôº ÊÓÆµµç»°  ÉÏÍø.*ÊÓÆµ ÊÓÆµÓïÒô ¿ªÑ¶ÊÓÆµ ÊÓÆµÅÄÉã
-ÊÓÆµÁÄÌì ÊÓÆµÍ¨»° ½ÓÊÓÆµ Â¼ÊÓÆµ ºÏ³ÉÊÓÆµ (photo+).*ÊÓÆµ ÏÂÔØ(ÊÓÆµ|µçÓ°|µçÊÓ|µçÊÓ¾ç) ÌÚÑ¶ qq ÊÓÆµ¸è 720ÊÓÆµ (½ÓÊÕ|ÊÕ)ÊÓÆµ (Î¢ÐÅ|ÅóÓÑÈ¦).*ÊÓÆµ (ÔÆÅÌ|ÔÆ·þÎñ).*ÊÓÆµ ½ØÍ¼ÊÓÆµ ÖÆ×÷.*ÊÓÆµ);
+ÊÓÆµÁÄÌì ÊÓÆµÍ¨»° ½ÓÊÓÆµ Â¼ÊÓÆµ ºÏ³ÉÊÓÆµ (photo+).*ÊÓÆµ ÏÂÔØ(ÊÓÆµ|µçÓ°|µçÊÓ|µçÊÓ¾ç) ÌÚÑ¶ qq ÊÓÆµ¸è 720ÊÓÆµ (½ÓÊÕ|ÊÕ)ÊÓÆµ (Î¢ÐÅ|ÅóÓÑÈ¦).*ÊÓÆµ (ÔÆÅÌ|ÔÆ·þÎñ).*ÊÓÆµ ½ØÍ¼ÊÓÆµ ÖÆ×÷.*ÊÓÆµ ÊÓÆµ.*²»(ÔÚ|¼û)ÁË ¼ÓÃÜ.*ÊÓÆµ);
 #---------ÒôÆµ------------------------
 my @KeywordsAudio = qw(ÉùÒô ÒôÆµ Ë«Âó½µÔë Ë«ÂóÏûÔë ¾²ÒôÄ£Ê½ ±©Òô ÌýÍ² ºÃÐ¡Éù Íâ·ÅÒô ¶ú»ú µç²¨Éù À®°È Â ²».*Â•Òô Â•Òô srs À¶ÑÀ.*ÉùÒô »ØÒô ¶ú»ú.*·¢Éù ÓïÒô.*ÎÊÌâ ÑïÉùÆ÷ ÁåÉù½¥Ç¿ ·¢.*ÓïÒô ÆÆÉù µçÁ÷Éù Ã»ÓÐÉùÒô ±¬Òô Ìý²»Çå Ã»Éù ÒôÁ¿µ× ÎÞÉù ÎÞÒô ÉùÐ¡ Éù´ó ¿¨Òô ÔÓÒô ÆÆÒô µ×Ôï µ×Ôë ÔëÒô ÔèÒô ÔïÒô ÉùÒô²»ÇåÎú ÒôÖÊ Ìý²»Çå³þ ´Ì¶ú Ã»ÓÐÉùÒô Ê±Ð¡Ê±´ó Ã»ÉùÒô ÉùÒô.*Ð¡ ÉùÒô.*´ó Í¨»°Òô 
-ÁåÒô ÒôÁ¿ ÍâÒô Ìý¼ò À®°ÈÒôÔÓ ÒôÏì Ìý²»¼û ÃâÌá.*²ÅÄÜÌý¼û Ìý²»µ½ÉùÒô);
-my @KeywordsAudioExcl = qw(ÒôÁ¿¼ü Ñ¡ÔñÒôÖÊ ÒôÁ¿¼Ó¼õ¼ü ¶ú»ú.*»µ ÓÃ¶ú»ú ÉùÒô¼ü (Î¢ÐÅ|qq).*ÓïÒô °Î³ö¶ú»ú ÒôÀÖ²¥·ÅÆ÷);
+ÁåÒô ÒôÁ¿ ÍâÒô Ìý¼ò À®°ÈÒôÔÓ ÒôÏì Ìý²»¼û ÃâÌá.*²ÅÄÜÌý¼û Ìý²»µ½ÉùÒô Ö»ÓÐ(×ó|ÓÒ)±ß.*Òô Ã»ÓÐ.*ÁåÉù);
+my @KeywordsAudioExcl = qw(ÒôÁ¿¼ü Ñ¡ÔñÒôÖÊ ÒôÁ¿¼Ó¼õ¼ü ¶ú»ú.*»µ ÓÃ¶ú»ú ÉùÒô¼ü (Î¢ÐÅ|qq).*ÓïÒô °Î³ö¶ú»ú ÒôÀÖ²¥·ÅÆ÷ ÉèÖÃ.{0.10}ÉùÒô ÓïÒôÖúÊÖ À¶ÑÀ¶ú»ú ¶ú»ú²å²»½ø);
 #----------¹Ü¼Ò-----------------------
-my @KeywordsiGuard = qw(Ëø.{0,18}Èí¼þ ÇåÀí.{0,18}Èí¼þ Èí¼þ.{0,18}ÇåÀí i¹Ü¼Ò (µ¯|³öÏÖ).*¹ã¸æ Íø¹º±£»¤ ÏµÍ³.*»º´æ.*É¾ À¹½Ø.*ºÅÂë Ê¡µãÄ£Ê½ Ê¡µçÄ£Ê½ Ò»¼üÇåÀí Ò»¼ü¼ÓËÙ °×Ãûµ¥ ¼ÓËÙºÚÃûµ¥ ³¬¼¶Ê¡µã ×Ô´ø.*¹Ü¼Ò ¹Ü¼Ò ³¬¼¶Ê¡µç);
-my @KeywordsiGuardExcl = qw(ÌÚÑ¶.*¹Ü¼Ò 360.*¹Ü¼Ò °Ù¶È.*¹Ü¼Ò ±ðËµÓÃ.*¹Ü¼Ò ÔõÑù ÈçºÎ ±ðµÄ.*ÇåÀí);
+my @KeywordsiGuard = qw(Ëø.{0,18}Èí¼þ ÇåÀí.{0,18}Èí¼þ Èí¼þ.{0,18}ÇåÀí i¹Ü¼Ò (µ¯|³öÏÖ).*¹ã¸æ Íø¹º±£»¤ ÏµÍ³.*»º´æ.*É¾ À¹½Ø.*ºÅÂë Ê¡µãÄ£Ê½ Ê¡µçÄ£Ê½ Ò»¼üÇåÀí Ò»¼ü¼ÓËÙ °×Ãûµ¥ ¼ÓËÙºÚÃûµ¥ ³¬¼¶Ê¡µã ×Ô´ø.*¹Ü¼Ò ¹Ü¼Ò 
+³¬¼¶Ê¡µç À¹½Ø);
+my @KeywordsiGuardExcl = qw(ÌÚÑ¶.*¹Ü¼Ò 360.*¹Ü¼Ò °Ù¶È.*¹Ü¼Ò ±ðËµÓÃ.*¹Ü¼Ò ÔõÑù ÈçºÎ ±ðµÄ.*ÇåÀí ËøÆÁ.*Èí¼þ Ö»ÄÜ.*Ò»¼ü¼ÓËÙ);
 #---------------------------------
 my @KeywordsBrowser = qw(ä¯ÀÀÆ÷ Á÷ÀÀÆ÷ ÓÎÀÀÆ÷);
 my @KeywordsBrowserExcl = qw(QQä¯ÀÀÆ÷ °Ù¶Èä¯ÀÀÆ÷ UCä¯ÀÀÆ÷ ÁÔ±ªä¯ÀÀÆ÷ esÎÄ¼þä¯ÀÀÆ÷ µÚÈý·½ä¯ÀÀÆ÷);
@@ -215,25 +217,25 @@ my @KeywordsAppStoreExcl = qw();
 #-----------×´Ì¬À¸----------------------
 my @KeywordsStatusBar = qw(ÏÔÊ¾.{0,18}ÔËÓªÉÌ ×´Ì¬À¸ ÆÁÄ».{0,18}×Ô¶¯Ðý×ª ëŠÁ¿°Ù·Ö±È ÏÂ¶¥À¸ ÉÏÀ­À¸ ÉÏ»®¿ØÖÆÀ¸ ÉÏÀ­À¸ ÉÏ»®²Ëµ¥ ÏÂ»¬²Ëµ¥ ÊúÆÁ¿ØÖÆ µçÁ¿ÊýÏÔ ¶¥À¸Í¼±ê ÏÂÀ­ ÏÂÀ­²Ëµ¥ ÏÂÀ­À¸ ¿ì½Ý(¼ü|½¨|½¡) Á÷Á¿ÏÔÊ¾ ¿ì½ÝÀ¸ 
 ÆÁÄ»Ðý×ª È¡ÏûºáÆÁ  ÖØÁ¦¸ÐÓ¦ ÉèÖÃºáÆÁ ¹Ø±ÕºáÆÁ ÇÐ»»ºáÆÁ ºáÊúÇÐ»» ÒÆ¶¯Ðý×ª ×ªÆÁ ¹Ø±ÕÆÁÄ»Ðý×ª ¹ØµôºáÆÁ ×Ô¶¯Ðý×ªÆÁÄ»  ÊúÆÁ.*Ëø¶¨ µçÁ¿.*°Ù·Ö±È|µçÁ¿.*°Ù·Ö°Ù|°Ù·ÖÊý.*ÏÔÊ¾|°Ù·Ö±È.*µçÁ¿|µç³Ø.*°Ù·Ö±È|µçÔ´°Ù·Ö±È ÊúÆÁ.*ÎÞÐ§ ¿ì½Ý·½Ê½ 
-ÏÂÀ­ÐüÍ£ ×Ô¶¯.*ºáÆÁ ×´Ì¬À¸ Í¨ÖªÀ¸ Í¨ÖªÀ¹ ºáÆÁÉÏ.*À­ ÈÎÎñÀ¸ ºáÆÁÏÂ.*À­ ÉÏÀ­²Ëµ¥ ÉÏ»®ÆðÀ´ µ×À¸ ÌáÊ¾À¸ Á÷Á¿¿ª¹Ø ¿ª¹ØÁ÷Á¿ Êý¾Ý¿ª¹Ø »».*(Êú|ºá).*ÆÁ ¿ì½Ý¹¦ÄÜ ÏÂÀ­ÏÔÊ¾ ÉÏ.*Í¼±ê ÏÂ»¬½çÃæ ÏûÏ¢ÌáÐÑ ÌáÊ¾.*¸üÐÂ (×óÉÏ|ÉÏ).*(·ûºÅ|Í¼±ê|±êÖ¾|ÏÔÊ¾)
-¸üÐÂ.*ÌáÊ¾ ÉÏÀ­.*¿ì½Ý ÐÅºÅÏÔÊ¾);
-my @KeywordsStatusBarExcl = qw(Í¸Ã÷ °×É«);
+ÏÂÀ­ÐüÍ£ ×Ô¶¯.*ºáÆÁ ×´Ì¬À¸ Í¨ÖªÀ¸ Í¨ÖªÀ¹ ºáÆÁÉÏ.*À­ ÈÎÎñÀ¸ ºáÆÁÏÂ.*À­ ÉÏÀ­²Ëµ¥ ÉÏ»®ÆðÀ´ µ×À¸ ÌáÊ¾À¸ Á÷Á¿¿ª¹Ø ¿ª¹ØÁ÷Á¿ Êý¾Ý¿ª¹Ø »».*(Êú|ºá).*ÆÁ ¿ì½Ý¹¦ÄÜ ÏÂÀ­ÏÔÊ¾ ÉÏ.*Í¼±ê ÏÂ»¬½çÃæ ÆÁÄ»ÏÂ»¬ ÏûÏ¢ÌáÐÑ ÌáÊ¾.*¸üÐÂ (×óÉÏ|ÉÏ).*(·ûºÅ|Í¼±ê|±êÖ¾|ÏÔÊ¾)
+¸üÐÂ.*ÌáÊ¾ ÉÏÀ­.*¿ì½Ý ÐÅºÅÏÔÊ¾ ÏÔÊ¾.*(ÐÅºÅ|µç³Ø|µçÁ¿) ÉÏ»¬(²Ëµ¥|¿ØÖÆÖÐÐÄ) ³Á½þÀ¸);
+my @KeywordsStatusBarExcl = qw(Í¸Ã÷ °×É« ÏÔÊ¾³ä²»ÁËµç);
 #---------------------------------
 my @KeywordsContact = qw(ÁªÏµÈË Í¨Ñ¶Â¼);
 my @KeywordsContactExcl = qw(ÉÏ´«.*ÁªÏµÈË Í¬²½.*ÁªÏµÈË ÁªÏµÈË.*±³¾°);
-#---------------------------------
+#---------¶ÌÐÅ------------------------
 my @KeywordsMMS = qw(¶ÌÐÅ ÒÑ¶Á Î´¶Á ÐÅÏ¢.*ÓïÒô²¥±¨ ¶ÌÐÅ ÖØ¸´ÊÕ ÐÅÏ¢Ðü¸¡´°  sim¿¨ÐÅÏ¢ ÐÅÏ¢Ó¦ÓÃ ¼ÓÃÜ¶ÌÐÅ ²ÊÐÅ ÐÅÏ¢.{0,12}Ë³Ðò.{0,12}ÂÒ);
 my @KeywordsMMSExcl = qw(Ê¹ÓÃÐÅÏ¢ (QQ)*.*Î¢ÐÅ.*ÐÅÏ¢ ÌìÆøÐÅÏ¢ Éè±¸ÐÅÏ¢ µç»°.*ÐÅÏ¢ ¶ÌÐÅ.*À¹½Ø ÐÅÏ¢µ¯´° ÐÅÏ¢Í£Ö¹ÔËÐÐ ÐÅÏ¢Á÷ ¶ÌÐÅ¼ÓÃÜ ÒôÀÖÐÅÏ¢ ¶ÌÐÅÉèÖÃ 
-Ï£Íû¶ÌÐÅ ¶ÌÐÅ½çÃæ ¶ÌÐÅÉÁ¹âµÆ ÓÅ»¯.*¶ÌÐÅ Èç¹û¶ÌÐÅ ÔÊÐí.*¶ÌÐÅ ¶ÌÐÅ¶¯»­ ¶ÌÐÅ.*°ô ¶ÌÐÅºô ¶ÌÐÅÍ¨Öª ¶ÌÐÅ.*×öÃÜÂë Í¬²½.*¶ÌÐÅ ¶ÌÐÅ(ÌáÊ¾|ÌáÐÑ));
+Ï£Íû¶ÌÐÅ ¶ÌÐÅ½çÃæ ¶ÌÐÅÉÁ¹âµÆ ÓÅ»¯.*¶ÌÐÅ Èç¹û¶ÌÐÅ ÔÊÐí.*¶ÌÐÅ ¶ÌÐÅ¶¯»­ ¶ÌÐÅ.*°ô ¶ÌÐÅºô ¶ÌÐÅÍ¨Öª ¶ÌÐÅ.*×öÃÜÂë Í¬²½.*¶ÌÐÅ ¶ÌÐÅ(ÌáÊ¾|ÌáÐÑ) À¹½Ø.*¶ÌÐÅ ¶ÌÐÅ(ÁåÉù|Æ¤·ô|Ö÷Ìâ));
 #---------------------------------
 my @KeywordsEmail = qw(µç×ÓÓÊ¼þ ÓÊ¼þ email µç×ÓÓÊÏä gmail ÓÊÏä);
-my @KeywordsEmailExcl = qw(QQÓÊÏä QQÓÊÏä ÍøÒ×ÓÊÏä ËÑºüÓÊÏä ÐÂÀËÓÊÏä);
-#---------------------------------
-my @KeywordsFileManager = qw(ÎÄ¼þ¹ÜÀí ´æ´¢Ä£Ê½);
+my @KeywordsEmailExcl = qw(QQÓÊÏä QQÓÊÏä ÍøÒ×ÓÊÏä ËÑºüÓÊÏä ÐÂÀËÓÊÏä ÊäÈëÓÊÏä);
+#-----------ÎÄ¼þ¹ÜÀí----------------------
+my @KeywordsFileManager = qw(ÎÄ¼þ¹ÜÀí ´æ´¢Ä£Ê½ (ÎÄ¼þ|¶«Î÷|ÒôÀÖ|ÊÓÆµ|µçÊÓ|µçÓ°).{0,12}(ÕÒ²»µ½|Ê§×Ù|ÏûÊ§|Ã»ÁË|²»¼ûÁË|¶ªÊ§) );
 my @KeywordsFileManagerExcl = qw();
-#---------------------------------
+#------------ÊäÈë·¨---------------------
 my @KeywordsIME = qw(´ò×Ö Îå±Ê ÊäÈë·¨ ÊäÈë.*ÎÊÌâ ¼üÅÌ ÎÄ×Ö.*ÊäÈë ´ò²»³ö×Ö ÊýÑ§·û.*(³ËºÅ|³ýºÅ));
-my @KeywordsIMEExcl = qw(ËÑ¹·ÊäÈë·¨ °Ù¶ÈÊäÈë·¨ µÚÈý·½ ¸ü»»Æ¤·ô ±ØÓ¦ÊäÈë·¨ Ñ¶·ÉÊäÈë·¨ ´ò×Ö.*¿¨);
+my @KeywordsIMEExcl = qw(ËÑ¹·ÊäÈë·¨ °Ù¶ÈÊäÈë·¨ µÚÈý·½ÊäÈë·¨ ¸ü»»Æ¤·ô ±ØÓ¦ÊäÈë·¨ Ñ¶·ÉÊäÈë·¨ ´ò×Ö.*¿¨);
 #---------------------------------
 my @KeywordsWeather = qw(ÌìÆøÔ¤±¨ ÌìÆø weather);
 my @KeywordsWeatherExcl = qw(ÌìÆø²å¼þ Ä«¼£ÌìÆø "ÌìÆø" ËøÆÁ.*ÒôÀÖ.*ÌìÆø.*¹Ò¼þ ËøÆÁ.*¶¯Ì¬ÌìÆø.*Í¼°¸ ËøÆÁ.*ÌìÆø.*ÒôÀÖ.*¹Ò¼þ ËøÆÁ.*ÒôÀÖ.*ÌìÆø.*½çÃæ ËøÆÁ.*¶¯Ì¬ÌìÆø.*Í¼°¸ ËøÆÁ.*ÌìÆø.*ÒôÀÖ.*½çÃæ (±ÚÖ½|ËøÆÁ)ÌìÆøÔ¤±¨);
@@ -248,24 +250,24 @@ my @KeywordsCinema = qw(³¬ÇåÓ°Ôº VIPµçÓ° ¸ßÇåÆ¬Ô´ VIP¿¨);
 my @KeywordsCinemaExcl = qw();
 #---------------------------------
 my @KeywordsEbook = qw(µç×ÓÊé µçÖ½Êé ëŠ×Ó•ø);
-my @KeywordsEbookExcl = qw(ÕÆÔÄµç×ÓÊé);
+my @KeywordsEbookExcl = qw(ÕÆÔÄµç×ÓÊé ÓïÊé);
 #----------ÍøÂç-----------------------
 my @KeywordsNetSignal = qw(ÍøÂçÐÅºÅ sim¿¨.{0,8}Ê¶±ð Ê¶±ð.{0,8}sim¿¨ ÍøÒ³.{0,18}´ò²»¿ª Íø.{0,18}µô Êý¾Ý.*Á¬.*²» Íø¿© sim¿¨²»¿ÉÓÃ|sim¿¨²»ÄÜÓÃ (ÎÞ|Ã»).*sim¿¨ ÐÅÌ–.{0,12}²î ÁªÍø ÐÅºÅ.*²î ÁªÍø.*¶Ï ²»ÁªÍø ÉÏÍø.*¶Ï 
 Êý¾ÝÁ÷Á¿.*Âý ÐÅºÅ²î GPR.*S ÉÏÍø›].*ÐÅÌ– ÍøÂç²»ÎÈ¶¨ Íø.*Á¬.*(²»|ÎÞ·¨)ÉÏ ÉÏÍø.*Âþ ¶ÎÍø ÐÅºÅ ÍøËÙ ¾WËÙ ¾W½j 2g 3g 4g Èýg µôÏß ÍøÂç Ã»ÓÐÍø ÒÆ¶¯ÍøÂç ¶ªÍø ¶ÏÏß CMCC µ¯Íø ÉÏ²»ÁËÍø Íæ²»ÉÏÍø ÉÏ.*Íø.*´ò²»¿ª ÏÂÔØ.*Âý 
 ÏÂ²Ã.*Âý ÍøÒ³´ò²»¿ª ²»ÄÜÁªÍø ½øÍø.*Âý Êý¾ÝÎÞÁª½Ó ÉÏÍø.*Âý ¶ÏÍø ÍøÒ³.*Âý (Áª|Á¬)²»ÉÏ(Íø|Ïß) Ã»ÓÐÑ¶ºÅ ¿¨ÔÚÏÂÔØ µôÍø ²».*ÉÏÍø ÉÏÍø.*²» ²».*ÉÏÍø ÏÂÔØ²»ÁË ´ò¿ªÍøÂç.*ÉèÖÃ Á¬²»ÁËÍø ·äÎÑÊý¾ÝÍø ÁªÍøÊ§°Ü ÍøÉÏÁ¬½Ó´íÎó 
-ÎÞ·¨Á¬½Ó·þÎñÆ÷ Á¬½Ó²»ÉÏ·þÎñÆ÷ (Êý¾Ý|Á÷Á¿).*¿ª²» ÒÆ¶¯Êý¾Ý.*Âý (Êý¾Ý|Á÷Á¿).*´ò²»¿ª (Êý¾Ý|Á÷Á¿).*´ò¿ª.*Ã»Íø (Êý¾Ý|Á÷Á¿).*ÓÃ²»ÁË ´ò²»¿ª.*Êý¾Ý  ´ò²»¿ª.*(ÍøÒ³|ÍøÖ·)  Ê¶±ð.{0,8}sim ÏÔÊ¾ÎÞ¿¨ Ã»ÐÅºÅ ²»ÄÜÁ¬Á÷Á¿ 
-(Êý¾ÝÍø|Âç).*(ÎÞÐ§|ÎÞ½¼) Á¬½Ó²»ÁË·þÎñÆ÷);
-my @KeywordsNetSignalExcl = qw(¹ÙÍø ÍøÂçÆ½Ì¨ Íø¹º±£»¤ ÍøÂç¸ñÊ½ wifi.*ÐÅºÅ 16G 32G 64G 2gÄÚ´æ 3GÄÚ´æ 4GÄÚ´æ ÄÚ´æ.*(4g|3g|2g)  ÍøÂç¿Æ¼¼ ÏÔÊ¾ÍøËÙ ÍøÂçÇÐ»» ÎÞÏßÁ¬½Ó Î¢ÐÅºÅ (ÍøÂç|ÐÅºÅ).(±êÖ¾|ÏÔÊ¾) ÍøÂç×ÖÌå °²×°.*sim¿¨
-²»ÊÇ.*(ÍøÂç|ÐÅºÅ).*ÎÊÌâ);
+ÎÞ·¨Á¬½Ó·þÎñÆ÷ Á¬½Ó²»ÉÏ·þÎñÆ÷ (Êý¾Ý|Á÷Á¿).*¿ª²» ÒÆ¶¯Êý¾Ý.*Âý (Êý¾Ý|Á÷Á¿).*´ò²»¿ª (Êý¾Ý|Á÷Á¿).*´ò¿ª.*Ã»Íø (Êý¾Ý|Á÷Á¿).*ÓÃ²»ÁË ´ò²»¿ª.*Êý¾Ý  ´ò²»¿ª.*(ÍøÒ³|ÍøÖ·)  Ê¶±ð.{0,8}sim ÏÔÊ¾ÎÞ¿¨ ²»ÏÔÊ¾sim¿¨ Ã»ÐÅºÅ ²»ÄÜÁ¬Á÷Á¿ 
+(Êý¾ÝÍø|Âç).*(ÎÞÐ§|ÎÞ½¼) Á¬½Ó²»ÁË·þÎñÆ÷ ¶Ï¿ªÍø ÎÞ·¨¶Á¿¨);
+my @KeywordsNetSignalExcl = qw(¹ÙÍø ÍøÂçÆ½Ì¨ Íø¹º±£»¤ ÍøÂç¸ñÊ½ wifi.*ÐÅºÅ 16G 32G 64G 2gÄÚ´æ 3GÄÚ´æ 4GÄÚ´æ ÄÚ´æ.*(4g|3g|2g)  ÍøÂç¿Æ¼¼ ÏÔÊ¾ÍøËÙ ÍøÂçÇÐ»» ÎÞÏßÁ¬½Ó Î¢ÐÅºÅ (ÍøÂç|ÐÅºÅ).*(±êÖ¾|ÏÔÊ¾) (±êÖ¾|ÏÔÊ¾).*(ÍøÂç|ÐÅºÅ) ÍøÂç×ÖÌå °²×°.*sim¿¨
+²»ÊÇ.*(ÍøÂç|ÐÅºÅ).*ÎÊÌâ  (2g|3G|4G)Í¼±ê ÍøÂçºÜºÃ ÍøÂçÓÎÏ· ÎÞÏßÍøÂç);
 #-----------wifi----------------------
 my @KeywordsWifi = qw(wifi ÎÞÏßÐÅºÅ waifi wlfi wlife wlanÁ¬.*²»ÉÏ wifi wlan ÎÞÏßÍø wiflan Wi£­Fi wi.*fi wfÐÅºÅ ÎÞÏß wife);
-my @KeywordsWifiExcl = qw(OK wifiÍòÄÜÔ¿³× wifi.*¿ì½Ý°´Å¥ ±ã½Ý¿ª¹Ø.*wifi wifi°éÂÂ (ÏÂÀ­¿ì½Ý|×´Ì¬À¸).*wifi QQ.*wife (wifi|wife)ÃÜÂë);
+my @KeywordsWifiExcl = qw(OK wifiÍòÄÜÔ¿³× wifi.*¿ì½Ý°´Å¥ ±ã½Ý¿ª¹Ø.*wifi wifi°éÂÂ (ÏÂÀ­¿ì½Ý|×´Ì¬À¸).*wifi QQ.*wife (wifi|wife)ÃÜÂë wifi¿ÉÒÔ);
 #---------------------------------
 my @KeywordsGps = qw(gps µ¼º½ ¶¨Î» Êµ¾°µ¼º½ AR.{0,12}navi);
 my @KeywordsGpsExcl = qw(µ¼º½À¸ Èí¼þ(²»|ÎÞ·¨)¼ûÁË.*µ¼º½ ÓÆÓÆµ¼º½ ¸ßµÂµ¼º½ ÀÏ»¢µØÍ¼);
 #---------------------------------
 my @KeywordsBluetooth = qw(bluetooth À¶ÑÀ À¼ÑÀ);
-my @KeywordsBluetoothExcl = qw(±ã½Ý¿ª¹Ø.*À¶ÑÀ (Âò|Âô).{0,18}À¶ÑÀ (ÔõÃ´|ÈçºÎ).*À¶ÑÀ À¶ÑÀ¶ú»ú À¶ÑÀ.*ÊÖ»·);
+my @KeywordsBluetoothExcl = qw(±ã½Ý¿ª¹Ø.*À¶ÑÀ (Âò|Âô).{0,18}À¶ÑÀ (ÔõÃ´|ÈçºÎ).*À¶ÑÀ (ÓÐ|Ã»ÓÐ).*À¶ÑÀ.*ÊÖ»·);
 #---------------------------------
 my @KeywordsFingerprint = qw(Ö¸ÎÆ ºó.*´¥.*½âËø);
 my @KeywordsFingerprintExcl = qw();
@@ -276,7 +278,7 @@ my @KeywordsOTGExcl = qw();
 my @KeywordsSmart = qw(ÖÇÄÜ ÖÇÄÜÌå¸Ð ÊÖÊÆÊ¶±ð Æ¤Ì×.{0,18}ÁÁÆÁ ÊÖÊÆ²¦ºÅ ÖÇÄÜÉù¿Ø Ðü¸¡¶àÈÎÎñ ÖÇÄÜÉù¿Ø ÊÖÊÆ²¦ºÅ Ë«µãÆÁÄ» (»®|»­|»¬).{0,12}(m|o|w)  Éù¿Ø½ÓÌý ÖÇÄÜÔÝÍ£ ÖÇÄÜ²¦ºÅ
 (±£»¤¸Ç|±£»¤Ì×|ÊÖ»úÌ×).*ÁÁÆÁ.*(Ê§Ð§|²».*Áé) smart.*wake ÓïÒô½ÓÌý ÓïÒô¹Ò¶Ï »®m »®o »®w ÖÇÄÜÍ¨»° ÖÇÄÜ´°¿Ú½Óµç»° ÖÇÄÜ½ÓÌý Ë«»÷ ÖÇÄÜÁÁÆÁ Ò¡Ò»Ò¡ »­o »­m »­w ¸ô¿Õ Ìå¸Ð ÖÇÄÜ¸ÐÓ¦ ÊÖÌ×Ä£Ê½ †¾ÐÑ Ï¨ÆÁÊÖÊÆ
 ÆÁÄ»»».*ÐÑ ÖÇÄÜ»½ÐÑ ¶àÆÁ»¥¶¯ ¸ô¿Õ²Ù×÷ ¿ÕÖÐ¹ì¼£ ÓïÒô»½ÐÑ air.*wake Ò¡»ÎÊÖ»ú);
-my @KeywordsSmartExcl = qw(Ë«»÷·Å´ó Ë«»÷Ï¨ÆÁ Ë«»÷ÏÖÏó ÖÇÄÜ»ú ÖÇÄÜÊÖ»ú ÔõÃ´ÉèÖÃ ²»ÌýÊ¹»½ ÖÇÄÜÊÖ»· ÓïÒôÖúÊÖ);
+my @KeywordsSmartExcl = qw(Ë«»÷·Å´ó Ë«»÷Ï¨ÆÁ Ë«»÷ÏÖÏó ÖÇÄÜ»ú ÖÇÄÜÊÖ»ú ÔõÃ´ÉèÖÃ ²»ÌýÊ¹»½ ÖÇÄÜÊÖ»· ÓïÒôÖúÊÖ vivoice.{0,8}ÖÇÄÜ ÖÇÄÜÀ¹½Ø) ;
 #---------------------------------
 #my @KeywordsLightTuning = qw(ÆÁÄ»ÁÁ¶È ÁÁ¶È °µ ºö°µºöÁÁ);
 #my @KeywordsLightTuningExcl = qw();
@@ -334,20 +336,20 @@ my @KeywordsGame = qw(ÊÖÓÎ ÓÎÏ· ÌìÌì·çÖ®ÂÃ ÉñÃíÌÓÍö ±¦±¦°ÍÊ¿ ÌÀÄ·Ã¨ ÌìÌì·çÖ®Ðý »
 ÌÇ¹ûÃÈÃÈÏû ´ó°®Í¿Ñ»Ì°³ÔÉß ÍêÃÀ¸ÖÇÙ Á¬Á¬¿´1000¹Ø Í£³µ¸ßÊÖ »áËµ»°µÄÍÒÄñ öèÓãÏòÇ°³å Ì«¹Ä´ÎÀÉ ½ÓÌÇ¹û ÌÇ¹ûÁ¬Á¬¿´ ¿ªÐÄ³¬ÈË¹Ø¿¨´óÌôÕ½ ÃÎ»ÃÅÝÅÝÁú ¿ìÀÖÐÇÃ¨ÒæÖÇÆ´Í¼ÓÎÏ· °®Ð¦ÅÝÅÝÁú ±¦Ê¯ÏûÏûÀÖ Ï¬Å£»¤Àí Ð¡Á÷¸ÐÒ½Ôº ÃÔÄãÎ÷ÓÎ´ó×÷Õ½ ¿É°®Á³Æ×ÀÖÀÖÏû Á³Æ×´«Ææ ÐÕÃû´ó×÷Õ½ ´ò°ü¼ÑÄÜ ¹«Ö÷·¿ÍÑ³ö ¹·¹·³åÌì Ë®¹ûÁ¬Á¬¿´ ¼ÇÒäÍõ Âé½«Á¬Á¬¿´ ³èÎïÁ¬Á¬¿´ ÊýÑ§Ïû³ý KK»¶ÀÖ¶· Ãæ°üµêµÄ¹ÊÊÂ:¸Ð¶÷½Ú ²ÍÌüµÄ¹ÊÊÂ Áú×åÎïÓï Ë®¹ûÏûÏûÀÖ2014 ÃÜÊÒÌÓÍÑ È«Ö°´óµÁ ·ßÅ­µÄÐ¡Äñ:±äÐÎ½ð¸Õ ³¬¼¶ÂêÀö´ó¾öÕ½ ³Ô»õÁÔÈË ±ð²È°×¿é¶ù1 ±¦±¦Ñ§¶¯Îï ½©Ê¬³Ç  ½©Ê¬¶¼ÊÐ ×îºóµÄÐÒ´æÕß ½©Ê¬Ö®³Ç2 Ê¯Æ÷Õ½Õù Æ¡¾ÆÆ¹ÅÒÇò ÅÝÅÝÁú »ðÑæÎÆÕÂ¶àÀ­»ùÑÇ776 »ðÑæÎÆÕÂ°µºÚÁúÓë¹âÖ®½£ Á¬Á¬¿´ ºÀ³µ±êÖ¾ÏûÏû¿´ ·ÅŒW‡Ó ÒíÁúÈÎÎñ Ê±¹â´©Ô½»ú ÕÆÉÏ²âÊÔ ÏòÉÏ°ÉÉÙÄêÆ´Í¼ ÌÇ¹ûÏûÏûÀÖ µ¨Ð¡Îð¿´ ÅÝÅÝÁú Ñ©ÐÜÌ½±¦ É³Ì²Ð¡µê ÈËÅ¼´óÅÚ ÈËÅ¼´óÅÚ ÈËÅ¼´óÅÚ4µÄÓÎÏ· À¯±Ê´óÅÚ ÉäÈËÅÚ ÕÛÄ¥ÈËµÄÅÚ ×î´ó¸ÖÌú ÐÜ³öÃ»Ö®É­ÁÖ±£ÎÀÕ½HD ¿ì´òÐý·ç ÈËÅ¼´óÅÚ ´ó¼ÒÀ´ÕÒ²çÖ®ÈËÅ¼ÍÞÍÞ ÐÒÔËÖ®ÊÖ ÁµÑ§Ôº Á³ÃÈ´³¹Ø2048 °Ö°Ö»ØÀ´ÁËÆ´Í¼ ÌÇ¹ûÌ¹¿Ë´óÕ½ ÓÎÏ·°Å±È ¿Ú´üÑý¹ÖÓ¢ÐÛ ´òËé»¨Æ¿ °ÑÌÇ¹û ¹ÖÎïÒ½ÉúÑÀÌ× 51Äã»­ÎÒ²Â Êý¶À¾º¼¼ ±£ÎÀ³Ç±¤ ÎïÀí¸ÐÖª ÊýÑ§¿ñÈË ¿¨Í¨Á¬Á¬¿´ ÌìÌìµ¯µ¯µ¯ ÄÔ½î¼±×ªÍä¾«Ñ¡ Ö¸Õ½ ¶¯ÎïÏûÏûÀÖ ¹ÖÎïÉ³ÁúºÃÍæµÄÓÎÏ· »Æ½ð¿ó¹¤Ö®Î÷²¿¿ª»Ä  ÕûÀíÌ©µÏÐÜ ìÅÖ¸¸ÖÇÙ Á½µãÖ®¼ä ÌìÌìÇ§ÅÚ²¶Óã ·ßÅ­µÄÑ©ÈË Ð¡ÍµµÄ¹ÊÊÂ Áµ°®¸ßÊÖ-ÐÄ¶¯ÄÐÅ® ·¢ÈÌÕß Ë¤½Ç¸ïÃü ·è¿ñµÄ×Óµ¯ ÍêÃÀÏû³ýÅÝÅÝÁú ÏûÃðÐÇÐÇ¹Ù·½°æ Ã¤¾° ºº»¯°æ ÌÓÉúÌôÕ½3 ÏûÃðÐÇÐÇ3·ÛËéÐ¡¹ÖÎï ³àÉ«ÒªÈû ÃÈºï´óÃ°ÏÕ Ïû³ý°ü×Ó ¾Æ¹íÑ°Â· Ö²Îï´óÕ½½©Ê¬ÀÖ¶Ó ·è¿ñ²ÂµçÊÓ ÄÔ¶´´ó¿ª Ê¥µ®ÃÀ·¢É³Áú ÉñÃØ×¯Ô° ·ßÅ­µÄÐ¡Äñ ³àÉ«ÒªÈûÎÞµÐ ÍêÃÀÀÖ¸Ð ÎÒ½ÐMT-¸¨ÖúÍâ¹Ò×÷±×Æ÷ ¼«Æ·¸ÖÇÙ ÇúÆæºæ¿¾ ±ù¹ûÖ­»ú Ê³Æ×²ÝÝ®¼ÒÍ¥µ°¸â Åëâ¿ÓÎÏ·µÄº¢×Ó ÎÒµÄ°Ö°Ö±­ ³ø·¿Óë°Å±È Ð£Ô° 100µÀÃÅ:³¬×ÔÈ»ÏÖÏó ÂÝÃ±³¬ÈË ÃÈ³èCS Äã°ÖÂèÖªµÀÂð ÌÇ¹û×æÂê-ËÍ»°·Ñ ÕÒÄãÃÃ3 Ó¤¶ù¼±¾ÈÉÕÉË ÖÆ×÷ºº±¤ Åëâ¿µ°¸â ÃÀÎ¶µ°¸â´ïÈË ×öÒ»¸öµ°¸â ³¬¼¶³ø·¿´ó×÷Õ½ Å®º¢ÓÎÏ·. .Ê¥µ®ËÌ¸è ÖóÅ£ÈâÃæ ÏûÃðÐÇÐÇ3×îÐÂ°æ 3M²¶Óã Åëâ¿ ÖÆ×÷ÊÙË¾ µ°¸âÓÎÏ· Ð¡ÃÛ·ä³øÊ¦ Ôç²ÍÊ³Îï Åëâ¿»éÀñµ°¸â ²ÝÝ®µ°¸â Åëâ¿×öµ°¸â Åëâ¿¿É°®µÄÐÄÐÎµ°¸â ·è¿ñË®¹û°®Á¬Á¬¿´ ¶¯ÎïÏûÏûÀÖ ÊÙË¾ ÃÀÎ¶µÄÈýÃ÷ÖÎ Åëâ¿µ°¾í±ùä¿ÁÜ ×ÔÖÆÃÞ»¨ÌÇÓÎÏ· É³À­ÖÆ×÷´óÍõ Åëâ¿±ÈÈü Åëâ¿±ÈÈü Ãµ¹å»éÀñµ°¸â °Å±ÈÍÞÍÞÓÎÏ· ×öµ°¸â Åëâ¿ÓÎÏ· Ñ©¸âÇòÖÆ×÷´óÊ¦ Ñ§×ö±ý¸É ±ùÌÇ¹û»ú2 °¢U±£ÎÀÕ½ ÌÇ¹û¸ßÂ¯ Ê¥µ®´ó²ÍÅëâ¿ÓÎÏ· ÍÐÂíË¹»ð³µÐ¡ÓÎÏ· »ð²ñÈË·ÑÉá¶û ÆßÁúÖéÓÎÏ· ÏÉÅ®Ð¡¶£µ±¼ÇÒäÓÎÏ· ·è¿ñÌÔ½ð¿ó ¶¯»­¼ÇÒäÓÎÏ· ÕÒµ½Ð¡ÂíµÄ²î±ð ÎÒºÍËýµÄ¾àÀë Ë®Æ½Æ½ºâÓÎÏ· ÉÙÅ®Ê±´úÓÎÏ· Ë®Ëþ ÄÉÃ×Áù½Ç ÍÃÐ¡ÃÃÌîÉ«¼Ç Ã¿ÈÕÐÂ¿îÊÔÒÂ¼äÅÄÕÕ¼¼ÇÉ ¼á³ÖÔ½Óü ºãÈËÓÎÏ· Êý×Ö×¨¼Ò ´óÁ¦Ë®ÊÖ¿¨Í¨ ´òÆÆÒøÐÐ °ÂÌØÂüÐÖµÜÇÀ¹ÖÊÞÒøÐÐ ÒøÐÐÌÓÉú ÒøÐÐ´ó½Ù°¸ ÅÝÅÝÅ®Î×2 ·ûÎÄÔÉÂä ÄÇÃ´ÎÊÌâÀ´ÁË ¾Í°®ÅÝÅÝÁú Ë®¹û´ó×ªÅÌ Éñ¾­Ã¨ ÌìÌì´ò¶¹¶¹ ÅÝÅÝÁú ÈÌÕßÉñ¹ê¹Ø¿¨ÓÎÏ· ¹ÖÎï¿¨³µ»ìÂÒ Éñ¾­Ã¨ÉýÌì ²ÊÉ«ÌÇ¹ûÏû³ý ÏûÃðß÷ÐÇÐÇÈË 14ºÅÒ½Ñ§ÑÐ¾¿Ëù ¸ù±¾Í£²»ÏÂÀ´2 Ð¡ÇåÐÂ¹Ø¿¨ÓÎÏ· Ê¿°ÍÍÞ´ó´³¹Ø µãÁÁµÆÅÝ °Ö°ÖÈ¥ÄÄ¶ù2ÓÎÏ· ¸ç°®Êý²ÔÓ¬ ÍòÊ¥½ÚÕæÐÄ»°´óÃ°ÏÕ ÌðÐÄÅ®º¢ Æû³µ·ÛËéÕß ±¦±´Æ´Æ´¿´ ³ö×â³µ3D Ì¸µ½Î¢Ð¦µÄÎ÷ÃÉ Ñ°Çó¸§ÃþµÄÃ¨ Ð¡¹ÖÊÞÏû³ýÖ®ÂÃ »ðÆ´¶íÂÞË¹ Å©³¡ÏûÏûÀÖ ´®´®ÌÇ¹û ³¬¼¶³ö×â³µÍ£·Å ÌÇ¹ûÉÁµç ½Ú²Ù²»¼ûÄñ ÎÞ½Ú²ÙÃÃ×ÓÄæÏ® ÏûÃðÌÇ¹ûÁ¬Á¬¿´ ÌÇ¹ûÏûÏûÀÖ ¶É¶ÉÄñÌÓÍö¼Ç ÊÖÊÆÁ¬Á¬¿´ ßòÂÞßòÂÞ´«Ææ ¶þÃÈÅÝÅÝ °®ÏûÃÈÃÈßÕ ¿ªÐÄÏûÏûÀÖ2
 ÌìÌìÁ¬ÃÈ ×ÔÀ´Ë®¸ÖÇÙ Ã×ÆæÆ´Í¼ ÒÆÏä´ïÈË º£µ×Ñ°±¦ ÌìÌìÐÇÁ¬ÃÈÐÂÊÖ±Ø¿´¹¥ÂÔ Ö®±äÌ¬Ô²2048 Ñ©ÈËÐÖµÜ ÌÇ¹ûÎÝ ÍÚ´©µØÐÄ Ïû·À³µ²éÕÒÓÎÏ· ¼ªËû×ÔÑ§±¦ ÌøÌøÄñ ÌøÌøÄñ È¤Î¶Ð¡ÓÎÏ· ´ò×©¿é Ð¡ÌáÇÙ·ûºÅ °ì¹«ÊÒÍµÀÁÓÎÏ· ÈËÌå½âÆÊÑ§ Ê®¿×¿ÚÇÙ °ì¹«ÊÒÍµÀÁ7 ÕÕÆ¬ÃÉÌ«Ææ ËØÃè²Â²Â Ä§ÕÈÊÖÖ¸ ´ó¼ÒÀ´ÕÒ²ç  Íò»¨Í²Í¿Ñ»°å ÃÛ·ä·´»÷Õ½ ÈÌÕß¿ìÅÜ ÑÕÉ«¼ÇÒä Ê¯Æ÷½âÃÔ Ð¡Ñ¼½ø»¯ Õü¾Èº£Ãà±¦±¦ ¼ÇÒä¿¨ÓÎÏ· ÓÒÄÔÓë¼«ÏÞ  Ä§»ÃÈýÎ¬Í¼Æ¬ ×ÖÄ¸¹ÖÊÞ ÖØÁ¦¸ÐÓ¦Æ¹ÅÒ ½ðÇò³å´Ì ²ÂÊý×Ö ÃÀÅ®Óë½Ú²Ù ¼ªËûÈëÃÅ¸ß¼¶½Ì³Ì ¿¨Í¨Êß¹ûÏû³ý Ë¿×¶ÃÀÈËÓã¹«Ö÷ ½¡ÉíÐ¡ÓÎÏ· ·è¿ñµ÷¾Æ´óÊ¦ Ô¶¹ÅµçÂ· ÊÜÀ§µÄÐ¡ÐÜÃ¨ ÃÀÎ¶µ°¸âÎÝ ¼ÇÒäÓÎÏ· ²ÂÓ¢ÐÛ Ð¡Å®Î× ÀÖ¸ß³¬¼¶Ó¢ÐÛ ÉÏÎ¾ÃÜÁî Âþ»­´óÊ¦ ¹Å½£ÆæÌ·Âþ»­ÓÎÏ· ²»Òª¿¿½üÎÒ ¶íÂÞË¹·½¿é¶¯Âþ ÇçÌìÐ¡¹·2 4399Âå¿ËÍõ¹ú ÌÇ¹ûÏû³ý¹¤½³ ÌìÌì²Â²Â¿´ Êý×Ö·´Ó¦ ËÀÍöÖ®ÎÇ ±ðÎÇ°×¿é¶ù ±¦Ê¯ÓÎÏ· ³ÉÓï½ÓÁú ×îÃÈ°¢Í¯Ä¾ÌøÔ¾ È«ÃñìÅÎèÍêÃÀ¹¥ÂÔ ¹ÅóÝÃûÇúÐÀÉÍ ÕæÏà»òÔðÈÎ18+ °Å±È·­·­ÀÖ Ð¡¼¦²»ºÃÈÇ±¬Ð¦Ï®À´ ÊÓ³ªÁ·¶ú ·è¿ñ²Â¸èÃû3 ·è¿ñÌÇ¹ûÅÝÅÝÁú Öé±¦Ìì¿Õ ÎÒ°®¼Ç¸èÃû ÉñÃØ·¿¼äÕÒ²»Í¬ ÈÌÕßÄñX:Ë®¹û¹¥»÷ ÌÇ¹ûÅÝÅÝÁú ¶íÂÞË¹·½¿é Í¿Ñ»Á¶½ðÊõ ¹û±¦ÌØ¹¥3¹û±¦Èý¹ú  ·è¿ñ¼Ç¸è´Ê ÌôÕ½Éñ¾­¼ÇÒä ÖÇÁ¦´óÌôÕ½ µ·µ°Õ¨µ¯ÈË ¼¦³áÅëâ¿ÓÎÏ· ÈýÒ¶²Ýµ°¸â ÅÝÅÝÕ½Õù ÇàÍÜÌøÔ¾ Êý×ÖÓÎÏ·×îÅ£¹¥ÂÔ2048 ±ý¸É°ü×° Õ½ÕùÔ¤Õ× ÈéÀÒµ°¸â³øÊ¦ ±ö¹ûÓÎÏ·ÊÒ ºûµû¼ÇÒä  Ë®¹ûƒÈ´æ ÇÐË®¹û´ïÈË ÍÚ¾ò»ú¼¼ÊõÄÄ¼ÒÇ¿ ²ÞËùÓÎÏ· ÃÔÊ§µÄË«°ûÌ¥ °Ù²ÞÌÓÍÑ2 ¹ÖÎï¹¤½³ È«Ãñ´òÅÝÅÝ ÅÝæ¤Ñ§Ôº Îå²Ê·½¿éÏû³ý ´ó¼ÒÒ»ÆðÕÒ²»Í¬ ÌÇ¹ûçÍ·×ÀÖ¿ñ»¶:»ð¼¦ÈÕ ²¶ÁÔÊÀ½ç ·è¿ñÁ¬Á¬¿´2 ·è¿ñ¶íÂÞË¹·½¿é ÌìÌì°®³ÔÓã ¿´Äã¶àÊÆÀû ½©Ê¬×© Ä§·¨¿ñÈÈ ÐÇÐÇÀÖÏûÏû ÓÎÁúÓ¢ÐÛÓÎÏ· Æ¿×ÓÆ¿ÓÎÏ· ¾Í°®ÅÝÅÝÁú Á£×ÓÎïÀíÄ£ÄâÆ÷ ±¦Ê¯ÏûÏû Ê¯Í·Á¬Á¬¿´¶àÍæÑ¡¹Ø°æ Ö²Îï´óÕ½À¥³æ ×½ÃÔ²Ø ÉßÖ®ÃÕ Îå×ÓÁ¬Öé ÌðÌðÈ¦µê exoÈ¤Î¶Æ´Í¼ ¶¯ÎïÁ¬Á¬¿´ ¿É°®ÏûÏû¿´ ±¦Ê¯Á¬Ïß ÕÒ²çÀ²£¡ Ê±ÉÐÅ®º¢ÁÄÌì¼Ó ³¤ÅÜÃÔ¾ãÀÖ²¿ ÁÄÌìÊÒÌÓÉú ÏÀµÁÁÔ³µÊÖÒô°å ÌÇ¹û·ÛËé´óÊ¦ ÂÖÅÌÏÖ³¡Ì½¸ê ¶àÈËÎÄ×ÖÓÎÏ· ÃÀÅ®´òÅÝÅÝ ³¬¼¶¶¯¸ÐÁ¬Á¬¿´ ¶ñ¸ã»ð²ñÈË ¶íÂÞË¹·½¿é Ó°×Ó¸ß ÅÝÅÝÁú ·è¿ñÌÇ¹ûÅÝÅÝÁú Ì°³ÔÉß ÃÔ³ÇÌÓÍö Êý¶À10000 ÆßÇÉ°åÆ´Í¼   EMÁ¬Á¬¿´ ¸ßÖÇÉÌÁ¬Ïß Ä£ÐÍÊÀ½ç ½ðÓî±òÆ´Í¼ µ÷Æ¤µÄÓ°×Ó ÃÈÃÃ×ÓÆ´Í¼Ð¡ÓÎÏ· ±¼ÅÜÐ¡º¢ ²Êºç·½¿é ÃÀÊ³´óÕ½ÀÏÊó ´óµ¨ÏòÇ°³å ¿É°®ÅÝÅÝÁú ÎÒµÄÍêÃÀ·¿¼ä È«ÃñPK ËÀÍö±¬Õ¨ ¼«ËÙÇ°½ø ²´³µÌôÕ½Èü Ð¡¼¦¸Ç·¹ÔÙÀ´Ò»Íë ÄÐº¢ºÍÅ®º¢ÑÀ¿ÆÕïËù LINE POPÏû³ý É½µØÍ£³µ¶àÈË°æ ÓÑ²Â Ñ©ÍÞAR±­µæ ÇÐÎ÷¹ÏÓÎÏ· Ð¡¹«Ö÷¾ÈÔ® ÍâÐÇÈËÒ²·è¿ñ Ò»´ðµ½µ× Ò»Ñ¡µ½µ× »¹Öé¸ñ¸ñÆ´ °Ù¿Æ×©¼Ò ÇÉÊÖ×ö³ÌÐò ¹úÃñ½ÌÓýÎ¯Ô±»á »áËµ»°µÄÐ¡¹í È¤Î¶Ñ§Éà ¶ùÍ¯ÅÝÅÝÁú µçÏßÉÏËµ»°µÄÐ¡Äñ ¿ªÐÄÕÒ²»Í¬-ÃÈ³è Webby¶ãÃ¨Ã¨ ¹û¿Ç²ÂÇò ³¬¼¶ÑÛÁ¦²âÊÔ ×ÖÀïÕÒ×Ö Ñ°ÕÒÍÃ×Ó ÃþÃþÕýÃÃÖ®×¥Ð¡ÈË ´ó¼ÒÀ´ÕÒ²ç ´ó¼ÒÒ»ÆðÀ´ÕÒ²ç ´ó¼ÒÀ´ÕÒ²ç ²ÊÉ«Çò ´ó¼ÒÀ´ÕÒ²ç ÕÒ²»Í¬¾²Îï°æ ÕÒ²»Í¬ ´ó¼ÒÀ´ÕÒ²ç ´ó¼ÒÀ´ÕÒ²ç´ó¼¯ºÏ ÎïÀíÉ³ºÐ YoÆ´Í¼ ´©Ç½Ì°³ÔÉß ×¥Ç®ÊÖ ÖÇ»ÛÖ®ÈÐ¾«×¼ÇÐ¸î ¼«ÖÂÇÐ¸î »úÐµÊÀ½ç ¼¢¶öÃ¨ßä ·ÉÌìÈÌÕßÃ¨ ÈÌÕßÇÐÇÐÀÖ ´òÆó¶ìËÄ Ë®¹ûÁ¬Á¬¿´ Ë®¹ûÉäÊÖ ÔªËØ×æÂê ½©Ê¬Ô²ÔÂ´óÌÓÍö ·è¿ñ²ÂµçÊÓ¾ç ¹«Ö÷Í¿»­ ±¦Ê¯ÉñÃí ÂêÑÅ¶Ô¶ÔÅö ³Ô´óÄÔµÄ½©Ê¬ ·ûÎÄÃÔ¹¬ ÖÇÉÌÇò3 ¸ßÖÇÉÌÓÎÏ· Ä§Ëþ´«Ææ ·ÛËéË®¹û Ö²ÎïÕ½½©Ê¬ °®ÀöË¿µÄÃÎ»Ã²è»á Ù¡Àöæ«Æ´Í¼ ÑîÃÝÆ´Í¼ ºº±¤ÖÆ×÷Ê¦ ÎÚÑ»ºÈË® Ä§¾µ
 Ñ±Áú¼Ç ÇàÍÜµÄ¹ÊÊÂII »Ã»ÃÇò °×Ñ©¹«Ö÷Æ´Í¼ ÁË²»ÆðµÄ°Ö°Ö ÍÚ¾ò¿ÖÁú¹Ç÷À °Ö°Ö¶Ñ¶â»ú ¶¯ÂþÕÒ²çÓÎÏ· Ä§¾µÆæÔµ Ï²ÑóÑóÆ´Í¼ ´ó¿¨³µÔËÐ¡½Î³µ3D ¶äÀ­ÖÇÁ¦Æ´Í¼ ¼ªËüÃûÇú ¸ñÁÖÍ¯»°°×Ñ©¹«Ö÷ ÅÝÅÝÁú-ÕæÈËPK°æ ³¿Á·Ð¡¼¦ SFCÖØ×°»ú±ø2 QQÁ¬Á¬¿´ ÈÓÖ½ÍÅ ¶á±¦Ææ±ù º£Õ½ »µÄÐº¢Ñ§Ôº ¼ÇÒä¿¼Ñé ´óÊå°ÎÐØÃ«°²×¿°æ Flash¿ª·¢µÄÐÇÇò ¿Ö²À˜ÇÌÝ ¸ÖÇÙÁ·Ï°±ê¼Ç ¸ú×ÙÓÎÏ· Ç§ÅÚ²¶Óã2 Ä§»Ã¾«Áé·½¿é Ðý×ªÐÐÐÇ ÏñËØÅ£×Ð »¬Ñ©´ïÍÃ Éú´æ¶·Õù  ·è¿ñµÄÊß²Ë »Ê¼ÒÀÏ»¢»ú ÈýÎ¬ÃÔ¹¬ ¿¼ÊÔÓ¢ÐÛ ÄÖ¹íÆÁÄ» ÓÐ¿ÕµÄÂÃÍ¾ ÒæÖÇ¿É°®¶¯ÎïÆ´Í¼ ³¬¼¶¾È»ð¶ÓÔ± ¶ÁÐÄÄ§Êõ ¹ÖÎï³ÔÌÇ¹û ÈÓÖ½ÍÅ ÊÖÖ¸ºÍ·Éµ¶ Ð¡ÕÂÓãÀúÏÕ¼Ç Á¦ÆÆ¼á¹û ·ÂÕæ´ò»ð»ú ¼¢¶öµÄöèÓã3 È«¼üÅÌ¸ÖÇÙ Á¬Á¬¿´ ¾¢ÀÖÍÅ4 ÇÐÊÖÖ¸ ÅÝÅÝÁú Õ³Õ³ÊÀ½ç ´òÈË×¨´òÁ³ ³¬¼¶Õ¨Ò©²¶Óã ¼¢¶öµÄöèÓã2 ÅÝÅÝÁú´ïÈË Ó²±Òº£µÁ Ìá»ùºï×ÓËþ Ò¡¹ö¾ÞÐÇ ÃÉÌØ×æÂêµÄ±¦²Ø Ë®¹ûÅÝÅÝÌÃ °®ÅÜÕß Æ½ºâ¹öÇò ´øÎÒ»Ø¼Ò 3D¼ÐÍÞÍÞ»ú ¶íÂÞË¹·½¿é °ì¹«ÊÒ·¢Ð¹ ºÃ¶à²ÔÓ¬ ÐéÄâ´ò»ð»ú ÇÐÊÖÖ¸ Ä§·¨Öé±¦ Â¿×ÓÌøÌø 3DÌ¨Çò ²¶Óã»úÆ÷ ÀÏ»¢»ú ´®´®ÉÕ »ðÇò ÎÒ°®Á¬Á¬¿´ ËÄÈË·´Ó¦¶Ñ ÕÒ³ö²»Í¬´¦ ÂíÏ·ÍÅ°²×¿°æ Ð¡Óã×Ü¶¯Ô± ÈÃÖí·ÉÆðÀ´ ÕÒ²ç ºÀ»ªµ¯Öé ´óÓã³ÔÐ¡Óã ¼àÓüÌÓÍÑ ÓÂ´³¶áÃüµº ³¬¼¶½ÖÍ·°ÔÍõ·½¿éII Ö¸¶¯ÌìÌÃ ¹ø´ò»ÒÌ«ÀÇ Ä§ËþÊÀ½ç ¿ÖÁúÀúÏÕ¼Ç ¸ÉµôÀÏ°å ÈÌÕßÍ»»÷ÖÐÎÄ°æ Õ¨µ¯ÈË Ð¡Äñ±¬ÆÆ ÊÖ»ú¸ÖÇÙ¾«Áé 3DºÀ»ªÍÆ±Ò»ú ³¬ÒôËÙ¹ìµÀ ×êÊ¯Ðý·ç2 ¶¡¶¡ÀúÏÕ¼Ç Í¿Ñ»ÌøÔ¾ ¾¢ÀÖÍÅ »áËµ»°µÄÊ¨×Ó ÕÒ²ç ¶íÂÞË¹·½¿é ¿ìÀÖÀÏ»¢»ú º£ÔôÍõ°æ Ì°³ÔÉßÒ¡»Î°æ BuBu×Ü¶¯Ô± ¿ìÀÖÎèµ¸ ¶¯Îï¹ÜÀíÔ± Ê³Ö¸Ð¡¹ÖÎï »¶ÀÖ²¶ÓãÖ®º£µ×¼«ÀÖ ÔÒÆ¿×Ó 3D¹ö·½¿é »áËµ»°µÄÆó¶ìÐÖµÜ ÆÆ»µÕß Êß²ËÈÌÕß ‡åÍ¾ÖíÖí ¿¨Í¨Á¬Á¬¿´ ½ð±ÒÍÆÍÁ»ú »áËµ»°µÄ±äÐÎ½ð¸Õ ¶¯ÎïËÇÑøÔ± ¸îÉþ×ÓÐ¡³óÍêÕû°æ ²¶Óã´óÊ¦ ¼¢¶öµÄöèÓã ÒôËÙ³ö»÷ Ð¡Æ¨º¢ÀúÏÕ¼Ç ÌðÃÛ²ÊÌÇ ¶íÂÞË¹·½¿é »Æ½ð¿ó¹¤ Ó×¶ùÆ´Í¼ ÊÊºÏÅ®º¢µÄ¿É°®ÐÝÏÐÐ¡ÓÎÏ· ìÅ²ÊÇú¹÷Çò
-´ó»°Î÷ÓÎ2|´ó»°Î÷ÓÎ ÌìÌì´«Ææ);
+´ó»°Î÷ÓÎ2|´ó»°Î÷ÓÎ ÌìÌì´«Ææ ½¨ÖþÄ£ÄâÆ÷);
 
 my @KeywordsGameExcl = qw(¿ì½Ý·½Ê½ ÓÎÏ·ÖÐÐÄ ÌìÌì¶¯Ìý ÌìÌìÃæ¶Ô LEDµÆ ¸ü²»ÒªËµÍæÓÎÏ· ²»ÍæÓÎÏ·);
 #---------µÚÈý·½------------------------
 my @Keywords3Party = qw(µÚÈý·½Èí¼þ ÎÞÓÇÔËÁ¦ pps ×·ÊéÉñÆ÷ °Ù´ÊÕ¶ ·½ÕýÐÐÊé facebook ÑÅË¼ÌýÁ¦±¦ ÀÏ»¢µØÍ¼ wifiÍòÄÜ½âËø ¹È¸èµç×ÓÊÐ³¡ ¹È¸èµç×ÓÉÌµê ½¨ÐÐÊÖ»úÖ§¸¶ ¹È¸è¼üÅÌ wifeÍòÄÜ ¿ìÊÖ ·çÔÆÖ±²¥ imic ×Ô´øÂ¼ÒôÅï ¶¹°ê ¹È¸è µ¥´ÊËøÆÁ Ñ¶·ÉÊäÈë·¨ È«¹úÎ¥ÕÂ²éÑ¯ Ò×»ãÍ¨ ´óÒÌÂè ÇÑ×Ó¿ì´« ÌìÃ¨ Å¼Ïñ¼À Ôª±´¼Ý¿¼ ÐËÒµÓÅÀí±¦ À´µçÍ¨ ±ØÓ¦ÊäÈë·¨ ¹Òq google µç×ÓÊÐ³¡ googleÐÇ¿ÕµØÍ¼ ·ï»ËÐÂÎÅ ÍøÒ×ÐÂÎÅ À­¿¨À­ ¿ì²¥ °Ù¶ÈÔÆÅÌ wifiÍòÄÜÔ¿³× °Ù¶ÈÊÓÆµ ¸ßµÂ ½¨ÉèÒøÐÐ ÃÎÉ­ÁÖ Ã¢¹ûtv wifi°éÂÂ ¹È¸èÊÐ³¡ Ç®ºÐÉÌ»§Í¨ ÒôÔÃÌ¨ °Ù¶ÈÌù°É WiFiÍòÄÜÔ¿³× ¿áÎÒ cntv ÌìÆøÍ¨ ÓÆÓÆµ¼º½ ³±°Ù´î ìÅÒ«×ÖÌå imac ³ª°É playÉÌµê ¾©¶«ÉÌ³Ç ¹È¸èÉÌµê k¸è´ïÈË ºÏµØÍ¼ ÀÖÊÓ µ¼º½È® ¿Û¿Û qq Î¢ÐÅ ÌÚÑ¶ Ä°Ä° ÍúÐÅ Î¢»° Ó°Ôº Ñ¸À×¿´¿´ YY ÍÁ¶¹ ¿á¹· ¿ìÑÀ Ô¿³× ÐÂÀË ÒøÐÐ Ö¤È¯ 
-ÍøÒ× ËÑ¹· ³ª°É ¾©¶« google ÃÀÅÄ °¢ÀïÍ¨ Ä«¼£ ÌìÌì¶¯Ìý ÖÐ¹úÏóÆå ireader ÒøºÓ¾ÁÀÖ °®ÆæÒÕ PPTV °Ù¶È ËÑºü ÏóÆå ±©·ç DIYÖ÷Ìâ´óÊ¦ ÕÆÔÄ ÌÔ±¦ ÓÅ¿á 360 ôÜÊÂ°Ù¿Æ Ñ¸À× Î¢²© µÎµÎ´ò³µ 
-¹È¸èµØÇò 360Ïà»ú ÃÀÑÕÏà»ú ÃÀÈËÏà»ú esÎÄ¼þä¯ÀÀÆ÷ ÌúÓÑ»ð³µÆ±Èí¼þ ÕÆÉÏÃ¨ÆË UCä¯ÀÀÆ÷ ±ð²È°×¿é 91ÖúÊÖ Íã¶¹¼Ô ½¨ÐÐ¿Í»§¶Ë ¿áÎÒÒôÀÖ Æ¤Æ¤ Ð¡Ó° Ö§¸¶±¦Ç®°ü Ö§¸¶±¦ ÃÀÍ¼ÐãÐã µÚÈý·½ä¯ÀÀÆ÷ 58Í¬³Ç);
-my @Keywords3PartyExcl = qw(¿ì½Ý·½Ê½ qqÓÎÏ· ³¬ÇåÓ°Ôº °Ù¶ÈÍøÖ·);
+ÍøÒ× ËÑ¹· ³ª°É ¾©¶« google ÃÀÅÄ °¢ÀïÍ¨ Ä«¼£ ÌìÌì¶¯Ìý ÖÐ¹úÏóÆå ireader ÒøºÓ¾ÁÀÖ °®ÆæÒÕ °®ÆæÒì PPTV °Ù¶È ËÑºü ÏóÆå ±©·ç DIYÖ÷Ìâ´óÊ¦ ÕÆÔÄ ÌÔ±¦ ÓÅ¿á 360 ôÜÊÂ°Ù¿Æ Ñ¸À× Î¢²© µÎµÎ´ò³µ ÓïÊé
+¹È¸èµØÇò 360Ïà»ú ÃÀÑÕÏà»ú ÃÀÈËÏà»ú esÎÄ¼þä¯ÀÀÆ÷ ÌúÓÑ»ð³µÆ±Èí¼þ ÕÆÉÏÃ¨ÆË UCä¯ÀÀÆ÷ ±ð²È°×¿é 91ÖúÊÖ Íã¶¹¼Ô ½¨ÐÐ¿Í»§¶Ë ¿áÎÒÒôÀÖ Æ¤Æ¤ Ð¡Ó° Ö§¸¶±¦Ç®°ü Ö§¸¶±¦ ÃÀÍ¼ÐãÐã µÚÈý·½ä¯ÀÀÆ÷ 58Í¬³Ç ¸£Àû±¦ Ê®¾ä»°);
+my @Keywords3PartyExcl = qw(¿ì½Ý·½Ê½ qqÓÎÏ· ³¬ÇåÓ°Ôº °Ù¶ÈÍøÖ· Ð¡ÆÁ);
 #---------------------------------
 my @KeywordsCloudService = qw(ÔÆ±¸·Ý ÔÆ·þÎñ ÔÆÅÌ ÔÆÍ¬²½);
-my @KeywordsCloudServiceExcl = qw(°Ù¶ÈÔÆÅÌ);
+my @KeywordsCloudServiceExcl = qw(°Ù¶ÈÔÆÅÌ 360ÔÆÅÌ);
 #------------³äµç---------------------
-my @KeywordsCharge = qw(³äµç ³ä²»Âú ³ä.*ëŠ ³äµç ³ä.*µç ³å.*µç µç.*³ä²»Âú µç.*³å²»Âú ²åÊý¾ÝÏßÂ©µç ³äëŠ);
-my @KeywordsChargeExcl = qw(µçÁ¿ ³äµç.*ÌÌ µç³ØÈÝÁ¿ ³äµç.*²Å ³äµç.*(Í¼±ê|ÏÔÊ¾) Ö»ÓÐ³äµçµÄÊ±ºò ÏÔÊ¾³äµç ²»³äµç.*Ò²·¢ÈÈ ³äµç.*ÌáÊ¾);
+my @KeywordsCharge = qw(³äµç ³ä²»Âú ³ä.*ëŠ ³äµç ³ä.*µç ³å.*µç µç.*³ä²»Âú µç.*³å²»Âú ²åÊý¾ÝÏßÂ©µç ³äëŠ ³ä²»ÁËµç ³ä.*½øÈ¥);
+my @KeywordsChargeExcl = qw(µçÁ¿ ³äµç.*ÌÌ µç³ØÈÝÁ¿ ³äµç.*²Å ³äµç.{0,5}(Í¼±ê|ÏÔÊ¾) Ö»ÓÐ³äµçµÄÊ±ºò ÏÔÊ¾³äµç ²»³äµç.*Ò²·¢ÈÈ ³äµç.*ÌáÊ¾ ³äµçÆ÷ ºôÎüµÆ);
 #------------½ØÆÁ---------------------
 my @KeywordsScreenShot = qw(½Ø.{0,18}ÆÁ ½Ø.{0,18}Í¼ Ýd.{0,18}ÆÁ Ýd.{0,18}Í¼ ½Ø.{0,18}ˆD ÔõÃ´½Ø ²¶×½.{0,18}ÆÁÄ» ´ËÍ¼ÒÑ½Ø);
 my @KeywordsScreenShotExcl = qw((ÏÂÀ­¿ì½ÝÀ¸|×´Ì¬À¸).*½ØÆÁ);
@@ -371,12 +373,12 @@ my @KeywordsLockScreen = qw(ÆÁÄ»°²È«Ëø Ëø.*ÆÁ.*ÌáÊ¾ Ëø.*ÆÁ.*Ê§Ð§ ÆÁ.*Ëø.*Ê§Ð§ Ëø
 Òì³£Ëø.*ÆÁ Ëø.*ÆÁ.*²¥·Å Ëø.*ÆÁ.*(²»|ÎÞ·¨).*ÐÅºÅ Ëø.*ÆÁ.*Ã»ÐÅºÅ ÎÞÔµÎÞ¹Ê.*Ëø.*ÆÁ ÃÜÂëËø.*ÆÁ.*Ëø(²»|ÎÞ·¨)ÉÏ ÈËÁ³Ëø.*ÆÁ.*ºÚÆÁ Ëø.*ÆÁ.*ÐÅÏ¢.*(²»|ÎÞ·¨).*½ÓÊÕ Ëø.*ÆÁ.*(²»|ÎÞ·¨).*ÐÅÏ¢ ×Ô¶¯Ëø.*ÆÁ 
 Ëø.*ÆÁ.*(²»|ÎÞ·¨)¼æÈÝ Ëø.*ÆÁ.*·´Ó¦ Ëø.*ÆÁ.*½ÚÈÕ.*±ÚÖ½ (ºÏ|¸Ç).*Ì×.*²».*(Ëø.*ÆÁ|Ï¢ÆÁ|Ï¨ÆÁ) (Ëø.*ÆÁ|ºÚÆÁ).*ÅÄÕÕ Ëø.*ÆÁ.*ÌìÆø.*Ã» Ëø.*ÆÁ.*´ò²»¿ª Ëø.*ÆÁ.*½âËø.*»¨ÆÁ ¿ªËø.*ºÚÆÁ ½âËø.*ÃÜÂë ËøÆÁ.*ÏÂÀ­.*(Ïà»ú|ÅÄÕÕ) 
 Í¼°¸½âËø ËøÆÁ½çÃæ ×ó»¬.*ÌìÆø.*ÒôÀÖ.*(²»¼û|ÏûÊ§|ÕÒ²»µ½|Ê§×Ù|Ã»ÁË) Ò»¼üËøÆÁ ÏÂ.*»¬.*(¿ª|½ø).*(ÉãÏñÍ·|Ïà»ú) »¬¶¯½âËø (±£»¤¸Ç|±£»¤Ì×|ÊÖ»úÌ×).{0,12}(Ï¨ÆÁ|ÃðÆÁ|Ëø.{0,12}ÆÁ) »®²»ÆÁ ËøÆÁ.{0,12}Í·Ïñ êÇ³Æ 
-ËøÆµ (ÎÞ·¨|²»ÄÜ).È¡Ïû.*ËøÆÁ (ÎÞ·¨|²»ÄÜ)½âËø (²»»á|²»ÄÜ).*ËøÆÁ );
-my @KeywordsLockScreenExcl = qw(ÑÛÇò ÈËÑÛ.{0,18}(Ê¶±ð|ÈÏ±ð|¼ÓÃÜ));
+ËøÆµ (ÎÞ·¨|²»ÄÜ).È¡Ïû.*ËøÆÁ ËøÆÁ.*(ÎÞ·¨|²»ÄÜ).*È¡Ïû (ÎÞ·¨|²»ÄÜ)½âËø (²»»á|²»ÄÜ).*ËøÆÁ ÆÁÄ»Ëø¶¨);
+my @KeywordsLockScreenExcl = qw(ÑÛÇò ÈËÑÛ.{0,18}(Ê¶±ð|ÈÏ±ð|¼ÓÃÜ) ËøÆÁ±ÚÖ½ Í¼°¸½âËø);
 #---------Ïà²á------------------------
-my @KeywordsGallery = qw(´æ´¢ÎÄ¼þ Í¼¿â Ïà²á ÕÕÆ¬ Í¼Æ¬ ÎÄ¼þ.*¶ªÊ§ ÒþË½¿Õ¼ä Ë½ÃÜ¿Õ¼ä ´æ´¢.{0,12}(ÕÒ²»µ½|Ê§×Ù|ÏûÊ§|Ã»ÁË) ÏàÆ¬ ÎÄ¼þ.{0,12}²»¼ûÁË);
-my @KeywordsGalleryExcl = qw(Ïà»ú ÏÂÔØ.*Í¼Æ¬ (½ÓÊÜ|½ÓÊÕ).*Í¼Æ¬ Í¼Æ¬·ÖÏí (ÔÆÅÌ|ÔÆ·þÎñ|QQ|¿Û¿Û|Î¢ÐÅ|Î¢²©|ä¯ÀÀÆ÷).*(Í¼Æ¬|ÕÕÆ¬) (Í¼Æ¬|ÕÕÆ¬).*(ÔÆÅÌ|ÔÆ·þÎñ|QQ|¿Û¿Û|Î¢ÐÅ|Î¢²©|ä¯ÀÀÆ÷) ÅÄ.*ÕÕÆ¬ ÏµÍ³ÎÄ¼þ¶ªÊ§ (ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ).*»Ö¸´
-»Ö¸´.*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ));
+my @KeywordsGallery = qw(´æ´¢ÎÄ¼þ Í¼¿â Ïà²á ÕÕÆ¬ Í¼Æ¬  ÒþË½¿Õ¼ä Ë½ÃÜ¿Õ¼ä (ÕÕÆ¬|Í¼Æ¬|ÏàÆ¬).{0,12}(ÕÒ²»µ½|Ê§×Ù|ÏûÊ§|Ã»ÁË|²»¼ûÁË) ÏàÆ¬);
+my @KeywordsGalleryExcl = qw(Ïà»ú ÏÂÔØ.*Í¼Æ¬ (½ÓÊÜ|½ÓÊÕ).*Í¼Æ¬ Í¼Æ¬·ÖÏí (ÔÆÅÌ|ÔÆ·þÎñ|QQ|¿Û¿Û|Î¢ÐÅ|Î¢²©|ä¯ÀÀÆ÷|·´À¡).*(Í¼Æ¬|ÕÕÆ¬) (Í¼Æ¬|ÕÕÆ¬).*(ÔÆÅÌ|ÔÆ·þÎñ|QQ|¿Û¿Û|Î¢ÐÅ|Î¢²©|ä¯ÀÀÆ÷) ÅÄ.*ÕÕÆ¬ ÏµÍ³ÎÄ¼þ¶ªÊ§ (ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ).*»Ö¸´
+»Ö¸´.*(ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ) (ÕÕÆ¬|Í¼Æ¬|ÎÄ¼þ).*(´«ËÍ|´«Êä) Ö÷Ìâ.*Í¼Æ¬);
 #---------ÊÖµçÍ²------------------------
 my @KeywordsFlashlight = qw(ÊÖµç µçÍ²);
 my @KeywordsFlashlightExcl = qw();
@@ -387,10 +389,10 @@ my @KeywordsFMExcl = qw(Ã»ÓÐÊÕÒô»ú);
 my @KeywordsFont = qw(×ÖÌå ×Ö.{0,12}Ð¡ font);
 my @KeywordsFontExcl = qw();
 #-----------ÄÚ´æ----------------------
-my @KeywordsSD = qw(TF SD ´æ´¢¿¨ ´¢´æ¿¨ UÅÌ ÄÚ´æ ´¢´æÉè±¸ ´æ´¢Éè±¸ Èí¼þ°á¼Ò °²×° ´æ´¢²»×ã ÏµÍ³¿Õ¼ä ´æ´¢¿Õ¼ä);
-my @KeywordsSDExcl = qw(Âò.*ÄÚ´æ¿¨ ÄÚ´æ³ä×ã µç»°¿¨.*°²×° °²×°µç»°¿¨ );
+my @KeywordsSD = qw(TF SD ´æ´¢¿¨ ´¢´æ¿¨ UÅÌ ÄÚ´æ ´¢´æÉè±¸ ´æ´¢Éè±¸ Èí¼þ°á¼Ò °²×° ´æ´¢²»×ã ÏµÍ³¿Õ¼ä ´æ´¢¿Õ¼ä ´¢´æ¿Õ¼ä ƒÈ´æ (Ó¦ÓÃ|Èí¼þ|×ÀÃæ).{0,12}(ÕÒ²»µ½|Ê§×Ù|ÏûÊ§|Ã»ÁË|²»¼ûÁË));
+my @KeywordsSDExcl = qw(Âò.*ÄÚ´æ¿¨ ÄÚ´æ³ä×ã µç»°¿¨.*°²×° °²×°µç»°¿¨ ²é¿´.*ÄÚ´æ ÓÐÄÚ´æ ÔõÃ´°²×°);
 #------------ÆÁÄ»ÁÁ¶È---------------------
-my @KeywordsScreenBright = qw(Ì«ÁÁ µ÷½ÚÁÁ¶È ÁÁ¶Èµ÷½Ú ÆÁÄ».*(ÁÁ¶È|ºöÃ÷ºö°µ|ÁÁ.*°µ|°µ.*ÁÁ) ÊÖ»ú.*(ÁÁ¶È|ºöÃ÷ºö°µ|ÁÁ.*°µ|°µ.*ÁÁ) »¬ÆÁ.{0,12}°µÒ»ÏÂ Ê±ÁÁ.{0,12}Ê±°µ);
+my @KeywordsScreenBright = qw(Ì«ÁÁ µ÷½ÚÁÁ¶È ÁÁ¶Èµ÷½Ú ÆÁÄ».*(ÁÁ¶È|ºöÃ÷ºö°µ|ÁÁ.*°µ|°µ.*ÁÁ) ÊÖ»ú.*(ÁÁ¶È|ºöÃ÷ºö°µ|ÁÁ.*°µ|°µ.*ÁÁ) »¬ÆÁ.{0,12}°µÒ»ÏÂ Ê±ÁÁ.{0,12}Ê±°µ ±¥ºÍ¶È);
 my @KeywordsScreenBrightExcl = qw();
 #------------Õð¶¯---------------------
 my @KeywordsVibration = qw(Õð¶¯ Õñ¶¯);
@@ -421,7 +423,7 @@ my @KeywordsVivoCommunity = qw(vivoÉçÇø);
 my @KeywordsVivoCommunityExcl = qw();
 #---------------------------------
 #=pod #ÑÛÇòÊ¶±ð	
-my @KeywordsEyeRecog = qw(ÑÛÇò ÈËÑÛ.{0,18}(Ê¶±ð|ÈÏ±ð|¼ÓÃÜ));
+my @KeywordsEyeRecog = qw(ÑÛÇò ÈËÑÛ.{0,18}(Ê¶±ð|ÈÏ±ð|¼ÓÃÜ) ÑÛÎÆÊ¶±ð ÑÛ¾¦½âËø);
 my @KeywordsEyeRecogExcl = qw();
 #=cut
 #---------------------------------
@@ -429,7 +431,7 @@ my @KeywordsDiaoqi = qw(µôÆá ±ß¿ò ÍÑÉ« µôÉ« µô.*ÑÕÉ« ÍËÉ« ±êÖ¾.*µô ºó¿Ç.*(ÉÌ±ê|±
 my @KeywordsDiaoqiExcl = qw(»»±ß¿ò ±ß¿òÉè¼Æ ±ß¿ò.*»»);
 #---------------------------------
 my @KeywordsSuggestion = qw(ÆÚ´ý¼ÓÈë Åª¸ö.*Ê²Ã´µÄ ÇéÌí¼Ó ÇëÌí¼Ó ÎÒ¾õµÃ 4.4 ×îºÃ Èç¹ûÓÐ.*¾ÍºÃÁË ÄÜ²»ÄÜ Ï£Íû ¸Ä½ø Ç¿ÁÒÒªÇó ¶àÀ´µã ³ö¶àµã ÏëÈ¡Ïû ¿É²»¿ÉÒÔ ÈËÐÔ»¯Ò»Ð© ¹òÇó ÄÜ·ñÔö¼Ó Ó¦ÏÔÊ¾ ×Ô¶¨Òå 
-Ï£Íû²ÉÄÉ ÓÐ.*¾Í.*ÍêÃÀ ÄÜ·ñ ÆÚÍûÔö¼Ó ¿ÉÒÔÔö¼Ó 
+Ï£Íû²ÉÄÉ ÓÐ.*¾Í.*ÍêÃÀ ÄÜ·ñ ÆÚÍûÔö¼Ó ¿ÉÒÔÔö¼Ó ¼ÓÈëÒ»Ð©
 ÄÜ.*¾ÍÍêÃÀÁË ÒªÇó ÒªÊÇÓÐ.*¾ÍºÃÁË ÎÒÈÏÎª.*¿ÉÒÔ ²»Òª³öÏÖ ½¨Òé);
 my @KeywordsSuggestionExcl = qw(Ï£Íû.*¸Ä½ø);#Ï£Íû½â¾ö ºÄµç ·¢ÈÈ ÐÔÄÜ ËÀ»ú ÖØÆô ×Ô¶¯¹Ø»ú ÎÞÏìÓ¦ Í£Ö¹ÔËÐÐ ÉÁÍË ¼æÈÝÐÔ ÍøÂçÐÅºÅ WIFI GPS Ê±¼ä²»×¼ HIFI µôÆá);
 #---------------------------------
@@ -437,11 +439,11 @@ my @KeywordsQuestion = qw(ÔõÃ´È¥µô ÔõÃ´¸ã ÔõÃ´°ì ÔÚÄÄ ÈçºÎ ¸ÉÊ²Ã´µÄ ÄÄÀï ÓÐÃ»ÓÐ 
 ÔõÃ´Ð¶ÔØ ÔõÃ´.*ÄØ.\?);
 my @KeywordsQuestionExcl = qw();
 #---------------------------------
-my @KeywordsComplain = qw(À¬»ø ²î ÀÃ mlgb ËûÄïµÄ ºÜ²»ºÃ ÒÅº¶ ºÜÉÙ Ì«ÉÙ Ì«Ð¡ ÎÞ°® ÑÏÖØ ÄãÂè ²»ÈËÐÔ»¯ ÄÑ¿´ Ê§Íû ²»¸øÁ¦ Ì«³óÁË ÆÛÆ­ Ì«¸´ÔÓ.*²»»áÊ¹ÓÃ ±».*¿ÓÁË ÊÖ»ú.*²»ÐÐ ¾Í³öÎÊÌâ Ã»ÄÜÁ¦ ¹·Æ¨ ²»ºÃÓÃ);
+my @KeywordsComplain = qw(À¬»ø ²î ÀÃ mlgb ËûÄïµÄ ºÜ²»ºÃ ÒÅº¶ ºÜÉÙ Ì«ÉÙ Ì«Ð¡ ÎÞ°® ÑÏÖØ ÄãÂè ²»ÈËÐÔ»¯ ÄÑ¿´ Ê§Íû ²»¸øÁ¦ Ì«³óÁË ÆÛÆ­ Ì«¸´ÔÓ.*²»»áÊ¹ÓÃ ±».*¿ÓÁË ÊÖ»ú.*²»ÐÐ ¾Í³öÎÊÌâ Ã»ÄÜÁ¦ ¹·Æ¨ ²»ºÃÓÃ Ì«²»ºÃ);
 my @KeywordsComplainExcl = qw();
 #---------------------------------
-my @KeywordsSatisfied = qw(ÔÞ ÂúÒâ ÊÖ»ú¿ÉÒÔ ºÜ°ô ¼ÓÓÍ ²»´í Ï²»¶ ºÜºÃ);
-my @KeywordsSatisfiedExcl = qw(²»ÂúÒâ ²»Ï²»¶);
+my @KeywordsSatisfied = qw(ÔÞ ÂúÒâ ÊÖ»ú¿ÉÒÔ ºÜ°ô ¼ÓÓÍ ²»´í Ï²»¶ ºÜºÃ );
+my @KeywordsSatisfiedExcl = qw(²»ÂúÒâ ²»Ï²»¶ Ï²»¶ËÀ»ú);
 #---------------------------------
 my $dir = getcwd;
 my $workbook;
