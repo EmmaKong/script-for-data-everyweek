@@ -1,10 +1,13 @@
 #!/usr/bin/perl 
 #version : 1.0
+# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
 #------------------------------------------------------------------------
 #  新建excel 问件，用于存储 模式细分 数据
+
+# modify kongqiao
 
 use Cwd;
 use Time::HiRes qw(gettimeofday);
@@ -76,13 +79,11 @@ sub process{
 	$Sheet2 = $workbook->Sheets(2);
 	$Sheet2->Activate;	# 删除前必须要激活当前窗口
 	$Sheet2->Delete;
-#	$Sheet3 = $workbook->Sheets(3);
-#	$Sheet3->Activate;	# 删除前必须要激活当前窗口
-#	$Sheet3->Delete;
 	
 	$workbookLast->Save();
 	$workbookLast->Close();
 		
 	$workbook->Save();
 	$workbook->Close();
+	
 }
