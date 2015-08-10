@@ -1,5 +1,6 @@
 #!/usr/bin/perl 
 #version : 1.0
+# xiaofangxu@vivo.com.cn, 2014.5.30
 #------------------------------------------------------------------------
 #Target:                                                               
 #   auto analysis tool of user feedback.    
@@ -249,8 +250,6 @@ sub process{
 	$Dataend = X.$DataLenth;
 	$workbook->Sheets($pageNum)->Range("A1:$Dataend")->{'value'} = $DataArray;	#传递的是数组引用
 	
-	#$workbook->Sheets($pageNum+1)->{name} = "所有数据";
-		
 	$workbook->Save();
 	$workbook->Close();
 }
