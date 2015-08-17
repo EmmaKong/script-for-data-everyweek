@@ -1,11 +1,3 @@
-#!/usr/bin/perl 
-#version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
-#------------------------------------------------------------------------
-#Target:                                                               
-#   auto analysis tool of user feedback.    
-#------------------------------------------------------------------------
-#  新建excel 问件，用于存储 模式细分 数据
 
 # modify kongqiao
 
@@ -13,13 +5,10 @@ use Cwd;
 use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
-#use Win32::OLE::NLS qw(:LOCALE :TIME);   
 $Win32::OLE::Warn = 3;  
 
-
-
 my @PHONEMODELS = qw(X3t X3L X3V Xplay Xplay3s Xplay3sF Xshot XshotF X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5SL X5Max+ Y29L X5MaxV X5ProD X5M Y13iL Y33); 
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M);# X5M); 
+
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 my $dir = getcwd;

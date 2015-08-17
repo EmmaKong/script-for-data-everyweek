@@ -1,18 +1,10 @@
-#!/usr/bin/perl 
-#version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
-#------------------------------------------------------------------------
-#Target:                                                               
-#   auto analysis tool of user feedback.    
-#------------------------------------------------------------------------
+
 use Cwd;
 use Time::HiRes qw(gettimeofday);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 $Win32::OLE::Warn = 3;  
 
-
-#需要将待处理的文件名设为a.xlsx，同时将所有隐藏页删除
 my @PHONEMODELS = qw(X520L Xplay3S X520F X3t X3L X3V X510t Xplay X710L Xshot X710F X5L Y22iL Y27 Y13L Y22L X5MaxL X5V Y28L Y23L X5S\sL X5Max\+ Y29L X5MaxV X5ProD X5M Y13iL Y33);  # Xplay3s: 0, X3t: 1, X510: 2, Xplay: 3, Xshot: 4
 my @PAGENAME = qw(全部数据 筛选);
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   

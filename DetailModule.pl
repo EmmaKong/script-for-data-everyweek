@@ -14,7 +14,6 @@ $Win32::OLE::Warn = 3;
 $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 
 my @PHONEMODELS = qw(XplayDetail Xplay3sDetail X5LDetail XshotDetail X5MaxLDetail X5Max+Detail Y29LDetail X5MaxVDetail X5ProDDetail X5MDetail);  # 机型
-#my @PHONEMODELS = qw(Y13iLDetail);  # 机型
 
 my $dir = getcwd;
 my $workbook;

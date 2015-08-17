@@ -1,9 +1,3 @@
-#!/usr/bin/perl 
-#version : 1.0
-#------------------------------------------------------------------------
-#Target:                                                               
-#   auto analysis tool of user feedback.    
-#------------------------------------------------------------------------
 
 use Cwd;
 use Time::HiRes qw(gettimeofday);
@@ -13,10 +7,8 @@ $Win32::OLE::Warn = 3;
 
 $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 
-#my @PHONEMODELS = qw(X3t X3V Xplay Xplay3s X5L Xshot Y22iL Y27 Y13L Y22L X5V Y28L Y23L X5SL);# X5MaxL);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
 my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M);  # 机型
-#my @PHONEMODELS = qw(Y13iL);  # 机型
+
 my $dir = getcwd;
 my $workbook;
 my $pageNum = 2;	

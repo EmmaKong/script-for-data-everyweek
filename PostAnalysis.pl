@@ -1,10 +1,3 @@
-#!/usr/bin/perl 
-#version : 1.0
-# xiaofangxu@vivo.com.cn, 2014.5.30
-#------------------------------------------------------------------------
-#Target:                                                               
-#   auto analysis tool of user feedback.    
-#------------------------------------------------------------------------
 
 use Cwd;
 use Time::HiRes qw(gettimeofday);
@@ -12,21 +5,12 @@ use Win32::OLE qw(in with);
 use Win32::OLE::Const 'Microsoft Excel';
 use File::Copy; #导入文件复制模块
 $Win32::OLE::Warn = 3;  
-#电量|(百分之|%).{0,18}电.{0,18}关机|电.{0,18}(百分之|%).{0,18}关机|%.{0,18}满格.{0,18}%
 my $Excel = Win32::OLE->GetActiveObject('Excel.Application')|| Win32::OLE->new('Excel.Application', 'Quit');   
 
-#my @PHONEMODELS = qw(X3t X3V X5L Y22iL Y27 Y13L Y22L X5V Y28L Y23L X5SL);  # 机型 X5MaxL
 my @PHONEMODELS = qw(X3t X3V X5L Xplay3s Y22L Y22iL Y27 Y13L X5V Y28L Y23L X5SL);# X5MaxL);  # 机型
-#my @PHONEEDITION2 = qw(8 15 2 30 20 20 16 12 13 18 13 14 10 7 11);  # 机型
-#my @PHONEEDITION1 = qw(5 1 7 1 1 1 1 27 1 1 1 1 1 1 1);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL);  # 机型
-#my @PHONEMODELS = qw(Xplay Xplay3s Xshot X5MaxL X5Max+ Y29L X5L X5MaxV X5ProD X5M Y13iL Y33);# X5M); 
-#my @PHONEMODELS = qw(X5MaxV);#X5M Y13iL Y33);
 my @PHONEEDITION2 = qw(8 15 4 2 9 20 16 12 13 18 15 14 10 7 11);  # 机型
 my @PHONEEDITION1 = qw(5 1 3 5 6 1 1 27 1 1 13 1 1 1 1);  # 机型
 $dayTime="0330";
-#发现有热，耗电，性能的问题之后，就可以直接跳过模块?
 my @keywordNull = qw();
 my @PAGENAME = qw(全部数据 系统性能 发热投诉 耗电投诉);
 #------------------ K(11) L    M  ....................................................
