@@ -419,20 +419,6 @@ sub Process{
 		$DataLengthLast=@$DataArrayLast-1;	
 #=cut
 
-
-
-=pod
-		$test="'hello'nimei>11122.345566667788666hello";
-		$test=~/\>(\d+(\.\d+)?)/;
-		print "1是$1\n";
-		$1是11122.345566667788666
-
-		$test="'hello'nimei>11122hello";
-		$test=~/\>(\d+(\.\d+)?)/;
-		print "1是$1\n";	
-		$1是11122
-=cut
-
 			
 		#读出EXCEL数据到数组
 		$totolRow = $rowCount+1;

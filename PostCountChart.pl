@@ -48,7 +48,6 @@ sub Process{
 										$DataArray = $workSheet->Range("A1:$numDRow")->{'Value'};
 										$DataLength=@$DataArray-1;
 
-#=pod
 									 									  
 									  #$filePathLast = $dir."\/".$_."用户反馈".".xlsx";	# 表格路径
 									  # modify kongqiao 20150714									  
@@ -67,14 +66,9 @@ sub Process{
 										#读出EXCEL数据到数组
 										$DataArrayLast = $workSheetLast->Range("A1:$numDRow")->{'Value'};
 										$DataLengthLast = @$DataArrayLast - 1;	
-#=cut		
 
-#处理数据
-
-#=pod
 										%rom_count = getRomcount($_);
-										calculateRomRate($DataArray, \%rom_count);
-#=cut				
+										calculateRomRate($DataArray, \%rom_count);				
 				
 										$firstCol=$$DataArray[0];
 										$tenthCol=$$DataArray[9];
@@ -308,10 +302,6 @@ sub Process{
 										}
 
 
-
-										#$workSheet->Range("A1:$numDRow")->{'value'}=$DataArray;
-
-
 										#按从大到小冒泡排序
 										#$DataArray = $workSheet->Range("A1:$numDRow")->{'Value'};
 										foreach $tempCount(2..$colMax-1-5){
@@ -483,20 +473,12 @@ sub Process{
 													
 										}
 															
-
-														
-									
+							
 										$workbook->Save();
 										$workbook->Close();
-#=pod										
+									
 										$workbookLast->Save();
 										$workbookLast->Close();
-#=cut					
-										#$workbookDetail->Save();
-										#$workbookDetail->Close();					
-					
-			
-					
 					
 					}
 

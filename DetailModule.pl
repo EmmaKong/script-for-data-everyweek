@@ -377,9 +377,6 @@ $numDRow=MM.$totolRow;#600行对应的excel长宽   #modify  kongqiao
 main();
 
 
-
-
-
 sub main{
 	Process();	#过滤处理，处理完后进行版本筛选，筛选策略：先找到版本个数，按照个数拷贝相同的份数，进行删除操作。	
 }
