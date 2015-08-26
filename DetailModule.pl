@@ -495,12 +495,12 @@ sub Process{
 														$numInsert++;			
 												}
 
-												# 只显示不为 0 的部分
-											
-										    # modify kongqiao 20150820	
-												for ($i = 1; $i < $numInsert; $i++){
+												# 相机或第三方软件只显示不为 0 的部分
+												if($value eq "相机" || $value eq "第三方软件"){
 												
-													for($j = 1; $j < $numInsert - $i; $j++){
+													for ($i = 1; $i < $numInsert; $i++){
+												
+														for($j = 1; $j < $numInsert - $i; $j++){
 															$jNum = $$tempSecondtData[$j];
 															$jNumP = $$tempSecondtData[$j + 1];
 															$jName = $$tempFirstData[$j];
@@ -511,21 +511,21 @@ sub Process{
 																$$tempFirstData[$j] = $jNameP;
 																$$tempFirstData[$j + 1] = $jName;
 															}
+														}
 													}
-												}
 												
-												$countNonZero = 0;
-												for($i = 1; $i < $numInsert; $i++){
-													if($$tempSecondtData[$i] > 0){
-														$countNonZero ++;
-													} else {
-														$$tempSecondtData[$i] = '';
-														$$tempFirstData[$i] = '';
+													$countNonZero = 0;
+													for($i = 1; $i < $numInsert; $i++){
+														if($$tempSecondtData[$i] > 0){
+															$countNonZero ++;
+														} else {
+															$$tempSecondtData[$i] = '';
+															$$tempFirstData[$i] = '';
+														}
 													}
-												}
-												$columnMap{$value} = $countNonZero;
-																																							
-											$allNum = $allNum+3;   					
+													$columnMap{$value} = $countNonZero;
+												}																																	
+												$allNum = $allNum+3;   
 																																																				
 										}
 										
@@ -603,10 +603,10 @@ sub Process{
 														$numInsertLast++;			
 												}
 
-												# 只显示不为 0 的部分
-									      # modify kongqiao 20150820
+												# 相机或第三方软件只显示不为 0 的部分
+												if($value eq "相机" || $value eq "第三方软件"){
 												
-												for ($i = 1; $i < $numInsertLast; $i++){
+													for ($i = 1; $i < $numInsertLast; $i++){
 												
 														for($j = 1; $j < $numInsertLast - $i; $j++){
 															$jNum = $$tempSecondtDataLast[$j];
@@ -622,16 +622,18 @@ sub Process{
 														}
 													}
 												
-												$countNonZeroLast = 0;
-												for($i = 1; $i < $numInsertLast; $i++){
-													if($$tempSecondtDataLast[$i] > 0){
-														$countNonZeroLast ++;
-													} else {
-														$$tempSecondtDataLast[$i] = '';
-														$$tempFirstDataLast[$i] = '';
+													$countNonZeroLast = 0;
+													for($i = 1; $i < $numInsertLast; $i++){
+														if($$tempSecondtDataLast[$i] > 0){
+															$countNonZeroLast ++;
+														} else {
+															$$tempSecondtDataLast[$i] = '';
+															$$tempFirstDataLast[$i] = '';
+														}
 													}
+													$columnMapLast{$value} = $countNonZeroLast;
 												}
-												$columnMapLast{$value} = $countNonZeroLast;
+												
 																					
 												$allNumLast = $allNumLast + 3;   
 																																																				
@@ -680,8 +682,7 @@ sub Process{
  										# 复制并解析上周数据
  										
 									  # 本周前八数据与上周前八数据存在不同，并不能一一对应， 我们对上周 所有的细分模式数据，进行匹配	
-									  my @nocount = 0 x $ModuleNum;		 # 存储，本周为0，上周不为0 的小模块数
-									  my $first = 0 x  $ModuleNum;				#存储本周不为0的 小模块总数+1		  
+									  my @nocount = 0 x $ModuleNum;								  
 									  $allChartNum = 1;																
 										foreach $row (1..$ModuleNum){		
 											foreach $row1 (1..$colMax){											
@@ -695,76 +696,81 @@ sub Process{
 											 							
 														$$DataArray[$allChartNum +($row-1)*35+1][0] = $$detailDataArray[240 +1 +($row1-1)*3][0];												
 																																							 															
-													# 将上周数据，一一对应的复制至本周，
-													# 先处理，能在上周数据中匹配到相应数值的
-													$count = @{$$DataArray[$allChartNum -1 + ($row-1)*35+0]};
-													$countLast = @{$$detailDataArray[240 + ($row1-1)*3]};												
-											
-													for ($i = 1; $i<$count; $i++){
-													#	print "enen $temp \n";
-														for ($j =1;$j < $countLast; $j++){
-														#	print "haha $tempLast \n";
-															if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq $$detailDataArray[240+($row1-1)*3][$j]) && 
-																	!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "")){
+														# 将上周数据，一一对应的复制至本周，
+														# 先处理，能在上周数据中匹配到相应数值的
+														$count = @{$$DataArray[$allChartNum -1 + ($row-1)*35+0]};
+														$countLast = @{$$detailDataArray[240 + ($row1-1)*3]};												
+												
+														for ($i = 1; $i<$count; $i++){
+														#	print "enen $temp \n";
+															for ($j =1;$j < $countLast; $j++){
+															#	print "haha $tempLast \n";
+																if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq $$detailDataArray[240+($row1-1)*3][$j]) && 
+																		!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "")){
 															
-																	$$DataArray[$allChartNum +($row-1)*35+1][$i] = $$detailDataArray[240 + 1 +($row1-1)*3][$j];															
-																												 																																										
-															}																																			
+																$$DataArray[$allChartNum +($row-1)*35+1][$i] = $$detailDataArray[240 + 1 +($row1-1)*3][$j];															
+																												 																													
+																}																																			
 													
-												 		}											  													
-													}
-													# 上周未匹配到
-													for ($i = 1; $i<$count; $i++){
-														if(!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") && !($$DataArray[$allChartNum + ($row-1)*35+0][$i] eq "")
+												 			}											  													
+														}
+														# 上周未匹配到
+														for ($i = 1; $i<$count; $i++){
+															if(!($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") && !($$DataArray[$allChartNum + ($row-1)*35+0][$i] eq "")
 													 				&& ($$DataArray[$allChartNum +1 + ($row-1)*35][$i] eq "")){
 													 
-												 			$$DataArray[$allChartNum +($row-1)*35+1][$i] = 0;
-														}
-												 
-													}
-												
-													# 找到本周数据中，不为空白的第一项
-													for ($i = 0; $i<$count; $i++){
-														if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") ){
-													 
-												  		$first[$row-1] = $i;								  		
-												  		print "aoigb $first[$row-1] \n";
-												  		last;
-														}
-													 
-													}
-													print "不为空的第一项： $first[$row-1] \n";
-																								
-													# 上周存在，但本周没有
-												
-													LINE: for($i = 1; $i < $countLast; $i++){
-														if(!($$detailDataArray[240 +($row1-1)*3][$i] eq "")){
-															for ($j = 1; $j < $count; $j++){
-																if($$detailDataArray[240 +($row1-1)*3][$i] eq $$DataArray[$allChartNum -1+($row-1)*35+0][$j]){
-																	#存在匹配的
-																	next LINE;																																																
-																}
-																																										
+													 			$$DataArray[$allChartNum +($row-1)*35+1][$i] = 0;
 															}
-														
-															# 未匹配的项
-															print "无匹配项：$$detailDataArray[240 +($row1-1)*3][$i] \n";																
-														
-															$$DataArray[$allChartNum -1+($row-1)*35+0][$first[$row-1] + $nocount[$row-1]] = $$detailDataArray[240+($row1-1)*3][$i];														
-															$$DataArray[$allChartNum +($row-1)*35+0][$first[$row-1] + $nocount[$row-1]] = 0;
-															$$DataArray[$allChartNum + 1+($row-1)*35+0][$first[$row-1] + $nocount[$row-1]] = $$detailDataArray[240+1+($row1-1)*3][$i];
-														
-															$nocount[$row-1]++;
-													
+													 
 														}
+														my $first = 0;
+														# 找到本周数据中，不为空白的第一项
+														for ($i = 0; $i<$count; $i++){
+															if(($$DataArray[$allChartNum -1 + ($row-1)*35+0][$i] eq "") ){
+													 
+													  		$first = $i;
+													  		last;
+															}
+													 
+														}
+														print "不为空的第一项： $first \n";
+																								
+														# 上周存在，但本周没有
+												
+														LINE: for($i = 1; $i < $countLast; $i++){
+															if(!($$detailDataArray[240 +($row1-1)*3][$i] eq "")){
+																for ($j = 1; $j < $count; $j++){
+																	if($$detailDataArray[240 +($row1-1)*3][$i] eq $$DataArray[$allChartNum -1+($row-1)*35+0][$j]){
+																		#存在匹配的
+																		next LINE;																																																
+																	}
+																																										
+																}
+														
+																# 未匹配的项
+																print "无匹配项：$$detailDataArray[240 +($row1-1)*3][$i] \n";																
+														
+																$$DataArray[$allChartNum -1+($row-1)*35+0][$first + $nocount[$row-1]] = $$detailDataArray[240+($row1-1)*3][$i];														
+																$$DataArray[$allChartNum +($row-1)*35+0][$first + $nocount[$row-1]] = 0;
+																$$DataArray[$allChartNum + 1+($row-1)*35+0][$first + $nocount[$row-1]] = $$detailDataArray[240+1+($row1-1)*3][$i];
+														
+																$nocount[$row-1] ++;
 													
-													}		
+															}
+													
+														}		
 												
-													$tempDataArray = $$DataArray[$allChartNum  +($row-1)*35];
+														$tempDataArray = $$DataArray[$allChartNum  +($row-1)*35];
 												
-													$$DataArray[$allChartNum  +($row-1)*35] = $$DataArray[$allChartNum  +($row-1)*35+1];
-													$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;																																																																											
-											
+														$$DataArray[$allChartNum  +($row-1)*35] = $$DataArray[$allChartNum  +($row-1)*35+1];
+														$$DataArray[$allChartNum  +($row-1)*35+1] = $tempDataArray;																																																																			
+												
+													}else{						
+												
+														$$DataArray[$allChartNum  +($row-1)*35+1] = $$DataArray[$allChartNum  +($row-1)*35];
+														$$DataArray[$allChartNum  +($row-1)*35] = $$detailDataArray[240 + 1 + ($row1-1)*3];
+												
+													}
 												}
 											
 											
@@ -775,22 +781,28 @@ sub Process{
 										$newSheet->Range("A1:$numDRow")->{'value'} = $DataArray;
 							
 										# 开始制图
-									  $getNum = 0;
+									  $getNum=0;
 										$allChartNum = 1;
 										for(1..$ModuleNum){
-											
 											for $row(0..$colMax-1){
 												if($getLine[$getNum] eq $getmodule[$row]){
 																												
 															$rangeStart = A.$allChartNum;
-															# modify kongqiao 20150820
-																											
-															$countindex = $columnMap{$getLine[$getNum]} + 1;
-															$rangeEnd = getColumnName($columnMap{$getLine[$getNum]} + 1+ $nocount[$getNum]).($allChartNum+2);
+															if($getLine[$getNum] eq "通话"){
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1-1).($allChartNum+2);
+															
+															}elsif($getLine[$getNum] eq "相机" || $getLine[$getNum] eq "第三方软件"){
 																
+																$countindex = $columnMap{$getLine[$getNum]} + 1;
+																$rangeEnd = getColumnName($columnMap{$getLine[$getNum]} + 1+ $nocount[$getNum]).($allChartNum+2);
+																
+																
+															}else{
+																
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1).($allChartNum+2);
+															}
 															#print "$rangeStart \n";
 															#print "$rangeEnd \n";
-=pod															
 															if($getLine[$getNum] eq "第三方软件"){
 																$chartWidth=2000;
 															}elsif($getLine[$getNum] eq "游戏"){
@@ -802,14 +814,7 @@ sub Process{
 															}else{
 																$chartWidth=1000;
 															}
-=cut													
-															my $countnum = $first[$getNum] - 1 + $nocount[$getNum];
-															print "abfjg $first[$getNum] \n";
-															print "Ujhb $nocount[$getNum] \n";
-															print "ahaf $countnum \n";
-															$chartWidth = 100*$countnum;
-						   											
-			
+															
 															$chartX=0;
 															$chartY=($allChartNum+5)*13.5;
 															$chartHeight = 13.5*23;
@@ -924,19 +929,25 @@ sub Process{
 												if($getLine[$getNum] eq $getmodule[$row]){
 																												
 															$rangeStart = A.$allChartNum;
-															# modify kongqiao 20150820
-																								
-															$rangeEnd = getColumnName($columnMap{$getLine[$getNum]} + 1 + $nocount[$getNum]).($allChartNum+2);																
-																												
+															if($getLine[$getNum] eq "通话"){
+																$rangeEnd=getColumnName($mergeArray[$positionModule[$row]]+1-1).($allChartNum+2);
+															
+															}elsif($getLine[$getNum] eq "相机" || $getLine[$getNum] eq "第三方软件"){
+																
+																$rangeEnd = getColumnName($columnMap{$getLine[$getNum]} + 1 + $nocount[$getNum]).($allChartNum+2);
+																
+																
+															}else{
+																
+																$rangeEnd = getColumnName($mergeArray[$positionModule[$row]]+1).($allChartNum+2);
+															}
+														
 															print "$rangeEnd \n";
 															
 															$chartX = 0;
 															$chartY = 145*13.5 + $getNum*420;
 
-															#$chartWidth = 1000;
-															my $countnum = $first[$getNum] - 1 + $nocount[$getNum];
-															print "ahsgbaf $countnum \n";
-															$chartWidth = 100*$countnum; 
+															$chartWidth = 1000;
 															$chartHeight = 405;
 															
 														  $chart_range = $newSheetSta->Range( "$rangeStart:$rangeEnd" );        # 数据源范围

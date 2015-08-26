@@ -38,6 +38,7 @@ my $X5MaxV = "$dir/X5MaxVDetail.xlsx";
 my $X5ProD = "$dir/X5ProDDetail.xlsx";
 my $X5M = "$dir/X5MDetail.xlsx";
 my $Y13iL = "$dir/Y13iLDetail.xlsx";
+my $Y33 = "$dir/Y33Detail.xlsx";
 
 main();
 
@@ -165,7 +166,12 @@ sub preProcess{
 	process($Y13iL, 1, $PHONEMODELS[26]);
 	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
     $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
-	printf "Y13iL已耗时：%s秒\n", $timeDelta ;		
+	printf "Y13iL已耗时：%s秒\n", $timeDelta ;	
+	
+	process($Y33, 1, $PHONEMODELS[27]);
+	my ($thirteenth_sec, $thirteenth_usec) = gettimeofday();
+    $timeDelta = ($thirteenth_usec - $twelfth_usec) / 1000000 + ($thirteenth_sec - $twelfth_sec);
+	printf "Y33已耗时：%s秒\n", $timeDelta ;	
 }
 
 sub process{
